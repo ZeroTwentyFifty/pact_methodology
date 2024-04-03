@@ -39,11 +39,13 @@ class CarbonFootprintGeographicalScope:
         scope (str or RegionOrSubregion): The geographical scope.
         granularity (GeographicalGranularity): The granularity of the geographical scope.
     """
-    def __init__(self, *, global_scope=False, geography_country_subdivision=None, geography_country=None,
-                 geography_region_or_subregion=None):
 
-        self.scope = None
-        self.granularity = None
+    def __init__(self, *, global_scope: bool = False, geography_country_subdivision: str = None,
+                 geography_country: str = None,
+                 geography_region_or_subregion: RegionOrSubregion | str = None) -> None:
+
+        self.scope: str | RegionOrSubregion
+        self.granularity: GeographicalGranularity
 
         if global_scope and (geography_country_subdivision or geography_country or geography_region_or_subregion):
             raise ValueError(
