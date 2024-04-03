@@ -1,5 +1,7 @@
 from enum import Enum
 
+import pycountry
+
 from pathfinder_framework.carbon_footprint.region_or_subregion import RegionOrSubregion
 
 
@@ -58,6 +60,11 @@ class CarbonFootprintGeographicalScope:
             or geography_country and geography_region_or_subregion
         ):
             raise ValueError("Cannot provide more than one geographical field")
+
+        if geography_country:
+            country = pycountry.countries.get(alpha_2=geography_country)
+            if country is None:
+                raise ValueError(f"Invalid country code: {geography_country}")
 
         if global_scope:
             self.scope = "Global"
