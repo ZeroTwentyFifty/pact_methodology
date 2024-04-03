@@ -1,6 +1,7 @@
 import pytest
 
-from pathfinder_framework.carbon_footprint_geographical_scope import CarbonFootprintGeographicalScope
+from pathfinder_framework.carbon_footprint_geographical_scope import CarbonFootprintGeographicalScope, GeographicalGranularity
+from pathfinder_framework.carbon_footprint.region_or_subregion import RegionOrSubregion
 
 
 @pytest.mark.parametrize(
@@ -9,7 +10,7 @@ from pathfinder_framework.carbon_footprint_geographical_scope import CarbonFootp
         (True, None, None, None),
         (False, "US-NY", None, None),
         (False, None, "FR", None),
-        (False, None, None, "Region"),
+        (False, None, None, RegionOrSubregion.AFRICA),
     ],
 )
 def test_carbon_footprint_geographical_scope_successful_instantiation(
@@ -60,8 +61,35 @@ def test_geography_country_scope():
 
 
 def test_geography_region_or_subregion_scope():
-    scope = CarbonFootprintGeographicalScope(geography_region_or_subregion="Region")
-    assert scope.scope == "Region"
+    scope = CarbonFootprintGeographicalScope(geography_region_or_subregion=RegionOrSubregion.AFRICA)
+    assert scope.scope == RegionOrSubregion.AFRICA
+
+
+def test_global_scope_granularity():
+    scope = CarbonFootprintGeographicalScope(global_scope=True)
+    assert scope.granularity == GeographicalGranularity.GLOBAL
+
+
+def test_geography_country_subdivision_scope_granularity():
+    scope = CarbonFootprintGeographicalScope(geography_country_subdivision="US-NY")
+    assert scope.granularity == GeographicalGranularity.COUNTRY_SUBDIVISION
+
+
+def test_geography_country_scope_granularity():
+    scope = CarbonFootprintGeographicalScope(geography_country="FR")
+    assert scope.granularity == GeographicalGranularity.COUNTRY
+
+
+def test_geography_region_or_subregion_scope_granularity():
+    scope = CarbonFootprintGeographicalScope(geography_region_or_subregion=RegionOrSubregion.AFRICA)
+    assert scope.granularity == GeographicalGranularity.REGION_OR_SUBREGION
+
+
+def test_geographical_granularity_enum():
+    assert GeographicalGranularity.GLOBAL.value == "Global"
+    assert GeographicalGranularity.COUNTRY_SUBDIVISION.value == "Country Subdivision"
+    assert GeographicalGranularity.COUNTRY.value == "Country"
+    assert GeographicalGranularity.REGION_OR_SUBREGION.value == "Region or Subregion"
 
 
 def test_no_scope_raises_value_error():
