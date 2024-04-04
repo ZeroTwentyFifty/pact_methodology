@@ -1,6 +1,6 @@
 import pytest
 
-from pathfinder_framework.carbon_footprint_geographical_scope import CarbonFootprintGeographicalScope, GeographicalGranularity
+from pathfinder_framework.carbon_footprint.geographical_scope import CarbonFootprintGeographicalScope, GeographicalGranularity
 from pathfinder_framework.carbon_footprint.region_or_subregion import RegionOrSubregion
 
 
