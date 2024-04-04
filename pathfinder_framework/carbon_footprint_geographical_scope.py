@@ -61,11 +61,6 @@ class CarbonFootprintGeographicalScope:
         ):
             raise ValueError("Cannot provide more than one geographical field")
 
-        if geography_country:
-            country = pycountry.countries.get(alpha_2=geography_country)
-            if country is None:
-                raise ValueError(f"Invalid country code: {geography_country}")
-
         if global_scope:
             self.scope = "Global"
             self.granularity = GeographicalGranularity.GLOBAL
@@ -73,6 +68,8 @@ class CarbonFootprintGeographicalScope:
             self.scope = geography_country_subdivision
             self.granularity = GeographicalGranularity.COUNTRY_SUBDIVISION
         elif geography_country:
+            if pycountry.countries.get(alpha_2=geography_country) is None:
+                raise ValueError(f"Invalid country code: {geography_country}")
             self.scope = geography_country
             self.granularity = GeographicalGranularity.COUNTRY
         elif geography_region_or_subregion:
