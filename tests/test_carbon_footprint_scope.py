@@ -105,6 +105,19 @@ def test_carbon_footprint_geographical_scope_invalid_country_codes(country_code)
         CarbonFootprintGeographicalScope(geography_country=country_code)
 
 
+@pytest.mark.parametrize("subdivision_code", ["US-CA", "FR-IDF", "GB-ENG", "CN-SH", "JP-13"])
+def test_carbon_footprint_geographical_scope_valid_subdivision_codes(subdivision_code):
+    scope = CarbonFootprintGeographicalScope(geography_country_subdivision=subdivision_code)
+    assert scope.granularity == GeographicalGranularity.COUNTRY_SUBDIVISION
+    assert scope.scope == subdivision_code
+
+
+@pytest.mark.parametrize("subdivision_code", ["US-XX", "FR-ABC", "GB-123", "CN-11", "CN-", "JP-  ", None])
+def test_carbon_footprint_geographical_scope_invalid_subdivision_codes(subdivision_code):
+    with pytest.raises(ValueError):
+        CarbonFootprintGeographicalScope(geography_country_subdivision=subdivision_code)
+
+
 def test_no_scope_raises_value_error():
     with pytest.raises(
             ValueError,

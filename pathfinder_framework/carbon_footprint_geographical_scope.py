@@ -65,6 +65,8 @@ class CarbonFootprintGeographicalScope:
             self.scope = "Global"
             self.granularity = GeographicalGranularity.GLOBAL
         elif geography_country_subdivision:
+            if pycountry.subdivisions.get(code=geography_country_subdivision) is None:
+                raise ValueError(f"Invalid country subdivision code: {geography_country_subdivision}")
             self.scope = geography_country_subdivision
             self.granularity = GeographicalGranularity.COUNTRY_SUBDIVISION
         elif geography_country:
