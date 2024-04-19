@@ -11,3 +11,9 @@ class SpecVersion:
 
     def __repr__(self):
         return f"SpecVersion({self.version})"
+
+    @classmethod
+    def get_latest_version(cls, *versions):
+        if not all(isinstance(version, cls) for version in versions):
+            raise ValueError("All arguments must be instances of SpecVersion")
+        return max(versions, key=lambda version: version.version)
