@@ -8,6 +8,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 pycountry = "^23.12.11"
+casregnum = "^1.0.1"
+urnparse = "^0.2.1"
 
 
 [tool.poetry.group.dev.dependencies]
