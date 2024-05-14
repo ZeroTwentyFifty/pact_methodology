@@ -18,7 +18,7 @@ class DeclaredUnit(str, Enum):
     The value of each DeclaredUnit MUST be encoded as a JSON String.
 
     For more information, please refer to the official documentation:
-        https://wbcsd.github.io/tr/2023/data-exchange-protocol-20231207/#dt-declaredunit
+        https://wbcsd.github.io/data-exchange-protocol/v2/#dt-declaredunit
     And the SI Unit reference:
         https://www.bipm.org/documents/20126/41483022/SI-Brochure-9-EN.pdf/2d2b50bf-f2b4-9661-f402-5f9d66e4b507
     """
