@@ -7,6 +7,7 @@ from pathfinder_framework.product_footprint.product_footprint import ProductFoot
 from pathfinder_framework.product_footprint.status import ProductFootprintStatus
 from pathfinder_framework.urn import CompanyId, ProductId
 from pathfinder_framework.product_footprint.cpc import CPCCodeLookup, CPC
+from pathfinder_framework.product_footprint.version import Version
 
 
 @pytest.fixture(scope="module")
@@ -25,12 +26,16 @@ def valid_cpc() -> CPC:
     return cpc_code_lookup.lookup('0111')
 
 
-def test_product_footprint_initialization(company_ids, product_ids, valid_cpc):
-    """Tests that a ProductFootprint instance can be initialized with all required attributes."""
+@pytest.fixture(scope="module")
+def version() -> Version:
+    return Version(1)
+
+
+def test_product_footprint_initialization(company_ids, product_ids, valid_cpc, version):
     product_footprint_id = ProductFootprintId()
     product_footprint = ProductFootprint(
         id=product_footprint_id,
-        version=1,
+        version=version,
         created=datetime.now(),
         updated=datetime.now(),
         status=ProductFootprintStatus.ACTIVE,
@@ -47,7 +52,7 @@ def test_product_footprint_initialization(company_ids, product_ids, valid_cpc):
         extensions={"key": "value"}
     )
     assert product_footprint.id == product_footprint_id
-    assert product_footprint.version == 1
+    assert product_footprint.version == version
     assert isinstance(product_footprint.created, datetime)
     assert isinstance(product_footprint.updated, datetime)
     assert product_footprint.status == ProductFootprintStatus.ACTIVE
@@ -64,10 +69,10 @@ def test_product_footprint_initialization(company_ids, product_ids, valid_cpc):
     assert product_footprint.extensions == {"key": "value"}
 
 
-def test_product_footprint_default_initialization(company_ids, product_ids, valid_cpc):
+def test_product_footprint_default_initialization(company_ids, product_ids, valid_cpc, version):
     """Tests that a ProductFootprint instance initializes with default values for optional attributes."""
     product_footprint = ProductFootprint(
-        version=1,
+        version=version,
         created=datetime.now(),
         updated=datetime.now(),
         status=ProductFootprintStatus.ACTIVE,
@@ -86,10 +91,10 @@ def test_product_footprint_default_initialization(company_ids, product_ids, vali
     assert isinstance(product_footprint.id, ProductFootprintId)
 
 
-def test_product_footprint_spec_version(company_ids, product_ids, valid_cpc):
+def test_product_footprint_spec_version(company_ids, product_ids, valid_cpc, version):
     """Tests that a ProductFootprint instance has a specVersion attribute."""
     product_footprint = ProductFootprint(
-        version=1,
+        version=version,
         created=datetime.now(),
         updated=datetime.now(),
         status=ProductFootprintStatus.ACTIVE,
@@ -108,12 +113,12 @@ def test_product_footprint_spec_version(company_ids, product_ids, valid_cpc):
     assert product_footprint.spec_version == "2.0.0"
 
 
-def test_product_footprint_repr(company_ids, product_ids, valid_cpc):
+def test_product_footprint_repr(company_ids, product_ids, valid_cpc, version):
     """Tests that the __repr__ method returns the expected string representation."""
     product_footprint_id = ProductFootprintId()
     product_footprint = ProductFootprint(
         id=product_footprint_id,
-        version=1,
+        version=version,
         created=datetime.now(),
         updated=datetime.now(),
         status=ProductFootprintStatus.ACTIVE,
