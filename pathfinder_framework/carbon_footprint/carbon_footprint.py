@@ -1,11 +1,13 @@
 from pathfinder_framework.carbon_footprint.characterization_factors import CharacterizationFactors
+from pathfinder_framework.carbon_footprint.declared_unit import DeclaredUnit
+
 
 class CarbonFootprint:
     """
     A CarbonFootprint represents the carbon footprint of a product and related data in accordance with the Pathfinder Framework.
 
     Attributes:
-        declared_unit (str): The unit of analysis of the product.
+        declared_unit (DeclaredUnit): The unit of analysis of the product.
         unitary_product_amount (float): The amount of Declared Units contained within the product to which the PCF is referring to.
         p_cf_excluding_biogenic (float): The product carbon footprint of the product excluding biogenic CO2 emissions.
         fossil_ghg_emissions (float): The emissions from fossil sources as a result of fuel combustion, from fugitive emissions, and from process emissions.
@@ -17,11 +19,9 @@ class CarbonFootprint:
         exempted_emissions_percent (float): The Percentage of emissions excluded from PCF, expressed as a decimal number between 0.0 and 5 including.
     """
     def __init__(self, declared_unit, unitary_product_amount, p_cf_excluding_biogenic, fossil_ghg_emissions, fossil_carbon_content, biogenic_carbon_content, characterization_factors, ipcc_characterization_factors_sources, cross_sectoral_standards_used, boundary_processes_description, exempted_emissions_percent):
-        accepted_declared_units = ['liter', 'kilogram', 'cubic meter', 'kilowatt hour', 'megajoule', 'ton kilometer',
-                                   'square meter']
-        if declared_unit not in accepted_declared_units:
+        if not isinstance(declared_unit, DeclaredUnit):
             raise ValueError(
-                f"declared_unit '{declared_unit}' is not valid. It must be one of the following: {', '.join(accepted_declared_units)}")
+                f"declared_unit '{declared_unit}' is not valid. It must be one of the following: {', '.join([unit.value for unit in DeclaredUnit])}")
         if unitary_product_amount <= 0:
             raise ValueError("unitary_product_amount must be strictly greater than 0")
         if p_cf_excluding_biogenic < 0:
