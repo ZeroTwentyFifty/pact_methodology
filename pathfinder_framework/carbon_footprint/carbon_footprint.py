@@ -1,4 +1,5 @@
 from pathfinder_framework.carbon_footprint.characterization_factors import CharacterizationFactors
+from pathfinder_framework.carbon_footprint.cross_sectoral_standard import CrossSectoralStandard
 from pathfinder_framework.carbon_footprint.declared_unit import DeclaredUnit
 
 
@@ -15,7 +16,7 @@ class CarbonFootprint:
         biogenic_carbon_content (float): The biogenic carbon content of the product (mass of carbon).
         characterization_factors (CharacterizationFactors): The IPCC version of the GWP characterization factors used in the calculation of the PCF.
         ipcc_characterization_factors_sources (list[str]): The characterization factors from one or more IPCC Assessment Reports used in the calculation of the PCF.
-        cross_sectoral_standards_used (list[str]): The cross-sectoral standards applied for calculating or allocating GHG emissions.
+        cross_sectoral_standards_used (list[CrossSectoralStandard]): The cross-sectoral standards applied for calculating or allocating GHG emissions.
         exempted_emissions_percent (float): The Percentage of emissions excluded from PCF, expressed as a decimal number between 0.0 and 5 including.
     """
     def __init__(self, declared_unit, unitary_product_amount, p_cf_excluding_biogenic, fossil_ghg_emissions, fossil_carbon_content, biogenic_carbon_content, characterization_factors, ipcc_characterization_factors_sources, cross_sectoral_standards_used, boundary_processes_description, exempted_emissions_percent):
@@ -36,8 +37,8 @@ class CarbonFootprint:
             raise ValueError("characterization_factors must be an instance of CharacterizationFactors")
         if not ipcc_characterization_factors_sources:
             raise ValueError("ipcc_characterization_factors_sources must not be empty")
-        if not cross_sectoral_standards_used:
-            raise ValueError("cross_sectoral_standards_used must not be empty")
+        if not all(isinstance(standard, CrossSectoralStandard) for standard in cross_sectoral_standards_used):
+            raise ValueError("cross_sectoral_standards_used must be a list of CrossSectoralStandard")
         if not boundary_processes_description:
             raise ValueError("boundary_processes_description must not be empty")
         if not 0.0 <= exempted_emissions_percent <= 5.0:
