@@ -3,6 +3,7 @@ from datetime import datetime
 from pathfinder_framework.product_footprint.id import ProductFootprintId
 from pathfinder_framework.product_footprint.status import ProductFootprintStatus
 from pathfinder_framework.urn import CompanyId, ProductId
+from pathfinder_framework.product_footprint.cpc import CPC
 
 
 class ProductFootprint:
@@ -11,7 +12,7 @@ class ProductFootprint:
     with the Pathfinder Framework.
     """
 
-    def __init__(self, *, id: ProductFootprintId | None = None, spec_version: str = "2.0.0", version: int, created: datetime, updated: datetime, status: ProductFootprintStatus, status_comment: str, validity_period_start: datetime, validity_period_end: datetime, company_name: str, company_ids: list[CompanyId], product_description: str, product_ids: list[ProductId], product_category_cpc: str, product_name_company: str, comment: str, extensions: dict):
+    def __init__(self, *, id: ProductFootprintId | None = None, spec_version: str = "2.0.0", version: int, created: datetime, updated: datetime, status: ProductFootprintStatus, status_comment: str, validity_period_start: datetime, validity_period_end: datetime, company_name: str, company_ids: list[CompanyId], product_description: str, product_ids: list[ProductId], product_category_cpc: CPC, product_name_company: str, comment: str, extensions: dict):
         """Initializes a new ProductFootprint instance.
 
         Args:
