@@ -1,9 +1,10 @@
-
 import pytest
+
 from datetime import datetime
 
-from pathfinder_framework.product_footprint.product_footprint import ProductFootprint
 from pathfinder_framework.product_footprint.id import ProductFootprintId
+from pathfinder_framework.product_footprint.product_footprint import ProductFootprint
+from pathfinder_framework.product_footprint.status import ProductFootprintStatus
 
 
 def test_product_footprint_initialization():
@@ -14,7 +15,7 @@ def test_product_footprint_initialization():
         version=1,
         created=datetime.now(),
         updated=datetime.now(),
-        status="active",
+        status=ProductFootprintStatus.ACTIVE,
         status_comment="This is a comment",
         validity_period_start=datetime.now(),
         validity_period_end=datetime.now(),
@@ -31,7 +32,7 @@ def test_product_footprint_initialization():
     assert product_footprint.version == 1
     assert isinstance(product_footprint.created, datetime)
     assert isinstance(product_footprint.updated, datetime)
-    assert product_footprint.status == "active"
+    assert product_footprint.status == ProductFootprintStatus.ACTIVE
     assert product_footprint.status_comment == "This is a comment"
     assert isinstance(product_footprint.validity_period_start, datetime)
     assert isinstance(product_footprint.validity_period_end, datetime)
@@ -51,7 +52,7 @@ def test_product_footprint_default_initialization():
         version=1,
         created=datetime.now(),
         updated=datetime.now(),
-        status="active",
+        status=ProductFootprintStatus.ACTIVE,
         status_comment="This is a comment",
         validity_period_start=datetime.now(),
         validity_period_end=datetime.now(),
@@ -73,7 +74,7 @@ def test_product_footprint_spec_version():
         version=1,
         created=datetime.now(),
         updated=datetime.now(),
-        status="active",
+        status=ProductFootprintStatus.ACTIVE,
         status_comment="This is a comment",
         validity_period_start=datetime.now(),
         validity_period_end=datetime.now(),
@@ -97,7 +98,7 @@ def test_product_footprint_repr():
         version=1,
         created=datetime.now(),
         updated=datetime.now(),
-        status="active",
+        status=ProductFootprintStatus.ACTIVE,
         status_comment="This is a comment",
         validity_period_start=datetime.now(),
         validity_period_end=datetime.now(),
