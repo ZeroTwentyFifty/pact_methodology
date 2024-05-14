@@ -8,11 +8,19 @@ from pathfinder_framework.product_footprint.status import ProductFootprintStatus
 from pathfinder_framework.urn import CompanyId, ProductId
 
 
-def test_product_footprint_initialization():
+@pytest.fixture(scope="module")
+def company_ids():
+    return [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")]
+
+
+@pytest.fixture(scope="module")
+def product_ids():
+    return [ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product")]
+
+
+def test_product_footprint_initialization(company_ids, product_ids):
     """Tests that a ProductFootprint instance can be initialized with all required attributes."""
     product_footprint_id = ProductFootprintId()
-    company_ids = [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")]
-    product_ids = [ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product")]
     product_footprint = ProductFootprint(
         id=product_footprint_id,
         version=1,
@@ -49,10 +57,8 @@ def test_product_footprint_initialization():
     assert product_footprint.extensions == {"key": "value"}
 
 
-def test_product_footprint_default_initialization():
+def test_product_footprint_default_initialization(company_ids, product_ids):
     """Tests that a ProductFootprint instance initializes with default values for optional attributes."""
-    company_ids = [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")]
-    product_ids = [ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product")]
     product_footprint = ProductFootprint(
         version=1,
         created=datetime.now(),
@@ -73,10 +79,8 @@ def test_product_footprint_default_initialization():
     assert isinstance(product_footprint.id, ProductFootprintId)
 
 
-def test_product_footprint_spec_version():
+def test_product_footprint_spec_version(company_ids, product_ids):
     """Tests that a ProductFootprint instance has a specVersion attribute."""
-    company_ids = [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")]
-    product_ids = [ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product")]
     product_footprint = ProductFootprint(
         version=1,
         created=datetime.now(),
@@ -97,11 +101,10 @@ def test_product_footprint_spec_version():
     assert product_footprint.spec_version == "2.0.0"
 
 
-def test_product_footprint_repr():
+def test_product_footprint_repr(company_ids, product_ids):
     """Tests that the __repr__ method returns the expected string representation."""
     product_footprint_id = ProductFootprintId()
-    company_ids = [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")]
-    product_ids = [ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product")]
+
     product_footprint = ProductFootprint(
         id=product_footprint_id,
         version=1,
