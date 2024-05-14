@@ -2,6 +2,7 @@ from datetime import datetime
 
 from pathfinder_framework.product_footprint.id import ProductFootprintId
 from pathfinder_framework.product_footprint.status import ProductFootprintStatus
+from pathfinder_framework.urn import CompanyId, ProductId
 
 
 class ProductFootprint:
@@ -10,7 +11,7 @@ class ProductFootprint:
     with the Pathfinder Framework.
     """
 
-    def __init__(self, *, id: ProductFootprintId | None = None, spec_version: str = "2.0.0", version: int, created: datetime, updated: datetime, status: ProductFootprintStatus, status_comment: str, validity_period_start: datetime, validity_period_end: datetime, company_name: str, company_ids: list[str], product_description: str, product_ids: list[str], product_category_cpc: str, product_name_company: str, comment: str, extensions: dict):
+    def __init__(self, *, id: ProductFootprintId | None = None, spec_version: str = "2.0.0", version: int, created: datetime, updated: datetime, status: ProductFootprintStatus, status_comment: str, validity_period_start: datetime, validity_period_end: datetime, company_name: str, company_ids: list[CompanyId], product_description: str, product_ids: list[ProductId], product_category_cpc: str, product_name_company: str, comment: str, extensions: dict):
         """Initializes a new ProductFootprint instance.
 
         Args:
@@ -29,9 +30,9 @@ class ProductFootprint:
             validity_period_start (datetime): The start date of the validity period for the ProductFootprint.
             validity_period_end (datetime): The end date of the validity period for the ProductFootprint.
             company_name (str): The name of the company that owns the ProductFootprint.
-            company_ids (list[str]): A list of IDs for the company that owns the ProductFootprint.
+            company_ids (list[CompanyId]): A list of CompanyIds for the company that owns the ProductFootprint.
             product_description (str): A description of the product.
-            product_ids (list[str]): A list of IDs for the product.
+            product_ids (list[ProductId]): A list of ProductIds for the product.
             product_category_cpc (str): The category of the product according to the CPC (Central Product Classification) system.
             product_name_company (str): The name of the product as used by the company.
             comment (str): A comment about the ProductFootprint.
@@ -48,9 +49,9 @@ class ProductFootprint:
             validity_period_start (datetime): The start date of the validity period for the ProductFootprint.
             validity_period_end (datetime): The end date of the validity period for the ProductFootprint.
             company_name (str): The name of the company that owns the ProductFootprint.
-            company_ids (list[str]): A list of IDs for the company that owns the ProductFootprint.
+            company_ids (list[CompanyId]): A list of CompanyIds for the company that owns the ProductFootprint.
             product_description (str): A description of the product.
-            product_ids (list[str]): A list of IDs for the product.
+            product_ids (list[ProductId]): A list of ProductIds for the product.
             product_category_cpc (str): The category of the product according to the CPC (Central Product Classification) system.
             product_name_company (str): The name of the product as used by the company.
             comment (str): A comment about the ProductFootprint.
