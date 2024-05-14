@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from pathfinder_framework.product_footprint.id import ProductFootprintId
+from pathfinder_framework.product_footprint.status import ProductFootprintStatus
 
 
 class ProductFootprint:
@@ -9,7 +10,7 @@ class ProductFootprint:
     with the Pathfinder Framework.
     """
 
-    def __init__(self, *, id: ProductFootprintId | None = None, spec_version: str = "2.0.0", version: int, created: datetime, updated: datetime, status: str, status_comment: str, validity_period_start: datetime, validity_period_end: datetime, company_name: str, company_ids: list[str], product_description: str, product_ids: list[str], product_category_cpc: str, product_name_company: str, comment: str, extensions: dict):
+    def __init__(self, *, id: ProductFootprintId | None = None, spec_version: str = "2.0.0", version: int, created: datetime, updated: datetime, status: ProductFootprintStatus, status_comment: str, validity_period_start: datetime, validity_period_end: datetime, company_name: str, company_ids: list[str], product_description: str, product_ids: list[str], product_category_cpc: str, product_name_company: str, comment: str, extensions: dict):
         """Initializes a new ProductFootprint instance.
 
         Args:
@@ -23,7 +24,7 @@ class ProductFootprint:
             version (int): The version of the ProductFootprint.
             created (datetime): The date and time when the ProductFootprint was created.
             updated (datetime): The date and time when the ProductFootprint was last updated.
-            status (str): The status of the ProductFootprint.
+            status (ProductFootprintStatus): The status of the ProductFootprint.
             status_comment (str): A comment describing the status of the ProductFootprint.
             validity_period_start (datetime): The start date of the validity period for the ProductFootprint.
             validity_period_end (datetime): The end date of the validity period for the ProductFootprint.
@@ -42,7 +43,7 @@ class ProductFootprint:
             version (int): The version of the ProductFootprint.
             created (datetime): The date and time when the ProductFootprint was created.
             updated (datetime): The date and time when the ProductFootprint was last updated.
-            status (str): The status of the ProductFootprint.
+            status (ProductFootprintStatus): The status of the ProductFootprint.
             status_comment (str): A comment describing the status of the ProductFootprint.
             validity_period_start (datetime): The start date of the validity period for the ProductFootprint.
             validity_period_end (datetime): The end date of the validity period for the ProductFootprint.
