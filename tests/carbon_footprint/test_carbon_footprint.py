@@ -12,12 +12,12 @@ def test_carbon_footprint_exists():
 
 
 def test_carbon_footprint_instantiation():
-    carbon_footprint = CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now())
+    carbon_footprint = CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now(), True)
     assert isinstance(carbon_footprint, CarbonFootprint)
 
 
 def test_carbon_footprint_attributes():
-    carbon_footprint = CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now())
+    carbon_footprint = CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now(), True)
     assert carbon_footprint.declared_unit == DeclaredUnit.KILOGRAM
     assert carbon_footprint.unitary_product_amount == 1.0
     assert carbon_footprint.p_cf_excluding_biogenic == 0.5
@@ -31,71 +31,82 @@ def test_carbon_footprint_attributes():
     assert carbon_footprint.exempted_emissions_percent == 1.0
     assert isinstance(carbon_footprint.reference_period_start, DateTime)
     assert isinstance(carbon_footprint.reference_period_end, DateTime)
+    assert carbon_footprint.packaging_emissions_included is True
 
 
 def test_carbon_footprint_invalid_declared_unit():
     with pytest.raises(ValueError) as excinfo:
-        CarbonFootprint("invalid unit", 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now())
+        CarbonFootprint("invalid unit", 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now(), True)
     assert str(excinfo.value) == "declared_unit 'invalid unit' is not valid. It must be one of the following: liter, kilogram, cubic meter, kilowatt hour, megajoule, ton kilometer, square meter"
 
 
 def test_carbon_footprint_invalid_unitary_product_amount():
     with pytest.raises(ValueError):
-        CarbonFootprint(DeclaredUnit.KILOGRAM, 0.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now())
+        CarbonFootprint(DeclaredUnit.KILOGRAM, 0.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now(), True)
 
 
 def test_carbon_footprint_invalid_p_cf_excluding_biogenic():
     with pytest.raises(ValueError):
-        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, -0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now())
+        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, -0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now(), True)
 
 
 def test_carbon_footprint_invalid_fossil_ghg_emissions():
     with pytest.raises(ValueError):
-        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, -0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now())
+        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, -0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now(), True)
 
 
 def test_carbon_footprint_invalid_fossil_carbon_content():
     with pytest.raises(ValueError):
-        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, -0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now())
+        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, -0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now(), True)
 
 
 def test_carbon_footprint_invalid_biogenic_carbon_content():
     with pytest.raises(ValueError):
-        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, -0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now())
+        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, -0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now(), True)
 
 
 def test_carbon_footprint_invalid_characterization_factors():
     with pytest.raises(ValueError) as excinfo:
-        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, "AR7", ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now())
+        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, "AR7", ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now(), True)
     assert str(excinfo.value) == "characterization_factors must be an instance of CharacterizationFactors"
 
 
 def test_carbon_footprint_invalid_ipcc_characterization_factors_sources():
     with pytest.raises(ValueError):
-        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, [], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now())
+        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, [], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now(), True)
 
 
 def test_carbon_footprint_invalid_cross_sectoral_standards_used():
     with pytest.raises(ValueError) as excinfo:
-        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], ["invalid standard"], "boundary processes description", 1.0, DateTime.now(), DateTime.now())
+        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], ["invalid standard"], "boundary processes description", 1.0, DateTime.now(), DateTime.now(), True)
     assert str(excinfo.value) == "cross_sectoral_standards_used must be a list of CrossSectoralStandard"
 
 
 def test_carbon_footprint_invalid_boundary_processes_description():
     with pytest.raises(ValueError):
-        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "", 1.0, DateTime.now(), DateTime.now())
+        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "", 1.0, DateTime.now(), DateTime.now(), True)
 
 
 def test_carbon_footprint_invalid_exempted_emissions_percent():
     with pytest.raises(ValueError):
-        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 6.0, DateTime.now(), DateTime.now())
+        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 6.0, DateTime.now(), DateTime.now(), True)
 
 
 def test_carbon_footprint_invalid_reference_period_start():
     with pytest.raises(ValueError):
-        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, "invalid datetime", DateTime.now())
+        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, "invalid datetime", DateTime.now(), True)
 
 
 def test_carbon_footprint_invalid_reference_period_end():
     with pytest.raises(ValueError):
-        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), "invalid datetime")
+        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), "invalid datetime", True)
+
+
+def test_carbon_footprint_invalid_packaging_emissions_included():
+    with pytest.raises(ValueError):
+        CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now(), "not a boolean")
+
+
+def test_carbon_footprint_valid_packaging_emissions_included():
+    carbon_footprint = CarbonFootprint(DeclaredUnit.KILOGRAM, 1.0, 0.5, 0.3, 0.2, 0.1, CharacterizationFactors.AR6, ["AR6"], [CrossSectoralStandard.GHG_PROTOCOL], "boundary processes description", 1.0, DateTime.now(), DateTime.now(), True)
+    assert carbon_footprint.packaging_emissions_included == True
