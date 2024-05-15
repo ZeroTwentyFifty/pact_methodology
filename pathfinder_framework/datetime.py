@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 
 class DateTime:
@@ -7,7 +7,7 @@ class DateTime:
 
     Attributes:
         value (str): The date and time string in ISO 8601 format with UTC timezone, always represented with 'Z'
-                        instead of '+00:00'.
+                    instead of '+00:00'.
     """
 
     def __init__(self, value: str) -> None:
@@ -27,6 +27,16 @@ class DateTime:
             self.value = dt.isoformat().replace('+00:00', 'Z')
         except ValueError:
             raise ValueError("Invalid ISO 8601 date and time string")
+
+    @classmethod
+    def now(cls) -> 'DateTime':
+        """
+        Creates a new DateTime object representing the current date and time in UTC.
+
+        Returns:
+            DateTime: A new DateTime object representing the current date and time in UTC.
+        """
+        return cls(datetime.now(timezone.utc).isoformat())
 
     def __eq__(self, other: object) -> bool:
         """

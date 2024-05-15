@@ -1,4 +1,5 @@
 import pytest
+from datetime import datetime, timedelta, timezone
 
 from pathfinder_framework.datetime import DateTime
 
@@ -43,3 +44,30 @@ def test_inequality():
 def test_repr():
     dt = DateTime("2020-03-01T00:00:00Z")
     assert repr(dt) == "DateTime(2020-03-01T00:00:00Z)"
+
+
+def test_now():
+    dt = DateTime.now()
+    assert dt.value.endswith('Z')
+    # Check that the value is within the last minute (to account for possible delays)
+    assert datetime.fromisoformat(dt.value.replace('Z', '+00:00')) > datetime.now(timezone.utc) - timedelta(minutes=1)
+    assert datetime.fromisoformat(dt.value.replace('Z', '+00:00')) < datetime.now(timezone.utc) + timedelta(minutes=1)
+
+
+def test_now_multiple_calls():
+    dt1 = DateTime.now()
+    dt2 = DateTime.now()
+    # Check that two consecutive calls to DateTime.now() return different values
+    assert dt1 != dt2
+
+
+def test_now_format():
+    dt = DateTime.now()
+    # Check that the value is in the correct format
+    datetime.fromisoformat(dt.value.replace('Z', '+00:00'))
+
+
+def test_now_timezone():
+    dt = DateTime.now()
+    # Check that the value has the correct timezone
+    assert datetime.fromisoformat(dt.value.replace('Z', '+00:00')).tzinfo == timezone.utc
