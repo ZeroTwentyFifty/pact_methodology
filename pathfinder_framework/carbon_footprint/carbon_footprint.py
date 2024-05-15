@@ -1,6 +1,7 @@
 from pathfinder_framework.carbon_footprint.characterization_factors import CharacterizationFactors
 from pathfinder_framework.carbon_footprint.cross_sectoral_standard import CrossSectoralStandard
 from pathfinder_framework.carbon_footprint.declared_unit import DeclaredUnit
+from pathfinder_framework.datetime import DateTime
 
 
 class CarbonFootprint:
@@ -18,8 +19,10 @@ class CarbonFootprint:
         ipcc_characterization_factors_sources (list[str]): The characterization factors from one or more IPCC Assessment Reports used in the calculation of the PCF.
         cross_sectoral_standards_used (list[CrossSectoralStandard]): The cross-sectoral standards applied for calculating or allocating GHG emissions.
         exempted_emissions_percent (float): The Percentage of emissions excluded from PCF, expressed as a decimal number between 0.0 and 5 including.
+        reference_period_start (DateTime): The start (including) of the time boundary for which the PCF value is considered to be representative.
+        reference_period_end (DateTime): The end (excluding) of the time boundary for which the PCF value is considered to be representative.
     """
-    def __init__(self, declared_unit, unitary_product_amount, p_cf_excluding_biogenic, fossil_ghg_emissions, fossil_carbon_content, biogenic_carbon_content, characterization_factors, ipcc_characterization_factors_sources, cross_sectoral_standards_used, boundary_processes_description, exempted_emissions_percent):
+    def __init__(self, declared_unit, unitary_product_amount, p_cf_excluding_biogenic, fossil_ghg_emissions, fossil_carbon_content, biogenic_carbon_content, characterization_factors, ipcc_characterization_factors_sources, cross_sectoral_standards_used, boundary_processes_description, exempted_emissions_percent, reference_period_start, reference_period_end):
         if not isinstance(declared_unit, DeclaredUnit):
             raise ValueError(
                 f"declared_unit '{declared_unit}' is not valid. It must be one of the following: {', '.join([unit.value for unit in DeclaredUnit])}")
@@ -43,6 +46,10 @@ class CarbonFootprint:
             raise ValueError("boundary_processes_description must not be empty")
         if not 0.0 <= exempted_emissions_percent <= 5.0:
             raise ValueError("exempted_emissions_percent must be between 0.0 and 5.0")
+        if not isinstance(reference_period_start, DateTime):
+            raise ValueError("reference_period_start must be an instance of DateTime")
+        if not isinstance(reference_period_end, DateTime):
+            raise ValueError("reference_period_end must be an instance of DateTime")
 
         self.declared_unit = declared_unit
         self.unitary_product_amount = unitary_product_amount
@@ -55,3 +62,5 @@ class CarbonFootprint:
         self.cross_sectoral_standards_used = cross_sectoral_standards_used
         self.boundary_processes_description = boundary_processes_description
         self.exempted_emissions_percent = exempted_emissions_percent
+        self.reference_period_start = reference_period_start
+        self.reference_period_end = reference_period_end
