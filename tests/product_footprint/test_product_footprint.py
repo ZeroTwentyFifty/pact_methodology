@@ -8,6 +8,7 @@ from pathfinder_framework.product_footprint.status import ProductFootprintStatus
 from pathfinder_framework.urn import CompanyId, ProductId
 from pathfinder_framework.product_footprint.cpc import CPCCodeLookup, CPC
 from pathfinder_framework.product_footprint.version import Version
+from pathfinder_framework.datetime import DateTime
 
 
 @pytest.fixture(scope="module")
@@ -36,12 +37,12 @@ def test_product_footprint_initialization(company_ids, product_ids, valid_cpc, v
     product_footprint = ProductFootprint(
         id=product_footprint_id,
         version=version,
-        created=datetime.now(),
-        updated=datetime.now(),
+        created=DateTime.now(),
+        updated=DateTime.now(),
         status=ProductFootprintStatus.ACTIVE,
         status_comment="This is a comment",
-        validity_period_start=datetime.now(),
-        validity_period_end=datetime.now(),
+        validity_period_start=DateTime.now(),
+        validity_period_end=DateTime.now(),
         company_name="Company Name",
         company_ids=company_ids,
         product_description="Product Description",
@@ -53,12 +54,12 @@ def test_product_footprint_initialization(company_ids, product_ids, valid_cpc, v
     )
     assert product_footprint.id == product_footprint_id
     assert product_footprint.version == version
-    assert isinstance(product_footprint.created, datetime)
-    assert isinstance(product_footprint.updated, datetime)
+    assert isinstance(product_footprint.created, DateTime)
+    assert isinstance(product_footprint.updated, DateTime)
     assert product_footprint.status == ProductFootprintStatus.ACTIVE
     assert product_footprint.status_comment == "This is a comment"
-    assert isinstance(product_footprint.validity_period_start, datetime)
-    assert isinstance(product_footprint.validity_period_end, datetime)
+    assert isinstance(product_footprint.validity_period_start, DateTime)
+    assert isinstance(product_footprint.validity_period_end, DateTime)
     assert product_footprint.company_name == "Company Name"
     assert product_footprint.company_ids == company_ids
     assert product_footprint.product_description == "Product Description"
@@ -73,12 +74,12 @@ def test_product_footprint_default_initialization(company_ids, product_ids, vali
     """Tests that a ProductFootprint instance initializes with default values for optional attributes."""
     product_footprint = ProductFootprint(
         version=version,
-        created=datetime.now(),
-        updated=datetime.now(),
+        created=DateTime.now(),
+        updated=DateTime.now(),
         status=ProductFootprintStatus.ACTIVE,
         status_comment="This is a comment",
-        validity_period_start=datetime.now(),
-        validity_period_end=datetime.now(),
+        validity_period_start=DateTime.now(),
+        validity_period_end=DateTime.now(),
         company_name="Company Name",
         company_ids=company_ids,
         product_description="Product Description",
@@ -95,12 +96,12 @@ def test_product_footprint_spec_version(company_ids, product_ids, valid_cpc, ver
     """Tests that a ProductFootprint instance has a specVersion attribute."""
     product_footprint = ProductFootprint(
         version=version,
-        created=datetime.now(),
-        updated=datetime.now(),
+        created=DateTime.now(),
+        updated=DateTime.now(),
         status=ProductFootprintStatus.ACTIVE,
         status_comment="This is a comment",
-        validity_period_start=datetime.now(),
-        validity_period_end=datetime.now(),
+        validity_period_start=DateTime.now(),
+        validity_period_end=DateTime.now(),
         company_name="Company Name",
         company_ids=company_ids,
         product_description="Product Description",
@@ -119,12 +120,12 @@ def test_product_footprint_repr(company_ids, product_ids, valid_cpc, version):
     product_footprint = ProductFootprint(
         id=product_footprint_id,
         version=version,
-        created=datetime.now(),
-        updated=datetime.now(),
+        created=DateTime.now(),
+        updated=DateTime.now(),
         status=ProductFootprintStatus.ACTIVE,
         status_comment="This is a comment",
-        validity_period_start=datetime.now(),
-        validity_period_end=datetime.now(),
+        validity_period_start=DateTime.now(),
+        validity_period_end=DateTime.now(),
         company_name="Company Name",
         company_ids=company_ids,
         product_description="Product Description",
