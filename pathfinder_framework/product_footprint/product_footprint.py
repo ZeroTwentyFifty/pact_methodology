@@ -5,6 +5,7 @@ from pathfinder_framework.product_footprint.status import ProductFootprintStatus
 from pathfinder_framework.urn import CompanyId, ProductId
 from pathfinder_framework.product_footprint.cpc import CPC
 from pathfinder_framework.product_footprint.version import Version
+from pathfinder_framework.datetime import DateTime
 
 
 class ProductFootprint:
@@ -13,7 +14,7 @@ class ProductFootprint:
     with the Pathfinder Framework.
     """
 
-    def __init__(self, *, id: ProductFootprintId | None = None, spec_version: str = "2.0.0", version: Version, created: datetime, updated: datetime, status: ProductFootprintStatus, status_comment: str, validity_period_start: datetime, validity_period_end: datetime, company_name: str, company_ids: list[CompanyId], product_description: str, product_ids: list[ProductId], product_category_cpc: CPC, product_name_company: str, comment: str, extensions: dict):
+    def __init__(self, *, id: ProductFootprintId | None = None, spec_version: str = "2.0.0", version: Version, created: DateTime, updated: DateTime, status: ProductFootprintStatus, status_comment: str, validity_period_start: DateTime, validity_period_end: DateTime, company_name: str, company_ids: list[CompanyId], product_description: str, product_ids: list[ProductId], product_category_cpc: CPC, product_name_company: str, comment: str, extensions: dict):
         """Initializes a new ProductFootprint instance.
 
         Args:
@@ -25,12 +26,12 @@ class ProductFootprint:
                 will be looking to implement this in a more SemVer friendly way, which it currently is not. So just
                 introduce it hard-coded for now, and revise it later.
             version (Version): The version of the ProductFootprint.
-            created (datetime): The date and time when the ProductFootprint was created.
-            updated (datetime): The date and time when the ProductFootprint was last updated.
+            created (DateTime): The date and time when the ProductFootprint was created.
+            updated (DateTime): The date and time when the ProductFootprint was last updated.
             status (ProductFootprintStatus): The status of the ProductFootprint.
             status_comment (str): A comment describing the status of the ProductFootprint.
-            validity_period_start (datetime): The start date of the validity period for the ProductFootprint.
-            validity_period_end (datetime): The end date of the validity period for the ProductFootprint.
+            validity_period_start (DateTime): The start date of the validity period for the ProductFootprint.
+            validity_period_end (DateTime): The end date of the validity period for the ProductFootprint.
             company_name (str): The name of the company that owns the ProductFootprint.
             company_ids (list[CompanyId]): A list of CompanyIds for the company that owns the ProductFootprint.
             product_description (str): A description of the product.
@@ -44,12 +45,12 @@ class ProductFootprint:
             id (ProductFootprintId): The unique identifier for this ProductFootprint.
             spec_version (str): The version of the ProductFootprint data specification.
             version (Version): The version of the ProductFootprint.
-            created (datetime): The date and time when the ProductFootprint was created.
-            updated (datetime): The date and time when the ProductFootprint was last updated.
+            created (DateTime): The date and time when the ProductFootprint was created.
+            updated (DateTime): The date and time when the ProductFootprint was last updated.
             status (ProductFootprintStatus): The status of the ProductFootprint.
             status_comment (str): A comment describing the status of the ProductFootprint.
-            validity_period_start (datetime): The start date of the validity period for the ProductFootprint.
-            validity_period_end (datetime): The end date of the validity period for the ProductFootprint.
+            validity_period_start (DateTime): The start date of the validity period for the ProductFootprint.
+            validity_period_end (DateTime): The end date of the validity period for the ProductFootprint.
             company_name (str): The name of the company that owns the ProductFootprint.
             company_ids (list[CompanyId]): A list of CompanyIds for the company that owns the ProductFootprint.
             product_description (str): A description of the product.
