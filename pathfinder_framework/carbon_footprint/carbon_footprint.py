@@ -21,8 +21,9 @@ class CarbonFootprint:
         exempted_emissions_percent (float): The Percentage of emissions excluded from PCF, expressed as a decimal number between 0.0 and 5 including.
         reference_period_start (DateTime): The start (including) of the time boundary for which the PCF value is considered to be representative.
         reference_period_end (DateTime): The end (excluding) of the time boundary for which the PCF value is considered to be representative.
+        packaging_emissions_included (bool): A boolean flag indicating whether packaging emissions are included in the PCF (pCfExcludingBiogenic, pCfIncludingBiogenic).
     """
-    def __init__(self, declared_unit, unitary_product_amount, p_cf_excluding_biogenic, fossil_ghg_emissions, fossil_carbon_content, biogenic_carbon_content, characterization_factors, ipcc_characterization_factors_sources, cross_sectoral_standards_used, boundary_processes_description, exempted_emissions_percent, reference_period_start, reference_period_end):
+    def __init__(self, declared_unit, unitary_product_amount, p_cf_excluding_biogenic, fossil_ghg_emissions, fossil_carbon_content, biogenic_carbon_content, characterization_factors, ipcc_characterization_factors_sources, cross_sectoral_standards_used, boundary_processes_description, exempted_emissions_percent, reference_period_start, reference_period_end, packaging_emissions_included):
         if not isinstance(declared_unit, DeclaredUnit):
             raise ValueError(
                 f"declared_unit '{declared_unit}' is not valid. It must be one of the following: {', '.join([unit.value for unit in DeclaredUnit])}")
@@ -50,6 +51,8 @@ class CarbonFootprint:
             raise ValueError("reference_period_start must be an instance of DateTime")
         if not isinstance(reference_period_end, DateTime):
             raise ValueError("reference_period_end must be an instance of DateTime")
+        if not isinstance(packaging_emissions_included, bool):
+            raise ValueError("packaging_emissions_included must be a boolean")
 
         self.declared_unit = declared_unit
         self.unitary_product_amount = unitary_product_amount
@@ -64,3 +67,4 @@ class CarbonFootprint:
         self.exempted_emissions_percent = exempted_emissions_percent
         self.reference_period_start = reference_period_start
         self.reference_period_end = reference_period_end
+        self.packaging_emissions_included = packaging_emissions_included
