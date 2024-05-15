@@ -1,11 +1,13 @@
 from datetime import datetime, timedelta
 
+
 class DateTime:
     """
     Represents a date and time string conforming to ISO 8601 with UTC timezone.
 
     Attributes:
-        value (str): The date and time string in ISO 8601 format with UTC timezone, always represented with 'Z' instead of '+00:00'.
+        value (str): The date and time string in ISO 8601 format with UTC timezone, always represented with 'Z'
+                        instead of '+00:00'.
     """
 
     def __init__(self, value: str) -> None:
