@@ -60,3 +60,43 @@ class DateTime:
             str: A string representation of the DateTime object.
         """
         return f"DateTime({self.value})"
+
+    @property
+    def year(self) -> int:
+        """
+        The year of the date and time.
+
+        Returns:
+            int: The year.
+        """
+        return datetime.fromisoformat(self.value.replace('Z', '+00:00')).year
+
+    @property
+    def month(self) -> int:
+        """
+        The month of the date and time.
+
+        Returns:
+            int: The month.
+        """
+        return datetime.fromisoformat(self.value.replace('Z', '+00:00')).month
+
+    @property
+    def day(self) -> int:
+        """
+        The day of the date and time.
+
+        Returns:
+            int: The day.
+        """
+        return datetime.fromisoformat(self.value.replace('Z', '+00:00')).day
+
+    @property
+    def time(self) -> str:
+        """
+        The time of the date and time in ISO 8601 format (HH:MM:SS).
+
+        Returns:
+            str: The time.
+        """
+        return datetime.fromisoformat(self.value.replace('Z', '+00:00')).strftime('%H:%M:%S')
