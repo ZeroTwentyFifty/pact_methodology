@@ -71,3 +71,23 @@ def test_now_timezone():
     dt = DateTime.now()
     # Check that the value has the correct timezone
     assert datetime.fromisoformat(dt.value.replace('Z', '+00:00')).tzinfo == timezone.utc
+
+
+def test_year():
+    dt = DateTime("2020-03-01T00:00:00Z")
+    assert dt.year == 2020
+
+
+def test_month():
+    dt = DateTime("2020-03-01T00:00:00Z")
+    assert dt.month == 3
+
+
+def test_day():
+    dt = DateTime("2020-03-01T00:00:00Z")
+    assert dt.day == 1
+
+
+def test_time():
+    dt = DateTime("2020-03-01T12:34:56Z")
+    assert dt.time == "12:34:56"
