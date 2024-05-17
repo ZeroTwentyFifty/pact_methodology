@@ -52,6 +52,62 @@ class DateTime:
             return False
         return self.value == other.value
 
+    def __lt__(self, other: 'DateTime') -> bool:
+        """
+        Compares this DateTime object with another DateTime object for less than.
+
+        Args:
+            other (DateTime): The object to compare with.
+
+        Returns:
+            bool: True if this object is less than the other object, False otherwise.
+        """
+        if not isinstance(other, DateTime):
+            raise TypeError("Other object must be a DateTime instance")
+        return datetime.fromisoformat(self.value.replace('Z', '+00:00')) < datetime.fromisoformat(other.value.replace('Z', '+00:00'))
+
+    def __le__(self, other: 'DateTime') -> bool:
+        """
+        Compares this DateTime object with another DateTime object for less than or equal.
+
+        Args:
+            other (DateTime): The object to compare with.
+
+        Returns:
+            bool: True if this object is less than or equal to the other object, False otherwise.
+        """
+        if not isinstance(other, DateTime):
+            raise TypeError("Other object must be a DateTime instance")
+        return datetime.fromisoformat(self.value.replace('Z', '+00:00')) <= datetime.fromisoformat(other.value.replace('Z', '+00:00'))
+
+    def __gt__(self, other: 'DateTime') -> bool:
+        """
+        Compares this DateTime object with another DateTime object for greater than.
+
+        Args:
+            other (DateTime): The object to compare with.
+
+        Returns:
+            bool: True if this object is greater than the other object, False otherwise.
+        """
+        if not isinstance(other, DateTime):
+            raise TypeError("Other object must be a DateTime instance")
+        return datetime.fromisoformat(self.value.replace('Z', '+00:00')) > datetime.fromisoformat(other.value.replace('Z', '+00:00'))
+
+    def __ge__(self, other: 'DateTime') -> bool:
+        """
+        Compares this DateTime object with another DateTime object for greater than or equal.
+
+        Args:
+            other (DateTime): The object to compare with.
+
+        Returns:
+            bool: True if this object is greater than or equal to the other object, False otherwise.
+        """
+        if not isinstance(other, DateTime):
+            raise TypeError("Other object must be a DateTime instance")
+        return datetime.fromisoformat(self.value.replace('Z', '+00:00')) >= datetime.fromisoformat(other.value.replace('Z', '+00:00'))
+
     def __repr__(self) -> str:
         """
         Returns a string representation of the DateTime object.
