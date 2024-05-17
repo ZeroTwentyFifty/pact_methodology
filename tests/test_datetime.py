@@ -91,3 +91,31 @@ def test_day():
 def test_time():
     dt = DateTime("2020-03-01T12:34:56Z")
     assert dt.time == "12:34:56"
+
+
+def test_less_than():
+    dt1 = DateTime("2020-03-01T00:00:00Z")
+    dt2 = DateTime("2020-03-02T00:00:00Z")
+    assert dt1 < dt2
+
+
+def test_less_than_or_equal():
+    dt1 = DateTime("2020-03-01T00:00:00Z")
+    dt2 = DateTime("2020-03-02T00:00:00Z")
+    assert dt1 <= dt2
+    dt3 = DateTime("2020-03-01T00:00:00Z")
+    assert dt1 <= dt3
+
+
+def test_greater_than():
+    dt1 = DateTime("2020-03-02T00:00:00Z")
+    dt2 = DateTime("2020-03-01T00:00:00Z")
+    assert dt1 > dt2
+
+
+def test_greater_than_or_equal():
+    dt1 = DateTime("2020-03-02T00:00:00Z")
+    dt2 = DateTime("2020-03-01T00:00:00Z")
+    assert dt1 >= dt2
+    dt3 = DateTime("2020-03-02T00:00:00Z")
+    assert dt1 >= dt3
