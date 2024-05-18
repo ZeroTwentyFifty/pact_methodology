@@ -2,7 +2,7 @@ from pathfinder_framework.carbon_footprint.characterization_factors import Chara
 from pathfinder_framework.carbon_footprint.cross_sectoral_standard import CrossSectoralStandard
 from pathfinder_framework.carbon_footprint.declared_unit import DeclaredUnit
 from pathfinder_framework.datetime import DateTime
-
+from pathfinder_framework.carbon_footprint.geographical_scope import CarbonFootprintGeographicalScope
 
 class CarbonFootprint:
     """
@@ -22,8 +22,9 @@ class CarbonFootprint:
         reference_period_start (DateTime): The start (including) of the time boundary for which the PCF value is considered to be representative.
         reference_period_end (DateTime): The end (excluding) of the time boundary for which the PCF value is considered to be representative.
         packaging_emissions_included (bool): A boolean flag indicating whether packaging emissions are included in the PCF (pCfExcludingBiogenic, pCfIncludingBiogenic).
+        geographical_scope (CarbonFootprintGeographicalScope): The geographical scope of the carbon footprint.
     """
-    def __init__(self, declared_unit, unitary_product_amount, p_cf_excluding_biogenic, fossil_ghg_emissions, fossil_carbon_content, biogenic_carbon_content, characterization_factors, ipcc_characterization_factors_sources, cross_sectoral_standards_used, boundary_processes_description, exempted_emissions_percent, reference_period_start, reference_period_end, packaging_emissions_included, p_cf_including_biogenic=None):
+    def __init__(self, declared_unit, unitary_product_amount, p_cf_excluding_biogenic, fossil_ghg_emissions, fossil_carbon_content, biogenic_carbon_content, characterization_factors, ipcc_characterization_factors_sources, cross_sectoral_standards_used, boundary_processes_description, exempted_emissions_percent, reference_period_start, reference_period_end, packaging_emissions_included, p_cf_including_biogenic=None, geographical_scope=None):
         if not isinstance(declared_unit, DeclaredUnit):
             raise ValueError(
                 f"declared_unit '{declared_unit}' is not valid. It must be one of the following: {', '.join([unit.value for unit in DeclaredUnit])}")
@@ -53,6 +54,8 @@ class CarbonFootprint:
             raise ValueError("reference_period_end must be an instance of DateTime")
         if not isinstance(packaging_emissions_included, bool):
             raise ValueError("packaging_emissions_included must be a boolean")
+        if not isinstance(geographical_scope, CarbonFootprintGeographicalScope):
+            raise ValueError("geographical_scope must be an instance of CarbonFootprintGeographicalScope")
         if p_cf_including_biogenic is not None and not isinstance(p_cf_including_biogenic, (int, float)):
             raise ValueError("p_cf_including_biogenic must be a number")
 
@@ -71,3 +74,4 @@ class CarbonFootprint:
         self.reference_period_end = reference_period_end
         self.packaging_emissions_included = packaging_emissions_included
         self.p_cf_including_biogenic = p_cf_including_biogenic
+        self.geographical_scope = geographical_scope
