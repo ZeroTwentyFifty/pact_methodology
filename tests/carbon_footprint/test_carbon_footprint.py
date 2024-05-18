@@ -5,6 +5,7 @@ from pathfinder_framework.carbon_footprint.characterization_factors import Chara
 from pathfinder_framework.carbon_footprint.cross_sectoral_standard import CrossSectoralStandard
 from pathfinder_framework.carbon_footprint.declared_unit import DeclaredUnit
 from pathfinder_framework.datetime import DateTime
+from pathfinder_framework.carbon_footprint.reference_period import ReferencePeriod
 from pathfinder_framework.carbon_footprint.geographical_scope import (
     CarbonFootprintGeographicalScope, GeographicalGranularity
 )
@@ -24,11 +25,11 @@ def valid_carbon_footprint_data():
         "cross_sectoral_standards_used": [CrossSectoralStandard.GHG_PROTOCOL],
         "boundary_processes_description": "boundary processes description",
         "exempted_emissions_percent": 1.0,
-        "reference_period_start": DateTime.now(),
-        "reference_period_end": DateTime.now(),
+        "reference_period": ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
         "packaging_emissions_included": True,
         "geographical_scope": CarbonFootprintGeographicalScope(global_scope=True, geography_country_subdivision=None, geography_country=None, geography_region_or_subregion=None)
     }
+
 
 
 def test_carbon_footprint_exists():
@@ -53,8 +54,7 @@ def test_carbon_footprint_attributes(valid_carbon_footprint_data):
     assert carbon_footprint.cross_sectoral_standards_used == valid_carbon_footprint_data["cross_sectoral_standards_used"]
     assert carbon_footprint.boundary_processes_description == valid_carbon_footprint_data["boundary_processes_description"]
     assert carbon_footprint.exempted_emissions_percent == valid_carbon_footprint_data["exempted_emissions_percent"]
-    assert isinstance(carbon_footprint.reference_period_start, DateTime)
-    assert isinstance(carbon_footprint.reference_period_end, DateTime)
+    assert isinstance(carbon_footprint.reference_period, ReferencePeriod)
     assert carbon_footprint.packaging_emissions_included == valid_carbon_footprint_data["packaging_emissions_included"]
     assert isinstance(carbon_footprint.geographical_scope, CarbonFootprintGeographicalScope)
 
@@ -147,20 +147,12 @@ def test_carbon_footprint_invalid_exempted_emissions_percent(valid_carbon_footpr
     assert str(excinfo.value) == "exempted_emissions_percent must be between 0.0 and 5.0"
 
 
-def test_carbon_footprint_invalid_reference_period_start(valid_carbon_footprint_data):
+def test_carbon_footprint_invalid_reference_period(valid_carbon_footprint_data):
     invalid_data = valid_carbon_footprint_data.copy()
-    invalid_data["reference_period_start"] = "invalid datetime"
+    invalid_data["reference_period"] = "invalid reference period"
     with pytest.raises(ValueError) as excinfo:
         CarbonFootprint(**invalid_data)
-    assert str(excinfo.value) == "reference_period_start must be an instance of DateTime"
-
-
-def test_carbon_footprint_invalid_reference_period_end(valid_carbon_footprint_data):
-    invalid_data = valid_carbon_footprint_data.copy()
-    invalid_data["reference_period_end"] = "invalid datetime"
-    with pytest.raises(ValueError) as excinfo:
-        CarbonFootprint(**invalid_data)
-    assert str(excinfo.value) == "reference_period_end must be an instance of DateTime"
+    assert str(excinfo.value) == "reference_period must be an instance of ReferencePeriod"
 
 
 def test_carbon_footprint_invalid_packaging_emissions_included(valid_carbon_footprint_data):
@@ -190,7 +182,7 @@ def test_carbon_footprint_invalid_p_cf_including_biogenic_type(valid_carbon_foot
 
 
 def test_carbon_footprint_p_cf_including_biogenic_optional_before_2025(valid_carbon_footprint_data):
-    valid_carbon_footprint_data["reference_period_start"] = DateTime("2024-12-31T00:00:00Z")
+    valid_carbon_footprint_data["reference_period"] = ReferencePeriod(start=DateTime("2024-12-31T00:00:00Z"), end=DateTime("2025-01-01T00:00:00Z"))
     carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
     assert carbon_footprint.p_cf_including_biogenic is None
 

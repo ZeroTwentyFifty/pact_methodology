@@ -31,3 +31,17 @@ def test_reference_period_end_before_start():
         start = DateTime("2022-01-01T00:00:00Z")
         end = DateTime("2021-01-01T00:00:00Z")
         ReferencePeriod(start, end)
+
+
+def test_reference_period_includes_2025_or_later():
+    start = DateTime("2024-01-01T00:00:00Z")
+    end = DateTime("2026-12-31T23:59:59Z")
+    ref_period = ReferencePeriod(start, end)
+    assert ref_period.includes_2025_or_later()
+
+
+def test_reference_period_does_not_include_2025_or_later():
+    start = DateTime("2022-01-01T00:00:00Z")
+    end = DateTime("2023-12-31T23:59:59Z")
+    ref_period = ReferencePeriod(start, end)
+    assert not ref_period.includes_2025_or_later()

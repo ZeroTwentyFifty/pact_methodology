@@ -11,3 +11,6 @@ class ReferencePeriod:
             raise ValueError("Start date must be before end date")
         self.start = start
         self.end = end
+
+    def includes_2025_or_later(self) -> bool:
+        return self.end.year >= 2025
