@@ -169,3 +169,22 @@ def test_carbon_footprint_invalid_packaging_emissions_included(valid_carbon_foot
 def test_carbon_footprint_valid_packaging_emissions_included(valid_carbon_footprint_data):
     carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
     assert carbon_footprint.packaging_emissions_included is True
+
+
+def test_carbon_footprint_valid_p_cf_including_biogenic(valid_carbon_footprint_data):
+    valid_carbon_footprint_data["p_cf_including_biogenic"] = 1.0
+    carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
+    assert carbon_footprint.p_cf_including_biogenic == 1.0
+
+
+def test_carbon_footprint_invalid_p_cf_including_biogenic_type(valid_carbon_footprint_data):
+    valid_carbon_footprint_data["p_cf_including_biogenic"] = "not a number"
+    with pytest.raises(ValueError) as excinfo:
+        CarbonFootprint(**valid_carbon_footprint_data)
+    assert str(excinfo.value) == "p_cf_including_biogenic must be a number"
+
+
+def test_carbon_footprint_p_cf_including_biogenic_optional_before_2025(valid_carbon_footprint_data):
+    valid_carbon_footprint_data["reference_period_start"] = DateTime("2024-12-31T00:00:00Z")
+    carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
+    assert carbon_footprint.p_cf_including_biogenic is None
