@@ -1,0 +1,18 @@
++-----------------------+
+|  ReferencePeriod    |
++-----------------------+
+| - start: DateTime   |
+| - end: DateTime     |
++-----------------------+
+| + __init__(start, end) |
++-----------------------+
+
++-----------------------+
+|  ValidityPeriod    |
++-----------------------+
+| - start: DateTime   |
+| - end: DateTime     |
++-----------------------+
+| + __init__(start, end) |
+| + is_valid(reference_period_end) |
++-----------------------+
