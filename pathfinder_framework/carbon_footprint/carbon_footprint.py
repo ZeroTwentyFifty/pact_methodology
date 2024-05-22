@@ -26,6 +26,8 @@ class CarbonFootprint:
         geographical_scope (CarbonFootprintGeographicalScope): The geographical scope of the carbon footprint.
         p_cf_including_biogenic (float | None): Carbon footprint including all biogenic emissions, expressed per declared unit.
            Can be negative, representing a net removal of CO2. Defaults to None.
+        primary_data_share (float): The share of primary data in percent. See the Pathfinder Framework Sections 4.2.1, 4.2.2, Appendix B.
+
 
     Note: The following attributes are not currently defined but will be affected by the 2025 check:
         - dLucGhgEmissions
@@ -41,7 +43,7 @@ class CarbonFootprint:
                  fossil_carbon_content, biogenic_carbon_content, characterization_factors,
                  ipcc_characterization_factors_sources, cross_sectoral_standards_used, boundary_processes_description,
                  exempted_emissions_percent, reference_period, packaging_emissions_included, geographical_scope,
-                 p_cf_including_biogenic=None):
+                 p_cf_including_biogenic=None, primary_data_share=None, dqi=None):
         if not isinstance(declared_unit, DeclaredUnit):
             raise ValueError(
                 f"declared_unit '{declared_unit}' is not valid. It must be one of the following: {', '.join([unit.value for unit in DeclaredUnit])}")
@@ -73,6 +75,8 @@ class CarbonFootprint:
             raise ValueError("geographical_scope must be an instance of CarbonFootprintGeographicalScope")
         if p_cf_including_biogenic is not None and not isinstance(p_cf_including_biogenic, (int, float)):
             raise ValueError("p_cf_including_biogenic must be a number")
+        if not isinstance(primary_data_share, (int, float)) and primary_data_share is not None:
+            raise ValueError("primaryDataShare must be a number")
 
         self.declared_unit = declared_unit
         self.unitary_product_amount = unitary_product_amount
@@ -89,8 +93,11 @@ class CarbonFootprint:
         self.packaging_emissions_included = packaging_emissions_included
         self.geographical_scope = geographical_scope
         self.p_cf_including_biogenic = p_cf_including_biogenic
+        self.primary_data_share = primary_data_share
+        self.dqi = dqi
 
-        required_attributes_after_2025 = ["p_cf_including_biogenic"]
+        required_attributes_before_2025 = ["primary_data_share", "dqi"]
+        required_attributes_after_2025 = ["primary_data_share", "p_cf_including_biogenic"]
 
         if reference_period.includes_2025_or_later():
             for attr in required_attributes_after_2025:
@@ -98,3 +105,8 @@ class CarbonFootprint:
                     raise ValueError(
                         f"Attribute '{attr}' must be defined and not None for reporting periods including 2025 or later"
                     )
+        else:
+            if not any(hasattr(self, attr) and getattr(self, attr) is not None for attr in required_attributes_before_2025):
+                raise ValueError(
+                    "At least one of 'primary_data_share' or 'dqi' must be defined for reporting periods before 2025"
+                )
