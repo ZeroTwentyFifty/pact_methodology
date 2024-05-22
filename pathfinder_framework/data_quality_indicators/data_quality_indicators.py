@@ -1,19 +1,38 @@
+from __future__ import annotations  # For forward references within the module
+
+
+from pathfinder_framework.carbon_footprint.reference_period import ReferencePeriod
+
+
 class DataQualityIndicators:
-    """
-    Represents quantitative data quality indicators in accordance with Pathfinder Framework Section 4.2.3 and Appendix B.
 
-    Attributes:
-        coverage_percent (float, optional): Percentage of PCF included in the data quality assessment based on the >5% emissions threshold.
-        technological_dqr (float, optional): Quantitative data quality rating for technological representativeness (1-3).
-        temporal_dqr (float, optional): Quantitative data quality rating for temporal representativeness (1-3).
-        geographical_dqr (float, optional): Quantitative data quality rating for geographical representativeness (1-3).
-        completeness_dqr (float, optional): Quantitative data quality rating for data completeness (1-3).
-        reliability_dqr (float, optional): Quantitative data quality rating for data reliability (1-3).
-    """
+    def __init__(self, reference_period: ReferencePeriod, coverage_percent: float | None = None,
+                 technological_dqr: float | None = None, temporal_dqr: float | None = None,
+                 geographical_dqr: float | None = None, completeness_dqr: float | None = None,
+                 reliability_dqr: float | None = None):
+        """Represents quantitative data quality indicators.
 
-    def __init__(self, reference_period, coverage_percent=None, technological_dqr=None, temporal_dqr=None,
-                 geographical_dqr=None, completeness_dqr=None, reliability_dqr=None):
+        Attributes:
+            coverage_percent: Percentage of PCF included in the assessment (>5% emissions threshold).
+            technological_dqr: Data quality rating for technological representativeness (1-3).
+            temporal_dqr: Data quality rating for temporal representativeness (1-3).
+            geographical_dqr: Data quality rating for geographical representativeness (1-3).
+            completeness_dqr: Data quality rating for data completeness (1-3).
+            reliability_dqr: Data quality rating for data reliability (1-3).
 
+        Args:
+            reference_period (ReferencePeriod): The reference period for the data quality assessment.
+            coverage_percent (float, optional): defaults to None if before 2025.
+            technological_dqr (float, optional): defaults to None if before 2025.
+            temporal_dqr (float, optional): defaults to None if before 2025.
+            geographical_dqr (float, optional): defaults to None if before 2025.
+            completeness_dqr (float, optional): defaults to None if before 2025.
+            reliability_dqr (float, optional): defaults to None if before 2025.
+
+        Raises:
+            ValueError: If any DQR value is not between 1 and 3, or if a required attribute
+                        is missing or None for reporting periods including 2025 or later.
+        """
         self.coverage_percent = coverage_percent
         self.technological_dqr = technological_dqr
         self.temporal_dqr = temporal_dqr
