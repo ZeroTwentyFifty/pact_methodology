@@ -4,6 +4,8 @@ from pathfinder_framework.carbon_footprint.declared_unit import DeclaredUnit
 from pathfinder_framework.datetime import DateTime
 from pathfinder_framework.carbon_footprint.geographical_scope import CarbonFootprintGeographicalScope
 from pathfinder_framework.carbon_footprint.reference_period import ReferencePeriod
+
+
 class CarbonFootprint:
     """
     A CarbonFootprint represents the carbon footprint of a product and related data in accordance with the Pathfinder Framework.
@@ -22,6 +24,17 @@ class CarbonFootprint:
         reference_period (ReferencePeriod): The period over which the data was recorded for the Carbon Footprint_
         packaging_emissions_included (bool): A boolean flag indicating whether packaging emissions are included in the PCF (pCfExcludingBiogenic, pCfIncludingBiogenic).
         geographical_scope (CarbonFootprintGeographicalScope): The geographical scope of the carbon footprint.
+        p_cf_including_biogenic (float | None): Carbon footprint including all biogenic emissions, expressed per declared unit.
+           Can be negative, representing a net removal of CO2. Defaults to None.
+
+    Note: The following attributes are not currently defined but will be affected by the 2025 check:
+        - dLucGhgEmissions
+        - landManagementGhgEmissions
+        - otherBiogenicGhgEmissions
+        - biogenicCarbonWithdrawal
+        - biogenicAccountingMethodology
+        - primaryDataShare
+        - dqi
     """
 
     def __init__(self, declared_unit, unitary_product_amount, p_cf_excluding_biogenic, fossil_ghg_emissions,
@@ -77,7 +90,11 @@ class CarbonFootprint:
         self.geographical_scope = geographical_scope
         self.p_cf_including_biogenic = p_cf_including_biogenic
 
+        required_attributes_after_2025 = ["p_cf_including_biogenic"]
+
         if reference_period.includes_2025_or_later():
-            if not all(hasattr(self, attr) for attr in ["p_cf_including_biogenic", "geographical_scope"]):
-                raise ValueError(
-                    "Attributes marked with O* must be defined for reporting periods including 2025 or later")
+            for attr in required_attributes_after_2025:
+                if not hasattr(self, attr) or getattr(self, attr) is None:
+                    raise ValueError(
+                        f"Attribute '{attr}' must be defined and not None for reporting periods including 2025 or later"
+                    )

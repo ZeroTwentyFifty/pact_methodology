@@ -182,9 +182,34 @@ def test_carbon_footprint_invalid_p_cf_including_biogenic_type(valid_carbon_foot
 
 
 def test_carbon_footprint_p_cf_including_biogenic_optional_before_2025(valid_carbon_footprint_data):
-    valid_carbon_footprint_data["reference_period"] = ReferencePeriod(start=DateTime("2024-12-31T00:00:00Z"), end=DateTime("2025-01-01T00:00:00Z"))
+    valid_carbon_footprint_data["reference_period"] = ReferencePeriod(start=DateTime("2024-01-01T00:00:00Z"), end=DateTime("2024-12-31T00:00:00Z"))
     carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
     assert carbon_footprint.p_cf_including_biogenic is None
+
+@pytest.mark.parametrize("attribute", [
+    "p_cf_including_biogenic",
+])
+def test_carbon_footprint_missing_attributes_valid_before_2025(valid_carbon_footprint_data, attribute):
+    if hasattr(valid_carbon_footprint_data, attribute):
+        delattr(valid_carbon_footprint_data, attribute)
+
+    valid_carbon_footprint_data["reference_period"] = ReferencePeriod(start=DateTime("2024-01-01T00:00:00Z"), end=DateTime("2024-12-31T00:00:00Z"))
+
+    carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
+
+
+@pytest.mark.parametrize("attribute", [
+    "p_cf_including_biogenic",
+])
+def test_carbon_footprint_missing_attributes_invalid_after_2025(valid_carbon_footprint_data, attribute):
+    if hasattr(valid_carbon_footprint_data, attribute):
+        delattr(valid_carbon_footprint_data, attribute)
+
+    valid_carbon_footprint_data["reference_period"] = ReferencePeriod(start=DateTime("2025-01-01T00:00:00Z"), end=DateTime("2026-01-01T00:00:00Z"))
+
+    with pytest.raises(ValueError):
+        CarbonFootprint(**valid_carbon_footprint_data)
+
 
 def test_carbon_footprint_invalid_geographical_scope_type(valid_carbon_footprint_data):
     invalid_data = valid_carbon_footprint_data.copy()
