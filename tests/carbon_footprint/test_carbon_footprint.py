@@ -27,9 +27,10 @@ def valid_carbon_footprint_data():
         "exempted_emissions_percent": 1.0,
         "reference_period": ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
         "packaging_emissions_included": True,
-        "geographical_scope": CarbonFootprintGeographicalScope(global_scope=True, geography_country_subdivision=None, geography_country=None, geography_region_or_subregion=None)
+        "geographical_scope": CarbonFootprintGeographicalScope(global_scope=True, geography_country_subdivision=None, geography_country=None, geography_region_or_subregion=None),
+        "primary_data_share": 50.0,
+        "dqi": DQI()
     }
-
 
 
 def test_carbon_footprint_exists():
@@ -208,6 +209,34 @@ def test_carbon_footprint_missing_attributes_invalid_after_2025(valid_carbon_foo
     valid_carbon_footprint_data["reference_period"] = ReferencePeriod(start=DateTime("2025-01-01T00:00:00Z"), end=DateTime("2026-01-01T00:00:00Z"))
 
     with pytest.raises(ValueError):
+        CarbonFootprint(**valid_carbon_footprint_data)
+
+
+class DQI:
+    def __init__(self, a=None, b=None):
+        self.a = a
+        self.b = b
+
+
+def test_primary_data_share_optional_before_2025(valid_carbon_footprint_data):
+    valid_carbon_footprint_data["reference_period"] = ReferencePeriod(start=DateTime("2024-01-01T00:00:00Z"), end=DateTime("2024-12-31T00:00:00Z"))
+    valid_carbon_footprint_data["primary_data_share"] = None
+    valid_carbon_footprint_data["dqi"] = DQI()
+    carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
+
+
+def test_primary_data_share_required_after_2025(valid_carbon_footprint_data):
+    valid_carbon_footprint_data["reference_period"] = ReferencePeriod(start=DateTime("2025-01-01T00:00:00Z"), end=DateTime("2026-01-01T00:00:00Z"))
+    valid_carbon_footprint_data["primary_data_share"] = None
+    with pytest.raises(ValueError, match="Attribute 'primary_data_share' must be defined"):
+        CarbonFootprint(**valid_carbon_footprint_data)
+
+
+def test_primary_data_share_or_dqi_required_before_2025(valid_carbon_footprint_data):
+    valid_carbon_footprint_data["reference_period"] = ReferencePeriod(start=DateTime("2024-01-01T00:00:00Z"), end=DateTime("2024-12-31T00:00:00Z"))
+    valid_carbon_footprint_data["primary_data_share"] = None
+    valid_carbon_footprint_data["dqi"] = None
+    with pytest.raises(ValueError, match="At least one of 'primary_data_share' or 'dqi' must be defined"):
         CarbonFootprint(**valid_carbon_footprint_data)
 
 
