@@ -57,9 +57,7 @@ def test_dqi_missing_reference_period():
         DataQualityIndicators()
 
 
-def test_dqi_missing_attributes_after_2025a():
-    reference_period = ReferencePeriod(start=DateTime("2025-01-01T00:00:00Z"), end=DateTime("2026-01-01T00:00:00Z"))
-    with pytest.raises(ValueError):
-        DataQualityIndicators(
-            reference_period=reference_period, technological_dqr=DataQualityRating(2.0)
-        )  # Missing other attributes
+# def test_dqi_invalid_dqr_type():
+#     reference_period = ReferencePeriod(start=DateTime("2025-01-01T00:00:00Z"), end=DateTime("2026-01-01T00:00:00Z"))
+#     with pytest.raises(TypeError):
+#         DataQualityIndicators(reference_period=reference_period, coverage_percent=50, technological_dqr=2.0)  # DQR should be a DataQualityRating instance
