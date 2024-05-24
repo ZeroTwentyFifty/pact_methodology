@@ -10,17 +10,15 @@ This module provides the `DataQualityRating` class to encapsulate and validate D
 """
 
 
+from dataclasses import dataclass
+
+
+@dataclass(eq=True, frozen=True)
 class DataQualityRating:
+    rating: int
 
-    def __init__(self, rating: int):
-        """Data Quality Rating (DQR)
-
-        Args:
-            rating (int): The numerical value of the data quality rating.
-
-        Raises:
-            ValueError: If the provided value is not between 1 and 3 (inclusive).
-        """
-        if not 1 <= rating <= 3:
+    def __post_init__(self):
+        if not isinstance(self.rating, int):
+            raise TypeError("Data quality rating must be an integer")
+        if self.rating < 1 or self.rating > 3:
             raise ValueError("Data quality rating must be between 1 and 3 (inclusive)")
-        self.rating = rating

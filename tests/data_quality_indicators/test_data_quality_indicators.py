@@ -11,11 +11,11 @@ def valid_data():
     return {
         "reference_period": ReferencePeriod(start=DateTime("2025-01-01T00:00:00Z"), end=DateTime("2026-01-01T00:00:00Z")),
         "coverage_percent": 80.0,
-        "technological_dqr": DataQualityRating(2.0),
-        "temporal_dqr": DataQualityRating(2.5),
-        "geographical_dqr": DataQualityRating(1.8),
-        "completeness_dqr": DataQualityRating(2.2),
-        "reliability_dqr": DataQualityRating(3.0)
+        "technological_dqr": DataQualityRating(2),
+        "temporal_dqr": DataQualityRating(2),
+        "geographical_dqr": DataQualityRating(1),
+        "completeness_dqr": DataQualityRating(2),
+        "reliability_dqr": DataQualityRating(3)
     }
 
 
