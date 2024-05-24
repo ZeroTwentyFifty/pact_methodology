@@ -32,6 +32,17 @@ class DataQualityIndicators:
                         including 2025 or later.
         """
 
+        if technological_dqr is not None and not isinstance(technological_dqr, DataQualityRating):
+            raise TypeError("technological_dqr must be an instance of DataQualityRating")
+        if temporal_dqr is not None and not isinstance(temporal_dqr, DataQualityRating):
+            raise TypeError("temporal_dqr must be an instance of DataQualityRating")
+        if geographical_dqr is not None and not isinstance(geographical_dqr, DataQualityRating):
+            raise TypeError("geographical_dqr must be an instance of DataQualityRating")
+        if completeness_dqr is not None and not isinstance(completeness_dqr, DataQualityRating):
+            raise TypeError("completeness_dqr must be an instance of DataQualityRating")
+        if reliability_dqr is not None and not isinstance(reliability_dqr, DataQualityRating):
+            raise TypeError("reliability_dqr must be an instance of DataQualityRating")
+
         self.coverage_percent = coverage_percent
         self.technological_dqr = technological_dqr
         self.temporal_dqr = temporal_dqr

@@ -98,7 +98,7 @@ class CarbonFootprint:
         self.dqi = dqi
 
         required_attributes_before_2025 = ["primary_data_share", "dqi"]
-        required_attributes_after_2025 = ["primary_data_share", "p_cf_including_biogenic"]
+        required_attributes_after_2025 = ["primary_data_share", "dqi", "p_cf_including_biogenic"]
 
         if reference_period.includes_2025_or_later():
             for attr in required_attributes_after_2025:
