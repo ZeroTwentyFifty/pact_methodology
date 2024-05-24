@@ -4,7 +4,7 @@ from pathfinder_framework.data_quality_indicators.data_quality_rating import Dat
 
 class DataQualityIndicators:
 
-    def __init__(self, reference_period: ReferencePeriod, coverage_percent: float | None = None,
+    def __init__(self, *, reference_period: ReferencePeriod, coverage_percent: float | None = None,
                  technological_dqr: DataQualityRating | None = None, temporal_dqr: DataQualityRating | None = None,
                  geographical_dqr: DataQualityRating | None = None, completeness_dqr: DataQualityRating | None = None,
                  reliability_dqr: DataQualityRating | None = None):
