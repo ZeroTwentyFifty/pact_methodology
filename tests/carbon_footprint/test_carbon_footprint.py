@@ -191,6 +191,7 @@ def test_carbon_footprint_p_cf_including_biogenic_optional_before_2025(valid_car
 
 @pytest.mark.parametrize("attribute", [
     "p_cf_including_biogenic",
+    "d_luc_ghg_emissions"
 ])
 def test_carbon_footprint_missing_attributes_valid_before_2025(valid_carbon_footprint_data, attribute):
     if hasattr(valid_carbon_footprint_data, attribute):
@@ -203,6 +204,7 @@ def test_carbon_footprint_missing_attributes_valid_before_2025(valid_carbon_foot
 
 @pytest.mark.parametrize("attribute", [
     "p_cf_including_biogenic",
+    "d_luc_ghg_emissions"
 ])
 def test_carbon_footprint_missing_attributes_invalid_after_2025(valid_carbon_footprint_data, attribute):
     if hasattr(valid_carbon_footprint_data, attribute):
