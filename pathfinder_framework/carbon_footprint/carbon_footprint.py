@@ -29,9 +29,9 @@ class CarbonFootprint:
            Can be negative, representing a net removal of CO2. Defaults to None.
         primary_data_share (float): The share of primary data in percent. See the Pathfinder Framework Sections 4.2.1, 4.2.2, Appendix B.
         dqi (DataQualityIndicators): The data quality indicators for the carbon footprint.
+        d_luc_ghg_emissions (float | None): Emissions resulting from recent (i.e., previous 20 years) carbon stock loss due to land conversion directly on the area of land under consideration, expressed as a decimal equal to or greater than zero, per declared unit with unit kg of CO2 equivalent per declared unit (kgCO2e / declaredUnit). Defaults to None.
 
     Note: The following attributes are not currently defined but will be affected by the 2025 check:
-        - dLucGhgEmissions
         - landManagementGhgEmissions
         - otherBiogenicGhgEmissions
         - biogenicCarbonWithdrawal
@@ -42,7 +42,7 @@ class CarbonFootprint:
                  fossil_carbon_content, biogenic_carbon_content, characterization_factors,
                  ipcc_characterization_factors_sources, cross_sectoral_standards_used, boundary_processes_description,
                  exempted_emissions_percent, reference_period, packaging_emissions_included, geographical_scope,
-                 p_cf_including_biogenic=None, primary_data_share=None, dqi=None):
+                 p_cf_including_biogenic=None, primary_data_share=None, dqi=None, d_luc_ghg_emissions=None):
         if not isinstance(declared_unit, DeclaredUnit):
             raise ValueError(
                 f"declared_unit '{declared_unit}' is not valid. It must be one of the following: {', '.join([unit.value for unit in DeclaredUnit])}")
@@ -74,6 +74,9 @@ class CarbonFootprint:
             raise ValueError("geographical_scope must be an instance of CarbonFootprintGeographicalScope")
         if p_cf_including_biogenic is not None and not isinstance(p_cf_including_biogenic, (int, float)):
             raise ValueError("p_cf_including_biogenic must be a number")
+        if d_luc_ghg_emissions is not None and (
+                not isinstance(d_luc_ghg_emissions, (int, float)) or d_luc_ghg_emissions < 0):
+            raise ValueError("d_luc_ghg_emissions must be a non-negative number")
         if not isinstance(primary_data_share, (int, float)) and primary_data_share is not None:
             raise ValueError("primaryDataShare must be a number")
         if dqi is not None and not isinstance(dqi, DataQualityIndicators):
@@ -96,9 +99,10 @@ class CarbonFootprint:
         self.p_cf_including_biogenic = p_cf_including_biogenic
         self.primary_data_share = primary_data_share
         self.dqi = dqi
+        self.d_luc_ghg_emissions = d_luc_ghg_emissions
 
         required_attributes_before_2025 = ["primary_data_share", "dqi"]
-        required_attributes_after_2025 = ["primary_data_share", "dqi", "p_cf_including_biogenic"]
+        required_attributes_after_2025 = ["primary_data_share", "dqi", "p_cf_including_biogenic", "d_luc_ghg_emissions"]
 
         if reference_period.includes_2025_or_later():
             for attr in required_attributes_after_2025:
