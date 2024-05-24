@@ -227,6 +227,19 @@ def test_primary_data_share_required_after_2025(valid_carbon_footprint_data):
         CarbonFootprint(**valid_carbon_footprint_data)
 
 
+def test_dqi_optional_before_2025(valid_carbon_footprint_data):
+    valid_carbon_footprint_data["reference_period"] = ReferencePeriod(start=DateTime("2024-01-01T00:00:00Z"), end=DateTime("2024-12-31T00:00:00Z"))
+    valid_carbon_footprint_data["dqi"] = None
+    carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
+
+
+def test_dqi_required_after_2025(valid_carbon_footprint_data):
+    valid_carbon_footprint_data["reference_period"] = ReferencePeriod(start=DateTime("2025-01-01T00:00:00Z"), end=DateTime("2026-01-01T00:00:00Z"))
+    valid_carbon_footprint_data["dqi"] = None
+    with pytest.raises(ValueError, match="Attribute 'dqi' must be defined"):
+        CarbonFootprint(**valid_carbon_footprint_data)
+
+
 def test_primary_data_share_or_dqi_required_before_2025(valid_carbon_footprint_data):
     valid_carbon_footprint_data["reference_period"] = ReferencePeriod(start=DateTime("2024-01-01T00:00:00Z"), end=DateTime("2024-12-31T00:00:00Z"))
     valid_carbon_footprint_data["primary_data_share"] = None

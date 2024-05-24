@@ -33,23 +33,16 @@ def test_dqi_missing_attributes_after_2025(valid_data, missing_attribute):
 def test_dqi_valid_before_2025():
     reference_period = ReferencePeriod(start=DateTime("2023-01-01T00:00:00Z"), end=DateTime("2024-01-01T00:00:00Z"))
     dqi = DataQualityIndicators(reference_period=reference_period,
-                                technological_dqr=2.0)  # Other attributes are optional
-    assert dqi.technological_dqr == 2.0
+                                technological_dqr=DataQualityRating(2))  # Other attributes are optional
+    assert dqi.technological_dqr == DataQualityRating(2)
 
 
 def test_dqi_valid_after_2025_all_attributes():
     reference_period = ReferencePeriod(start=DateTime("2025-01-01T00:00:00Z"), end=DateTime("2026-01-01T00:00:00Z"))
     dqi = DataQualityIndicators(
-        reference_period=reference_period, coverage_percent=80.0, technological_dqr=2.0, temporal_dqr=2.5,
-        geographical_dqr=1.8, completeness_dqr=2.2, reliability_dqr=3.0)
+        reference_period=reference_period, coverage_percent=80.0, technological_dqr=DataQualityRating(2), temporal_dqr=DataQualityRating(2),
+        geographical_dqr=DataQualityRating(1), completeness_dqr=DataQualityRating(2), reliability_dqr=DataQualityRating(3))
     assert dqi.coverage_percent == 80.0
-
-
-def test_dqi_invalid_dqr_value():
-    reference_period = ReferencePeriod(start=DateTime("2025-01-01T00:00:00Z"), end=DateTime("2026-01-01T00:00:00Z"))
-    with pytest.raises(ValueError):
-        DataQualityIndicators(reference_period=reference_period,
-                              technological_dqr=0.5)  # DQR value must be between 1 and 3
 
 
 def test_dqi_missing_reference_period():
@@ -57,7 +50,7 @@ def test_dqi_missing_reference_period():
         DataQualityIndicators()
 
 
-# def test_dqi_invalid_dqr_type():
-#     reference_period = ReferencePeriod(start=DateTime("2025-01-01T00:00:00Z"), end=DateTime("2026-01-01T00:00:00Z"))
-#     with pytest.raises(TypeError):
-#         DataQualityIndicators(reference_period=reference_period, coverage_percent=50, technological_dqr=2.0)  # DQR should be a DataQualityRating instance
+def test_dqi_invalid_dqr_type():
+    reference_period = ReferencePeriod(start=DateTime("2025-01-01T00:00:00Z"), end=DateTime("2026-01-01T00:00:00Z"))
+    with pytest.raises(TypeError):
+        DataQualityIndicators(reference_period=reference_period, coverage_percent=50, technological_dqr=2.0)  # DQR should be a DataQualityRating instance
