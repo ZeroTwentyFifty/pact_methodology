@@ -4,6 +4,7 @@ from pathfinder_framework.carbon_footprint.declared_unit import DeclaredUnit
 from pathfinder_framework.datetime import DateTime
 from pathfinder_framework.carbon_footprint.geographical_scope import CarbonFootprintGeographicalScope
 from pathfinder_framework.carbon_footprint.reference_period import ReferencePeriod
+from pathfinder_framework.data_quality_indicators.data_quality_indicators import DataQualityIndicators
 
 
 class CarbonFootprint:
@@ -27,7 +28,7 @@ class CarbonFootprint:
         p_cf_including_biogenic (float | None): Carbon footprint including all biogenic emissions, expressed per declared unit.
            Can be negative, representing a net removal of CO2. Defaults to None.
         primary_data_share (float): The share of primary data in percent. See the Pathfinder Framework Sections 4.2.1, 4.2.2, Appendix B.
-
+        dqi (DataQualityIndicators): The data quality indicators for the carbon footprint.
 
     Note: The following attributes are not currently defined but will be affected by the 2025 check:
         - dLucGhgEmissions
@@ -35,8 +36,6 @@ class CarbonFootprint:
         - otherBiogenicGhgEmissions
         - biogenicCarbonWithdrawal
         - biogenicAccountingMethodology
-        - primaryDataShare
-        - dqi
     """
 
     def __init__(self, declared_unit, unitary_product_amount, p_cf_excluding_biogenic, fossil_ghg_emissions,
@@ -77,6 +76,8 @@ class CarbonFootprint:
             raise ValueError("p_cf_including_biogenic must be a number")
         if not isinstance(primary_data_share, (int, float)) and primary_data_share is not None:
             raise ValueError("primaryDataShare must be a number")
+        if dqi is not None and not isinstance(dqi, DataQualityIndicators):
+            raise ValueError("dqi must be an instance of DataQualityIndicators")
 
         self.declared_unit = declared_unit
         self.unitary_product_amount = unitary_product_amount

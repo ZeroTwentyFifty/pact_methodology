@@ -9,6 +9,7 @@ from pathfinder_framework.carbon_footprint.reference_period import ReferencePeri
 from pathfinder_framework.carbon_footprint.geographical_scope import (
     CarbonFootprintGeographicalScope, GeographicalGranularity
 )
+from pathfinder_framework.data_quality_indicators.data_quality_indicators import DataQualityIndicators
 
 
 @pytest.fixture
@@ -29,7 +30,7 @@ def valid_carbon_footprint_data():
         "packaging_emissions_included": True,
         "geographical_scope": CarbonFootprintGeographicalScope(global_scope=True, geography_country_subdivision=None, geography_country=None, geography_region_or_subregion=None),
         "primary_data_share": 50.0,
-        "dqi": DQI()
+        "dqi": DataQualityIndicators(reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()))
     }
 
 
@@ -58,6 +59,7 @@ def test_carbon_footprint_attributes(valid_carbon_footprint_data):
     assert isinstance(carbon_footprint.reference_period, ReferencePeriod)
     assert carbon_footprint.packaging_emissions_included == valid_carbon_footprint_data["packaging_emissions_included"]
     assert isinstance(carbon_footprint.geographical_scope, CarbonFootprintGeographicalScope)
+    assert isinstance(carbon_footprint.dqi, DataQualityIndicators)
 
 
 def test_carbon_footprint_invalid_declared_unit(valid_carbon_footprint_data):
@@ -212,16 +214,9 @@ def test_carbon_footprint_missing_attributes_invalid_after_2025(valid_carbon_foo
         CarbonFootprint(**valid_carbon_footprint_data)
 
 
-class DQI:
-    def __init__(self, a=None, b=None):
-        self.a = a
-        self.b = b
-
-
 def test_primary_data_share_optional_before_2025(valid_carbon_footprint_data):
     valid_carbon_footprint_data["reference_period"] = ReferencePeriod(start=DateTime("2024-01-01T00:00:00Z"), end=DateTime("2024-12-31T00:00:00Z"))
     valid_carbon_footprint_data["primary_data_share"] = None
-    valid_carbon_footprint_data["dqi"] = DQI()
     carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
 
 
