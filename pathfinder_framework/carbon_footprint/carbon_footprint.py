@@ -30,9 +30,9 @@ class CarbonFootprint:
         primary_data_share (float): The share of primary data in percent. See the Pathfinder Framework Sections 4.2.1, 4.2.2, Appendix B.
         dqi (DataQualityIndicators): The data quality indicators for the carbon footprint.
         d_luc_ghg_emissions (float | None): Emissions resulting from recent (i.e., previous 20 years) carbon stock loss due to land conversion directly on the area of land under consideration, expressed as a decimal equal to or greater than zero, per declared unit with unit kg of CO2 equivalent per declared unit (kgCO2e / declaredUnit). Defaults to None.
+        land_management_ghg_emissions (float | None): If present, GHG emissions and removals associated with land-management-related changes, including non-CO2 sources. The value MUST be calculated per declared unit with unit kg of CO2 equivalent per declared unit (kgCO2e / declaredUnit), expressed as a decimal. Defaults to None.
 
     Note: The following attributes are not currently defined but will be affected by the 2025 check:
-        - landManagementGhgEmissions
         - otherBiogenicGhgEmissions
         - biogenicCarbonWithdrawal
         - biogenicAccountingMethodology
@@ -42,7 +42,7 @@ class CarbonFootprint:
                  fossil_carbon_content, biogenic_carbon_content, characterization_factors,
                  ipcc_characterization_factors_sources, cross_sectoral_standards_used, boundary_processes_description,
                  exempted_emissions_percent, reference_period, packaging_emissions_included, geographical_scope,
-                 p_cf_including_biogenic=None, primary_data_share=None, dqi=None, d_luc_ghg_emissions=None):
+                 p_cf_including_biogenic=None, primary_data_share=None, dqi=None, d_luc_ghg_emissions=None, land_management_ghg_emissions=None):
         if not isinstance(declared_unit, DeclaredUnit):
             raise ValueError(
                 f"declared_unit '{declared_unit}' is not valid. It must be one of the following: {', '.join([unit.value for unit in DeclaredUnit])}")
@@ -81,6 +81,9 @@ class CarbonFootprint:
         if d_luc_ghg_emissions is not None and (
                 not isinstance(d_luc_ghg_emissions, (int, float)) or d_luc_ghg_emissions < 0):
             raise ValueError("d_luc_ghg_emissions must be a non-negative number")
+        if land_management_ghg_emissions is not None and (
+                not isinstance(land_management_ghg_emissions, (int, float))):
+            raise ValueError("land_management_ghg_emissions must be a number")
 
         self.declared_unit = declared_unit
         self.unitary_product_amount = unitary_product_amount
@@ -100,9 +103,11 @@ class CarbonFootprint:
         self.primary_data_share = primary_data_share
         self.dqi = dqi
         self.d_luc_ghg_emissions = d_luc_ghg_emissions
+        self.land_management_ghg_emissions = land_management_ghg_emissions
 
         required_attributes_before_2025 = ["primary_data_share", "dqi"]
-        required_attributes_after_2025 = ["primary_data_share", "dqi", "p_cf_including_biogenic", "d_luc_ghg_emissions"]
+        required_attributes_after_2025 = ["primary_data_share", "dqi", "p_cf_including_biogenic", "d_luc_ghg_emissions",
+                                          "land_management_ghg_emissions"]
 
         if reference_period.includes_2025_or_later():
             for attr in required_attributes_after_2025:
@@ -111,7 +116,8 @@ class CarbonFootprint:
                         f"Attribute '{attr}' must be defined and not None for reporting periods including 2025 or later"
                     )
         else:
-            if not any(hasattr(self, attr) and getattr(self, attr) is not None for attr in required_attributes_before_2025):
+            if not any(hasattr(self, attr) and getattr(self, attr) is not None for attr in
+                       required_attributes_before_2025):
                 raise ValueError(
                     "At least one of 'primary_data_share' or 'dqi' must be defined for reporting periods before 2025"
                 )
