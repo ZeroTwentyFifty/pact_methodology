@@ -32,7 +32,8 @@ def valid_carbon_footprint_data():
         "geographical_scope": CarbonFootprintGeographicalScope(global_scope=True, geography_country_subdivision=None, geography_country=None, geography_region_or_subregion=None),
         "primary_data_share": 50.0,
         "dqi": DataQualityIndicators(reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now())),
-        "d_luc_ghg_emissions": 2
+        "d_luc_ghg_emissions": 2,
+        "land_management_ghg_emissions": 1.5
     }
 
 
@@ -64,6 +65,7 @@ def test_carbon_footprint_attributes(valid_carbon_footprint_data):
     assert isinstance(carbon_footprint.geographical_scope, CarbonFootprintGeographicalScope)
     assert isinstance(carbon_footprint.dqi, DataQualityIndicators)
     assert carbon_footprint.d_luc_ghg_emissions == valid_carbon_footprint_data["d_luc_ghg_emissions"]
+    assert carbon_footprint.land_management_ghg_emissions == valid_carbon_footprint_data["land_management_ghg_emissions"]
 
 
 def test_carbon_footprint_invalid_declared_unit(valid_carbon_footprint_data):
@@ -178,6 +180,7 @@ def test_carbon_footprint_valid_packaging_emissions_included(valid_carbon_footpr
 @pytest.mark.parametrize("attribute, value", [
     ("p_cf_including_biogenic", 1.0),
     ("d_luc_ghg_emissions", 1.0),
+    ("land_management_ghg_emissions", 1.5),
 ])
 def test_carbon_footprint_valid_attribute(valid_carbon_footprint_data, attribute, value):
     valid_carbon_footprint_data[attribute] = value
@@ -188,6 +191,7 @@ def test_carbon_footprint_valid_attribute(valid_carbon_footprint_data, attribute
 @pytest.mark.parametrize("attribute, value, expected_error", [
     ("p_cf_including_biogenic", "not a number", "p_cf_including_biogenic must be a number"),
     ("d_luc_ghg_emissions", "not a number", "d_luc_ghg_emissions must be a non-negative number"),
+    ("land_management_ghg_emissions", "not a number", "land_management_ghg_emissions must be a number"),
 ])
 def test_carbon_footprint_invalid_attribute_type(valid_carbon_footprint_data, attribute, value, expected_error):
     valid_carbon_footprint_data[attribute] = value
@@ -198,7 +202,8 @@ def test_carbon_footprint_invalid_attribute_type(valid_carbon_footprint_data, at
 
 @pytest.mark.parametrize("attribute", [
     "p_cf_including_biogenic",
-    "d_luc_ghg_emissions"
+    "d_luc_ghg_emissions",
+    "land_management_ghg_emissions"
 ])
 def test_carbon_footprint_attribute_optional_before_2025(valid_carbon_footprint_data, attribute):
     del valid_carbon_footprint_data[attribute]
@@ -209,7 +214,8 @@ def test_carbon_footprint_attribute_optional_before_2025(valid_carbon_footprint_
 
 @pytest.mark.parametrize("attribute", [
     "p_cf_including_biogenic",
-    "d_luc_ghg_emissions"
+    "d_luc_ghg_emissions",
+    "land_management_ghg_emissions"
 ])
 def test_carbon_footprint_missing_attributes_valid_before_2025(valid_carbon_footprint_data, attribute):
     if hasattr(valid_carbon_footprint_data, attribute):
@@ -222,7 +228,8 @@ def test_carbon_footprint_missing_attributes_valid_before_2025(valid_carbon_foot
 
 @pytest.mark.parametrize("attribute", [
     "p_cf_including_biogenic",
-    "d_luc_ghg_emissions"
+    "d_luc_ghg_emissions",
+    "land_management_ghg_emissions"
 ])
 def test_carbon_footprint_missing_attributes_invalid_after_2025(valid_carbon_footprint_data, attribute):
     del valid_carbon_footprint_data[attribute]
