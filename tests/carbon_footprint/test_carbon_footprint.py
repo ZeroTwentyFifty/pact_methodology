@@ -18,6 +18,7 @@ def valid_carbon_footprint_data():
         "declared_unit": DeclaredUnit.KILOGRAM,
         "unitary_product_amount": 1.0,
         "p_cf_excluding_biogenic": 0.5,
+        "p_cf_including_biogenic": 2,
         "fossil_ghg_emissions": 0.3,
         "fossil_carbon_content": 0.2,
         "biogenic_carbon_content": 0.1,
@@ -30,7 +31,8 @@ def valid_carbon_footprint_data():
         "packaging_emissions_included": True,
         "geographical_scope": CarbonFootprintGeographicalScope(global_scope=True, geography_country_subdivision=None, geography_country=None, geography_region_or_subregion=None),
         "primary_data_share": 50.0,
-        "dqi": DataQualityIndicators(reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()))
+        "dqi": DataQualityIndicators(reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now())),
+        "d_luc_ghg_emissions": 2
     }
 
 
@@ -48,6 +50,7 @@ def test_carbon_footprint_attributes(valid_carbon_footprint_data):
     assert carbon_footprint.declared_unit == valid_carbon_footprint_data["declared_unit"]
     assert carbon_footprint.unitary_product_amount == valid_carbon_footprint_data["unitary_product_amount"]
     assert carbon_footprint.p_cf_excluding_biogenic == valid_carbon_footprint_data["p_cf_excluding_biogenic"]
+    assert carbon_footprint.p_cf_including_biogenic == valid_carbon_footprint_data["p_cf_including_biogenic"]
     assert carbon_footprint.fossil_ghg_emissions == valid_carbon_footprint_data["fossil_ghg_emissions"]
     assert carbon_footprint.fossil_carbon_content == valid_carbon_footprint_data["fossil_carbon_content"]
     assert carbon_footprint.biogenic_carbon_content == valid_carbon_footprint_data["biogenic_carbon_content"]
@@ -60,6 +63,7 @@ def test_carbon_footprint_attributes(valid_carbon_footprint_data):
     assert carbon_footprint.packaging_emissions_included == valid_carbon_footprint_data["packaging_emissions_included"]
     assert isinstance(carbon_footprint.geographical_scope, CarbonFootprintGeographicalScope)
     assert isinstance(carbon_footprint.dqi, DataQualityIndicators)
+    assert carbon_footprint.d_luc_ghg_emissions == valid_carbon_footprint_data["d_luc_ghg_emissions"]
 
 
 def test_carbon_footprint_invalid_declared_unit(valid_carbon_footprint_data):
@@ -171,23 +175,37 @@ def test_carbon_footprint_valid_packaging_emissions_included(valid_carbon_footpr
     assert carbon_footprint.packaging_emissions_included is True
 
 
-def test_carbon_footprint_valid_p_cf_including_biogenic(valid_carbon_footprint_data):
-    valid_carbon_footprint_data["p_cf_including_biogenic"] = 1.0
+@pytest.mark.parametrize("attribute, value", [
+    ("p_cf_including_biogenic", 1.0),
+    ("d_luc_ghg_emissions", 1.0),
+])
+def test_carbon_footprint_valid_attribute(valid_carbon_footprint_data, attribute, value):
+    valid_carbon_footprint_data[attribute] = value
     carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
-    assert carbon_footprint.p_cf_including_biogenic == 1.0
+    assert getattr(carbon_footprint, attribute) == value
 
 
-def test_carbon_footprint_invalid_p_cf_including_biogenic_type(valid_carbon_footprint_data):
-    valid_carbon_footprint_data["p_cf_including_biogenic"] = "not a number"
+@pytest.mark.parametrize("attribute, value, expected_error", [
+    ("p_cf_including_biogenic", "not a number", "p_cf_including_biogenic must be a number"),
+    ("d_luc_ghg_emissions", "not a number", "d_luc_ghg_emissions must be a non-negative number"),
+])
+def test_carbon_footprint_invalid_attribute_type(valid_carbon_footprint_data, attribute, value, expected_error):
+    valid_carbon_footprint_data[attribute] = value
     with pytest.raises(ValueError) as excinfo:
         CarbonFootprint(**valid_carbon_footprint_data)
-    assert str(excinfo.value) == "p_cf_including_biogenic must be a number"
+    assert str(excinfo.value) == expected_error
 
 
-def test_carbon_footprint_p_cf_including_biogenic_optional_before_2025(valid_carbon_footprint_data):
+@pytest.mark.parametrize("attribute", [
+    "p_cf_including_biogenic",
+    "d_luc_ghg_emissions"
+])
+def test_carbon_footprint_attribute_optional_before_2025(valid_carbon_footprint_data, attribute):
+    del valid_carbon_footprint_data[attribute]
     valid_carbon_footprint_data["reference_period"] = ReferencePeriod(start=DateTime("2024-01-01T00:00:00Z"), end=DateTime("2024-12-31T00:00:00Z"))
     carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
-    assert carbon_footprint.p_cf_including_biogenic is None
+    assert getattr(carbon_footprint, attribute) is None
+
 
 @pytest.mark.parametrize("attribute", [
     "p_cf_including_biogenic",
@@ -207,9 +225,7 @@ def test_carbon_footprint_missing_attributes_valid_before_2025(valid_carbon_foot
     "d_luc_ghg_emissions"
 ])
 def test_carbon_footprint_missing_attributes_invalid_after_2025(valid_carbon_footprint_data, attribute):
-    if hasattr(valid_carbon_footprint_data, attribute):
-        delattr(valid_carbon_footprint_data, attribute)
-
+    del valid_carbon_footprint_data[attribute]
     valid_carbon_footprint_data["reference_period"] = ReferencePeriod(start=DateTime("2025-01-01T00:00:00Z"), end=DateTime("2026-01-01T00:00:00Z"))
 
     with pytest.raises(ValueError):

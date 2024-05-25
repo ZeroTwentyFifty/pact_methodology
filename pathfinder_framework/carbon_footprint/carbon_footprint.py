@@ -74,13 +74,13 @@ class CarbonFootprint:
             raise ValueError("geographical_scope must be an instance of CarbonFootprintGeographicalScope")
         if p_cf_including_biogenic is not None and not isinstance(p_cf_including_biogenic, (int, float)):
             raise ValueError("p_cf_including_biogenic must be a number")
-        if d_luc_ghg_emissions is not None and (
-                not isinstance(d_luc_ghg_emissions, (int, float)) or d_luc_ghg_emissions < 0):
-            raise ValueError("d_luc_ghg_emissions must be a non-negative number")
         if not isinstance(primary_data_share, (int, float)) and primary_data_share is not None:
             raise ValueError("primaryDataShare must be a number")
         if dqi is not None and not isinstance(dqi, DataQualityIndicators):
             raise ValueError("dqi must be an instance of DataQualityIndicators")
+        if d_luc_ghg_emissions is not None and (
+                not isinstance(d_luc_ghg_emissions, (int, float)) or d_luc_ghg_emissions < 0):
+            raise ValueError("d_luc_ghg_emissions must be a non-negative number")
 
         self.declared_unit = declared_unit
         self.unitary_product_amount = unitary_product_amount
