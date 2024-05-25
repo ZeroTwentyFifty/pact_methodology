@@ -31,9 +31,9 @@ class CarbonFootprint:
         dqi (DataQualityIndicators): The data quality indicators for the carbon footprint.
         d_luc_ghg_emissions (float | None): Emissions resulting from recent (i.e., previous 20 years) carbon stock loss due to land conversion directly on the area of land under consideration, expressed as a decimal equal to or greater than zero, per declared unit with unit kg of CO2 equivalent per declared unit (kgCO2e / declaredUnit). Defaults to None.
         land_management_ghg_emissions (float | None): If present, GHG emissions and removals associated with land-management-related changes, including non-CO2 sources. The value MUST be calculated per declared unit with unit kg of CO2 equivalent per declared unit (kgCO2e / declaredUnit), expressed as a decimal. Defaults to None.
+        other_biogenic_ghg_emissions (float | None): If present, all other biogenic GHG emissions associated with product manufacturing and transport that are not included in dLUC (dLucGhgEmissions), iLUC (iLucGhgEmissions), and land management (landManagementGhgEmissions). The value MUST be calculated per declared unit with unit kg of CO2 equivalent per declared unit (kgCO2e / declaredUnit), expressed as a decimal equal to or greater than zero.
 
     Note: The following attributes are not currently defined but will be affected by the 2025 check:
-        - otherBiogenicGhgEmissions
         - biogenicCarbonWithdrawal
         - biogenicAccountingMethodology
     """
@@ -42,7 +42,7 @@ class CarbonFootprint:
                  fossil_carbon_content, biogenic_carbon_content, characterization_factors,
                  ipcc_characterization_factors_sources, cross_sectoral_standards_used, boundary_processes_description,
                  exempted_emissions_percent, reference_period, packaging_emissions_included, geographical_scope,
-                 p_cf_including_biogenic=None, primary_data_share=None, dqi=None, d_luc_ghg_emissions=None, land_management_ghg_emissions=None):
+                 p_cf_including_biogenic=None, primary_data_share=None, dqi=None, d_luc_ghg_emissions=None, land_management_ghg_emissions=None, other_biogenic_ghg_emissions=None):
         if not isinstance(declared_unit, DeclaredUnit):
             raise ValueError(
                 f"declared_unit '{declared_unit}' is not valid. It must be one of the following: {', '.join([unit.value for unit in DeclaredUnit])}")
@@ -84,6 +84,9 @@ class CarbonFootprint:
         if land_management_ghg_emissions is not None and (
                 not isinstance(land_management_ghg_emissions, (int, float))):
             raise ValueError("land_management_ghg_emissions must be a number")
+        if other_biogenic_ghg_emissions is not None and (
+                not isinstance(other_biogenic_ghg_emissions, (int, float)) or other_biogenic_ghg_emissions < 0):
+            raise ValueError("other_biogenic_ghg_emissions must be a non-negative number")
 
         self.declared_unit = declared_unit
         self.unitary_product_amount = unitary_product_amount
@@ -104,10 +107,10 @@ class CarbonFootprint:
         self.dqi = dqi
         self.d_luc_ghg_emissions = d_luc_ghg_emissions
         self.land_management_ghg_emissions = land_management_ghg_emissions
+        self.other_biogenic_ghg_emissions = other_biogenic_ghg_emissions
 
         required_attributes_before_2025 = ["primary_data_share", "dqi"]
-        required_attributes_after_2025 = ["primary_data_share", "dqi", "p_cf_including_biogenic", "d_luc_ghg_emissions",
-                                          "land_management_ghg_emissions"]
+        required_attributes_after_2025 = ["primary_data_share", "dqi", "p_cf_including_biogenic", "d_luc_ghg_emissions", "land_management_ghg_emissions", "other_biogenic_ghg_emissions"]
 
         if reference_period.includes_2025_or_later():
             for attr in required_attributes_after_2025:
