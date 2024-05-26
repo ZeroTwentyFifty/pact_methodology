@@ -34,7 +34,8 @@ def valid_carbon_footprint_data():
         "dqi": DataQualityIndicators(reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now())),
         "d_luc_ghg_emissions": 2,
         "land_management_ghg_emissions": 1.0,
-        "other_biogenic_ghg_emissions": 1.5
+        "other_biogenic_ghg_emissions": 1.5,
+        "biogenic_carbon_withdrawal": -1.0
     }
 
 
@@ -68,6 +69,7 @@ def test_carbon_footprint_attributes(valid_carbon_footprint_data):
     assert carbon_footprint.d_luc_ghg_emissions == valid_carbon_footprint_data["d_luc_ghg_emissions"]
     assert carbon_footprint.land_management_ghg_emissions == valid_carbon_footprint_data["land_management_ghg_emissions"]
     assert carbon_footprint.other_biogenic_ghg_emissions == valid_carbon_footprint_data["other_biogenic_ghg_emissions"]
+    assert carbon_footprint.biogenic_carbon_withdrawal == valid_carbon_footprint_data["biogenic_carbon_withdrawal"]
 
 
 def test_carbon_footprint_invalid_declared_unit(valid_carbon_footprint_data):
@@ -184,6 +186,7 @@ def test_carbon_footprint_valid_packaging_emissions_included(valid_carbon_footpr
     ("d_luc_ghg_emissions", 1.0),
     ("land_management_ghg_emissions", 1.0),
     ("other_biogenic_ghg_emissions", 1.5),
+    ("biogenic_carbon_withdrawal", -1.0)
 ])
 def test_carbon_footprint_valid_attribute(valid_carbon_footprint_data, attribute, value):
     valid_carbon_footprint_data[attribute] = value
@@ -197,6 +200,8 @@ def test_carbon_footprint_valid_attribute(valid_carbon_footprint_data, attribute
     ("land_management_ghg_emissions", "not a number", "land_management_ghg_emissions must be a number"),
     ("other_biogenic_ghg_emissions", "not a number", "other_biogenic_ghg_emissions must be a non-negative number"),
     ("other_biogenic_ghg_emissions", -1, "other_biogenic_ghg_emissions must be a non-negative number"),
+    ("biogenic_carbon_withdrawal", "not a number", "biogenic_carbon_withdrawal must be a non-positive number"),
+    ("biogenic_carbon_withdrawal", 1, "biogenic_carbon_withdrawal must be a non-positive number")
 ])
 def test_carbon_footprint_invalid_attribute_type(valid_carbon_footprint_data, attribute, value, expected_error):
     valid_carbon_footprint_data[attribute] = value
@@ -209,7 +214,8 @@ def test_carbon_footprint_invalid_attribute_type(valid_carbon_footprint_data, at
     "p_cf_including_biogenic",
     "d_luc_ghg_emissions",
     "land_management_ghg_emissions",
-    "other_biogenic_ghg_emissions"
+    "other_biogenic_ghg_emissions",
+    "biogenic_carbon_withdrawal"
 ])
 def test_carbon_footprint_attribute_optional_before_2025(valid_carbon_footprint_data, attribute):
     del valid_carbon_footprint_data[attribute]
@@ -222,7 +228,8 @@ def test_carbon_footprint_attribute_optional_before_2025(valid_carbon_footprint_
     "p_cf_including_biogenic",
     "d_luc_ghg_emissions",
     "land_management_ghg_emissions",
-    "other_biogenic_ghg_emissions"
+    "other_biogenic_ghg_emissions",
+    "biogenic_carbon_withdrawal"
 ])
 def test_carbon_footprint_missing_attributes_valid_before_2025(valid_carbon_footprint_data, attribute):
     if hasattr(valid_carbon_footprint_data, attribute):
@@ -237,7 +244,8 @@ def test_carbon_footprint_missing_attributes_valid_before_2025(valid_carbon_foot
     "p_cf_including_biogenic",
     "d_luc_ghg_emissions",
     "land_management_ghg_emissions",
-    "other_biogenic_ghg_emissions"
+    "other_biogenic_ghg_emissions",
+    "biogenic_carbon_withdrawal"
 ])
 def test_carbon_footprint_missing_attributes_invalid_after_2025(valid_carbon_footprint_data, attribute):
     del valid_carbon_footprint_data[attribute]
