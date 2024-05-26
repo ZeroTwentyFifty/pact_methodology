@@ -33,6 +33,7 @@ class CarbonFootprint:
         land_management_ghg_emissions (float | None): If present, GHG emissions and removals associated with land-management-related changes, including non-CO2 sources. The value MUST be calculated per declared unit with unit kg of CO2 equivalent per declared unit (kgCO2e / declaredUnit), expressed as a decimal. Defaults to None.
         other_biogenic_ghg_emissions (float | None): If present, all other biogenic GHG emissions associated with product manufacturing and transport that are not included in dLUC (dLucGhgEmissions), iLUC (iLucGhgEmissions), and land management (landManagementGhgEmissions). The value MUST be calculated per declared unit with unit kg of CO2 equivalent per declared unit (kgCO2e / declaredUnit), expressed as a decimal equal to or greater than zero.
         biogenic_carbon_withdrawal (float | None): If present, the Biogenic Carbon contained in the product converted to kilogram of CO2e. The value MUST be calculated per declared unit with unit kgCO2e / declaredUnit expressed as a decimal equal to or less than zero.
+        iluc_ghg_emissions (float | None): If present, emissions resulting from recent (i.e., previous 20 years) carbon stock loss due to land conversion on land not owned or controlled by the company or in its supply chain, induced by change in demand for products produced or sourced by the company. The value MUST be calculated per declared unit with unit kg of CO2 equivalent per declared unit (kgCO2e / declaredUnit), expressed as a decimal equal to or greater than zero. See Pathfinder Framework (Appendix B) for details. Defaults to None.
 
     Note: The following attributes are not currently defined but will be affected by the 2025 check:
         - biogenicAccountingMethodology
@@ -43,7 +44,8 @@ class CarbonFootprint:
                  ipcc_characterization_factors_sources, cross_sectoral_standards_used, boundary_processes_description,
                  exempted_emissions_percent, reference_period, packaging_emissions_included, geographical_scope,
                  p_cf_including_biogenic=None, primary_data_share=None, dqi=None, d_luc_ghg_emissions=None,
-                 land_management_ghg_emissions=None, other_biogenic_ghg_emissions=None, biogenic_carbon_withdrawal=None):
+                 land_management_ghg_emissions=None, other_biogenic_ghg_emissions=None, biogenic_carbon_withdrawal=None,
+                 iluc_ghg_emissions=None):
         if not isinstance(declared_unit, DeclaredUnit):
             raise ValueError(
                 f"declared_unit '{declared_unit}' is not valid. It must be one of the following: {', '.join([unit.value for unit in DeclaredUnit])}")
@@ -91,6 +93,9 @@ class CarbonFootprint:
         if biogenic_carbon_withdrawal is not None and (
                 not isinstance(biogenic_carbon_withdrawal, (int, float)) or biogenic_carbon_withdrawal > 0):
             raise ValueError("biogenic_carbon_withdrawal must be a non-positive number")
+        if iluc_ghg_emissions is not None and (
+                not isinstance(iluc_ghg_emissions, (int, float)) or iluc_ghg_emissions < 0):
+            raise ValueError("iluc_ghg_emissions must be a non-negative number")
 
         self.declared_unit = declared_unit
         self.unitary_product_amount = unitary_product_amount
@@ -113,6 +118,7 @@ class CarbonFootprint:
         self.land_management_ghg_emissions = land_management_ghg_emissions
         self.other_biogenic_ghg_emissions = other_biogenic_ghg_emissions
         self.biogenic_carbon_withdrawal = biogenic_carbon_withdrawal
+        self.iluc_ghg_emissions = iluc_ghg_emissions
 
         required_attributes_before_2025 = ["primary_data_share", "dqi"]
         required_attributes_after_2025 = ["primary_data_share", "dqi", "p_cf_including_biogenic", "d_luc_ghg_emissions", "land_management_ghg_emissions", "other_biogenic_ghg_emissions", "biogenic_carbon_withdrawal"]
