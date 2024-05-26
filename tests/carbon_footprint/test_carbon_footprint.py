@@ -35,7 +35,8 @@ def valid_carbon_footprint_data():
         "d_luc_ghg_emissions": 2,
         "land_management_ghg_emissions": 1.0,
         "other_biogenic_ghg_emissions": 1.5,
-        "biogenic_carbon_withdrawal": -1.0
+        "biogenic_carbon_withdrawal": -1.0,
+        "iluc_ghg_emissions": 1.0
     }
 
 
@@ -70,6 +71,7 @@ def test_carbon_footprint_attributes(valid_carbon_footprint_data):
     assert carbon_footprint.land_management_ghg_emissions == valid_carbon_footprint_data["land_management_ghg_emissions"]
     assert carbon_footprint.other_biogenic_ghg_emissions == valid_carbon_footprint_data["other_biogenic_ghg_emissions"]
     assert carbon_footprint.biogenic_carbon_withdrawal == valid_carbon_footprint_data["biogenic_carbon_withdrawal"]
+    assert carbon_footprint.iluc_ghg_emissions == valid_carbon_footprint_data["iluc_ghg_emissions"]
 
 
 def test_carbon_footprint_invalid_declared_unit(valid_carbon_footprint_data):
@@ -306,3 +308,22 @@ def test_carbon_footprint_geographical_scope_attributes(valid_carbon_footprint_d
     carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
     assert carbon_footprint.geographical_scope.scope == "Global"
     assert carbon_footprint.geographical_scope.granularity == GeographicalGranularity.GLOBAL
+
+
+@pytest.mark.parametrize("iluc_ghg_emissions", [None, 0, 1, 100, 0.0, 1.0, 100.0])
+def test_carbon_footprint_valid_iluc_ghg_emissions(valid_carbon_footprint_data, iluc_ghg_emissions):
+    valid_data = valid_carbon_footprint_data.copy()
+    valid_data["iluc_ghg_emissions"] = iluc_ghg_emissions
+    CarbonFootprint(**valid_data)
+
+
+@pytest.mark.parametrize("iluc_ghg_emissions, expected_error", [
+    (-1.0, "iluc_ghg_emissions must be a non-negative number"),
+    ("not a number", "iluc_ghg_emissions must be a non-negative number"),
+])
+def test_carbon_footprint_invalid_iluc_ghg_emissions(valid_carbon_footprint_data, iluc_ghg_emissions, expected_error):
+    invalid_data = valid_carbon_footprint_data.copy()
+    invalid_data["iluc_ghg_emissions"] = iluc_ghg_emissions
+    with pytest.raises(ValueError) as excinfo:
+        CarbonFootprint(**invalid_data)
+    assert str(excinfo.value) == expected_error
