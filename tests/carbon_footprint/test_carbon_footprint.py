@@ -39,6 +39,8 @@ def valid_carbon_footprint_data():
         "iluc_ghg_emissions": 1.0,
         "aircraft_ghg_emissions": 1.0,
         "packaging_ghg_emissions": 1.0,
+        "allocation_rules_description": "Example allocation rules description",
+        "uncertainty_assessment_description": "Example uncertainty assessment description"
     }
 
 
@@ -76,7 +78,8 @@ def test_carbon_footprint_attributes(valid_carbon_footprint_data):
     assert carbon_footprint.iluc_ghg_emissions == valid_carbon_footprint_data["iluc_ghg_emissions"]
     assert carbon_footprint.aircraft_ghg_emissions == valid_carbon_footprint_data["aircraft_ghg_emissions"]
     assert carbon_footprint.packaging_ghg_emissions == valid_carbon_footprint_data["packaging_ghg_emissions"]
-
+    assert carbon_footprint.allocation_rules_description == valid_carbon_footprint_data["allocation_rules_description"]
+    assert carbon_footprint.uncertainty_assessment_description == valid_carbon_footprint_data["uncertainty_assessment_description"]
 
 def test_carbon_footprint_invalid_declared_unit(valid_carbon_footprint_data):
     invalid_data = valid_carbon_footprint_data.copy()
@@ -374,6 +377,39 @@ def test_carbon_footprint_invalid_packaging_ghg_emissions(valid_carbon_footprint
     invalid_data = valid_carbon_footprint_data.copy()
     invalid_data["packaging_ghg_emissions"] = packaging_ghg_emissions
     invalid_data["packaging_emissions_included"] = packaging_emissions_included
+    with pytest.raises(ValueError) as excinfo:
+        CarbonFootprint(**invalid_data)
+    assert str(excinfo.value) == expected_error
+
+
+@pytest.mark.parametrize("allocation_rules_description", [None, "Example allocation rules description"])
+def test_carbon_footprint_valid_allocation_rules_description(valid_carbon_footprint_data, allocation_rules_description):
+    valid_data = valid_carbon_footprint_data.copy()
+    valid_data["allocation_rules_description"] = allocation_rules_description
+    CarbonFootprint(**valid_data)
+
+@pytest.mark.parametrize("allocation_rules_description, expected_error", [
+    (1, "allocation_rules_description must be a string"),
+])
+def test_carbon_footprint_invalid_allocation_rules_description(valid_carbon_footprint_data, allocation_rules_description, expected_error):
+    invalid_data = valid_carbon_footprint_data.copy()
+    invalid_data["allocation_rules_description"] = allocation_rules_description
+    with pytest.raises(ValueError) as excinfo:
+        CarbonFootprint(**invalid_data)
+    assert str(excinfo.value) == expected_error
+
+@pytest.mark.parametrize("uncertainty_assessment_description", [None, "uncertainty assessment description"])
+def test_carbon_footprint_valid_uncertainty_assessment_description(valid_carbon_footprint_data, uncertainty_assessment_description):
+    valid_data = valid_carbon_footprint_data.copy()
+    valid_data["uncertainty_assessment_description"] = uncertainty_assessment_description
+    CarbonFootprint(**valid_data)
+
+@pytest.mark.parametrize("uncertainty_assessment_description, expected_error", [
+    (1, "uncertainty_assessment_description must be a string"),
+])
+def test_carbon_footprint_invalid_uncertainty_assessment_description(valid_carbon_footprint_data, uncertainty_assessment_description, expected_error):
+    invalid_data = valid_carbon_footprint_data.copy()
+    invalid_data["uncertainty_assessment_description"] = uncertainty_assessment_description
     with pytest.raises(ValueError) as excinfo:
         CarbonFootprint(**invalid_data)
     assert str(excinfo.value) == expected_error
