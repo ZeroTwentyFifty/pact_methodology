@@ -110,12 +110,21 @@ class DateTime:
 
     def __repr__(self) -> str:
         """
-        Returns a string representation of the DateTime object.
+        Returns a string representation of the DateTime object that can be used to recreate the object.
 
         Returns:
             str: A string representation of the DateTime object.
         """
-        return f"DateTime({self.value})"
+        return f"DateTime('{self.value}')"
+
+    def __str__(self) -> str:
+        """
+        Returns a human-readable string representation of the DateTime object.
+
+        Returns:
+            str: A human-readable string representation of the DateTime object.
+        """
+        return self.value
 
     @property
     def year(self) -> int:

@@ -43,7 +43,12 @@ def test_inequality():
 
 def test_repr():
     dt = DateTime("2020-03-01T00:00:00Z")
-    assert repr(dt) == "DateTime(2020-03-01T00:00:00Z)"
+    assert repr(dt) == "DateTime('2020-03-01T00:00:00Z')"
+
+
+def test_str():
+    dt = DateTime("2020-03-01T00:00:00Z")
+    assert str(dt) == "2020-03-01T00:00:00Z"
 
 
 def test_now():
