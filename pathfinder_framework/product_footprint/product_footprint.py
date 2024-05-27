@@ -62,6 +62,40 @@ class ProductFootprint:
 
         if not isinstance(pcf, CarbonFootprint):
             raise ValueError("pcf must be an instance of CarbonFootprint")
+        if not isinstance(id, (ProductFootprintId, type(None))):
+            raise ValueError("id must be an instance of ProductFootprintId or None")
+        if not isinstance(spec_version, str):
+            raise ValueError("spec_version must be a string")
+        if not isinstance(version, Version):
+            raise ValueError("version must be an instance of Version")
+        if not isinstance(created, DateTime):
+            raise ValueError("created must be an instance of DateTime")
+        if not isinstance(updated, DateTime):
+            raise ValueError("updated must be an instance of DateTime")
+        if not isinstance(status, ProductFootprintStatus):
+            raise ValueError("status must be an instance of ProductFootprintStatus")
+        if not isinstance(status_comment, str):
+            raise ValueError("status_comment must be a string")
+        if not isinstance(validity_period_start, DateTime):
+            raise ValueError("validity_period_start must be an instance of DateTime")
+        if not isinstance(validity_period_end, DateTime):
+            raise ValueError("validity_period_end must be an instance of DateTime")
+        if not isinstance(company_name, str):
+            raise ValueError("company_name must be a string")
+        if not isinstance(company_ids, list) or not all(isinstance(company_id, CompanyId) for company_id in company_ids):
+            raise ValueError("company_ids must be a list of CompanyId")
+        if not isinstance(product_ids, list) or not all(isinstance(product_id, ProductId) for product_id in product_ids):
+            raise ValueError("product_ids must be a list of ProductId")
+        if not isinstance(product_description, str):
+            raise ValueError("product_description must be a string")
+        if not isinstance(product_category_cpc, CPC):
+            raise ValueError("product_category_cpc must be an instance of CPC")
+        if not isinstance(product_name_company, str):
+            raise ValueError("product_name_company must be a string")
+        if not isinstance(comment, str):
+            raise ValueError("comment must be a string")
+        if not isinstance(extensions, dict):
+            raise ValueError("extensions must be a dictionary")
 
         self.id = id if id else ProductFootprintId()
         self.spec_version = spec_version
