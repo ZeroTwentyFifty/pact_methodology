@@ -37,7 +37,8 @@ def valid_carbon_footprint_data():
         "other_biogenic_ghg_emissions": 1.5,
         "biogenic_carbon_withdrawal": -1.0,
         "iluc_ghg_emissions": 1.0,
-        "aircraft_ghg_emissions": 1.0
+        "aircraft_ghg_emissions": 1.0,
+        "packaging_ghg_emissions": 1.0,
     }
 
 
@@ -74,6 +75,7 @@ def test_carbon_footprint_attributes(valid_carbon_footprint_data):
     assert carbon_footprint.biogenic_carbon_withdrawal == valid_carbon_footprint_data["biogenic_carbon_withdrawal"]
     assert carbon_footprint.iluc_ghg_emissions == valid_carbon_footprint_data["iluc_ghg_emissions"]
     assert carbon_footprint.aircraft_ghg_emissions == valid_carbon_footprint_data["aircraft_ghg_emissions"]
+    assert carbon_footprint.packaging_ghg_emissions == valid_carbon_footprint_data["packaging_ghg_emissions"]
 
 
 def test_carbon_footprint_invalid_declared_unit(valid_carbon_footprint_data):
@@ -345,6 +347,33 @@ def test_carbon_footprint_valid_aircraft_ghg_emissions(valid_carbon_footprint_da
 def test_carbon_footprint_invalid_aircraft_ghg_emissions(valid_carbon_footprint_data, aircraft_ghg_emissions, expected_error):
     invalid_data = valid_carbon_footprint_data.copy()
     invalid_data["aircraft_ghg_emissions"] = aircraft_ghg_emissions
+    with pytest.raises(ValueError) as excinfo:
+        CarbonFootprint(**invalid_data)
+    assert str(excinfo.value) == expected_error
+
+
+@pytest.mark.parametrize("packaging_ghg_emissions, packaging_emissions_included", [
+    (0.0, True),
+    (1.0, True),
+    (100.0, True),
+    (None, False),
+])
+def test_carbon_footprint_valid_packaging_ghg_emissions(valid_carbon_footprint_data, packaging_ghg_emissions, packaging_emissions_included):
+    valid_data = valid_carbon_footprint_data.copy()
+    valid_data["packaging_ghg_emissions"] = packaging_ghg_emissions
+    valid_data["packaging_emissions_included"] = packaging_emissions_included
+    CarbonFootprint(**valid_data)
+
+@pytest.mark.parametrize("packaging_ghg_emissions, packaging_emissions_included, expected_error", [
+    (-1.0, True, "packaging_ghg_emissions must be a non-negative number if packaging_emissions_included is true"),
+    ("not a number", True, "packaging_ghg_emissions must be a non-negative number if packaging_emissions_included is true"),
+    (1.0, False, "packaging_ghg_emissions must not be defined if packaging_emissions_included is false"),
+    (None, True, "packaging_ghg_emissions must be a non-negative number if packaging_emissions_included is true"),
+])
+def test_carbon_footprint_invalid_packaging_ghg_emissions(valid_carbon_footprint_data, packaging_ghg_emissions, packaging_emissions_included, expected_error):
+    invalid_data = valid_carbon_footprint_data.copy()
+    invalid_data["packaging_ghg_emissions"] = packaging_ghg_emissions
+    invalid_data["packaging_emissions_included"] = packaging_emissions_included
     with pytest.raises(ValueError) as excinfo:
         CarbonFootprint(**invalid_data)
     assert str(excinfo.value) == expected_error
