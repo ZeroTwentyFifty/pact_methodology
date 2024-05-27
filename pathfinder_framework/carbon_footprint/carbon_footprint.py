@@ -35,6 +35,7 @@ class CarbonFootprint:
         biogenic_carbon_withdrawal (float | None): If present, the Biogenic Carbon contained in the product converted to kilogram of CO2e. The value MUST be calculated per declared unit with unit kgCO2e / declaredUnit expressed as a decimal equal to or less than zero.
         iluc_ghg_emissions (float | None): If present, emissions resulting from recent (i.e., previous 20 years) carbon stock loss due to land conversion on land not owned or controlled by the company or in its supply chain, induced by change in demand for products produced or sourced by the company. The value MUST be calculated per declared unit with unit kg of CO2 equivalent per declared unit (kgCO2e / declaredUnit), expressed as a decimal equal to or greater than zero. See Pathfinder Framework (Appendix B) for details. Defaults to None.
         aircraft_ghg_emissions (float | None): If present, the GHG emissions resulting from aircraft engine usage for the transport of the product, excluding radiative forcing. The value MUST be calculated per declared unit with unit kg of CO2 equivalent per declared unit (kgCO2e / declaredUnit), expressed as a decimal equal to or greater than zero.
+        packaging_ghg_emissions (float | None): Emissions resulting from the packaging of the product. If present, the value MUST be calculated per declared unit with unit kg of CO2 equivalent per kilogram (kgCO2e / declared unit), expressed as a decimal equal to or greater than zero. The value MUST NOT be defined if packagingEmissionsIncluded is false.
 
 
     Note: The following attributes are not currently defined but will be affected by the 2025 check:
@@ -47,7 +48,7 @@ class CarbonFootprint:
                  exempted_emissions_percent, reference_period, packaging_emissions_included, geographical_scope,
                  p_cf_including_biogenic=None, primary_data_share=None, dqi=None, d_luc_ghg_emissions=None,
                  land_management_ghg_emissions=None, other_biogenic_ghg_emissions=None, biogenic_carbon_withdrawal=None,
-                 iluc_ghg_emissions=None, aircraft_ghg_emissions=None):
+                 iluc_ghg_emissions=None, aircraft_ghg_emissions=None, packaging_ghg_emissions=None):
         if not isinstance(declared_unit, DeclaredUnit):
             raise ValueError(
                 f"declared_unit '{declared_unit}' is not valid. It must be one of the following: {', '.join([unit.value for unit in DeclaredUnit])}")
@@ -101,6 +102,13 @@ class CarbonFootprint:
         if aircraft_ghg_emissions is not None and (
                 not isinstance(aircraft_ghg_emissions, (int, float)) or aircraft_ghg_emissions < 0):
             raise ValueError("aircraft_ghg_emissions must be a non-negative number")
+        if packaging_emissions_included and (packaging_ghg_emissions is None or not isinstance(packaging_ghg_emissions,
+                                                                                               (int,
+                                                                                                float)) or packaging_ghg_emissions < 0):
+            raise ValueError(
+                "packaging_ghg_emissions must be a non-negative number if packaging_emissions_included is true")
+        elif packaging_ghg_emissions is not None and not packaging_emissions_included:
+            raise ValueError("packaging_ghg_emissions must not be defined if packaging_emissions_included is false")
 
         self.declared_unit = declared_unit
         self.unitary_product_amount = unitary_product_amount
@@ -125,6 +133,7 @@ class CarbonFootprint:
         self.biogenic_carbon_withdrawal = biogenic_carbon_withdrawal
         self.iluc_ghg_emissions = iluc_ghg_emissions
         self.aircraft_ghg_emissions = aircraft_ghg_emissions
+        self.packaging_ghg_emissions = packaging_ghg_emissions
 
         required_attributes_before_2025 = ["primary_data_share", "dqi"]
         required_attributes_after_2025 = ["primary_data_share", "dqi", "p_cf_including_biogenic", "d_luc_ghg_emissions", "land_management_ghg_emissions", "other_biogenic_ghg_emissions", "biogenic_carbon_withdrawal"]
