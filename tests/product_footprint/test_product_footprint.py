@@ -44,6 +44,7 @@ def valid_cpc() -> CPC:
 def version() -> Version:
     return Version(1)
 
+
 @pytest.fixture
 def valid_carbon_footprint_data():
     return {
@@ -93,29 +94,40 @@ def carbon_footprint(valid_carbon_footprint_data):
     return CarbonFootprint(**valid_carbon_footprint_data)
 
 
-def test_product_footprint_initialization(company_ids, product_ids, valid_cpc, version, carbon_footprint):
-    product_footprint_id = ProductFootprintId()
-    product_footprint = ProductFootprint(
-        id=product_footprint_id,
-        version=version,
-        created=DateTime.now(),
-        updated=DateTime.now(),
-        status=ProductFootprintStatus.ACTIVE,
-        status_comment="This is a comment",
-        validity_period_start=DateTime.now(),
-        validity_period_end=DateTime.now(),
-        company_name="Company Name",
-        company_ids=company_ids,
-        product_description="Product Description",
-        product_ids=product_ids,
-        product_category_cpc=valid_cpc,
-        product_name_company="Product Name Company",
-        comment="This is a comment",
-        extensions={"key": "value"},
-        pcf=carbon_footprint
-    )
-    assert product_footprint.id == product_footprint_id
-    assert product_footprint.version == version
+@pytest.fixture
+def valid_product_footprint_data(valid_carbon_footprint_data):
+    company_ids = [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")]
+    product_ids = [ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product")]
+    cpc_code_lookup = CPCCodeLookup()
+    valid_cpc = cpc_code_lookup.lookup('0111')
+    version = Version(1)
+
+    return {
+        "id": ProductFootprintId(),
+        "version": version,
+        "created": DateTime.now(),
+        "updated": DateTime.now(),
+        "status": ProductFootprintStatus.ACTIVE,
+        "status_comment": "This is a comment",
+        "validity_period_start": DateTime.now(),
+        "validity_period_end": DateTime.now(),
+        "company_name": "Company Name",
+        "company_ids": company_ids,
+        "product_description": "Product Description",
+        "product_ids": product_ids,
+        "product_category_cpc": valid_cpc,
+        "product_name_company": "Product Name Company",
+        "comment": "This is a comment",
+        "extensions": {"key": "value"},
+        "pcf": CarbonFootprint(**valid_carbon_footprint_data)
+    }
+
+
+def test_product_footprint_initialization(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+
+    assert product_footprint.id == valid_product_footprint_data["id"]
+    assert product_footprint.version == Version(1)
     assert isinstance(product_footprint.created, DateTime)
     assert isinstance(product_footprint.updated, DateTime)
     assert product_footprint.status == ProductFootprintStatus.ACTIVE
@@ -123,15 +135,14 @@ def test_product_footprint_initialization(company_ids, product_ids, valid_cpc, v
     assert isinstance(product_footprint.validity_period_start, DateTime)
     assert isinstance(product_footprint.validity_period_end, DateTime)
     assert product_footprint.company_name == "Company Name"
-    assert product_footprint.company_ids == company_ids
+    assert product_footprint.company_ids == [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")]
     assert product_footprint.product_description == "Product Description"
-    assert product_footprint.product_ids == product_ids
-    assert product_footprint.product_category_cpc == valid_cpc
+    assert product_footprint.product_ids == [ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product")]
+    assert product_footprint.product_category_cpc == CPCCodeLookup().lookup('0111')
     assert product_footprint.product_name_company == "Product Name Company"
     assert product_footprint.comment == "This is a comment"
     assert product_footprint.extensions == {"key": "value"}
     assert isinstance(product_footprint.pcf, CarbonFootprint)
-
 
 
 def test_product_footprint_default_initialization(company_ids, product_ids, valid_cpc, version, carbon_footprint):
@@ -157,27 +168,15 @@ def test_product_footprint_default_initialization(company_ids, product_ids, vali
     assert isinstance(product_footprint.id, ProductFootprintId)
 
 
-def test_product_footprint_spec_version(company_ids, product_ids, valid_cpc, version, carbon_footprint):
-    """Tests that a ProductFootprint instance has a specVersion attribute."""
-    product_footprint = ProductFootprint(
-        version=version,
-        created=DateTime.now(),
-        updated=DateTime.now(),
-        status=ProductFootprintStatus.ACTIVE,
-        status_comment="This is a comment",
-        validity_period_start=DateTime.now(),
-        validity_period_end=DateTime.now(),
-        company_name="Company Name",
-        company_ids=company_ids,
-        product_description="Product Description",
-        product_ids=product_ids,
-        product_category_cpc=valid_cpc,
-        product_name_company="Product Name Company",
-        comment="This is a comment",
-        extensions={"key": "value"},
-        pcf=carbon_footprint
-    )
+def test_product_footprint_spec_version(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
     assert product_footprint.spec_version == "2.0.0"
+
+
+def test_product_footprint_invalid_spec_version(valid_product_footprint_data):
+    invalid_product_footprint_data = {**valid_product_footprint_data, "spec_version": "1.0.0"}
+    with pytest.raises(ValueError, match="Invalid spec version"):
+        ProductFootprint(**invalid_product_footprint_data)
 
 
 def test_product_footprint_repr(company_ids, product_ids, valid_cpc, version, carbon_footprint):
@@ -246,3 +245,213 @@ def test_product_footprint_pcf_validation_success(company_ids, product_ids, vali
         pcf=carbon_footprint
     )
     assert isinstance(product_footprint.pcf, CarbonFootprint)
+
+
+@pytest.mark.parametrize("version", [Version(1), Version(2), Version(3)])
+def test_product_footprint_valid_version(valid_product_footprint_data, version):
+    product_footprint_data = {**valid_product_footprint_data, "version": version}
+    product_footprint = ProductFootprint(**product_footprint_data)
+    assert product_footprint.version == version
+
+
+@pytest.mark.parametrize("version", [1, "1", 1.0, datetime.now()])
+def test_product_footprint_invalid_version(valid_product_footprint_data, version):
+    product_footprint_data = {**valid_product_footprint_data, "version": version}
+    with pytest.raises(ValueError, match="version must be an instance of Version"):
+        ProductFootprint(**product_footprint_data)
+
+
+@pytest.mark.parametrize("created", [DateTime.now()])
+def test_product_footprint_valid_created(valid_product_footprint_data, created):
+    product_footprint_data = {**valid_product_footprint_data, "created": created}
+    product_footprint = ProductFootprint(**product_footprint_data)
+    assert product_footprint.created == created
+
+
+@pytest.mark.parametrize("created", [1, "1", 1.0, datetime.now()])
+def test_product_footprint_invalid_created(valid_product_footprint_data, created):
+    product_footprint_data = {**valid_product_footprint_data, "created": created}
+    with pytest.raises(ValueError, match="created must be an instance of DateTime"):
+        ProductFootprint(**product_footprint_data)
+
+
+@pytest.mark.parametrize("updated", [DateTime.now()])
+def test_product_footprint_valid_updated(valid_product_footprint_data, updated):
+    product_footprint_data = {**valid_product_footprint_data, "updated": updated}
+    product_footprint = ProductFootprint(**product_footprint_data)
+    assert product_footprint.updated == updated
+
+
+@pytest.mark.parametrize("updated", ["2022-01-01", datetime.now(), 1643723400, 1.0, None])
+def test_product_footprint_invalid_updated(valid_product_footprint_data, updated):
+    product_footprint_data = {**valid_product_footprint_data, "updated": updated}
+    with pytest.raises(ValueError, match="updated must be an instance of DateTime"):
+        ProductFootprint(**product_footprint_data)
+
+
+@pytest.mark.parametrize("status", [ProductFootprintStatus.ACTIVE, ProductFootprintStatus.DEPRECATED])
+def test_product_footprint_valid_status(valid_product_footprint_data, status):
+    product_footprint_data = {**valid_product_footprint_data, "status": status}
+    product_footprint = ProductFootprint(**product_footprint_data)
+    assert product_footprint.status == status
+
+
+@pytest.mark.parametrize("status", ["Active", "Deprecated",1, 1.0, datetime.now()])
+def test_product_footprint_invalid_status(valid_product_footprint_data, status):
+    product_footprint_data = {**valid_product_footprint_data, "status": status}
+    with pytest.raises(ValueError, match="status must be an instance of ProductFootprintStatus"):
+        ProductFootprint(**product_footprint_data)
+
+
+@pytest.mark.parametrize("status_comment", ["This is a comment", "Another comment"])
+def test_product_footprint_valid_status_comment(valid_product_footprint_data, status_comment):
+    product_footprint_data = {**valid_product_footprint_data, "status_comment": status_comment}
+    product_footprint = ProductFootprint(**product_footprint_data)
+    assert product_footprint.status_comment == status_comment
+
+
+@pytest.mark.parametrize("status_comment", [1, 1.0, datetime.now(), None])
+def test_product_footprint_invalid_status_comment(valid_product_footprint_data, status_comment):
+    product_footprint_data = {**valid_product_footprint_data, "status_comment": status_comment}
+    with pytest.raises(ValueError, match="status_comment must be a string"):
+        ProductFootprint(**product_footprint_data)
+
+
+@pytest.mark.parametrize("validity_period_start", [DateTime.now()])
+def test_product_footprint_valid_validity_period_start(valid_product_footprint_data, validity_period_start):
+    product_footprint_data = {**valid_product_footprint_data, "validity_period_start": validity_period_start}
+    product_footprint = ProductFootprint(**product_footprint_data)
+    assert product_footprint.validity_period_start == validity_period_start
+
+
+@pytest.mark.parametrize("validity_period_start", ["2022-01-01", datetime.now(), 1643723400, 1.0, None])
+def test_product_footprint_invalid_validity_period_start(valid_product_footprint_data, validity_period_start):
+    product_footprint_data = {**valid_product_footprint_data, "validity_period_start": validity_period_start}
+    with pytest.raises(ValueError, match="validity_period_start must be an instance of DateTime"):
+        ProductFootprint(**product_footprint_data)
+
+
+@pytest.mark.parametrize("validity_period_end", [DateTime.now()])
+def test_product_footprint_valid_validity_period_end(valid_product_footprint_data, validity_period_end):
+    product_footprint_data = {**valid_product_footprint_data, "validity_period_end": validity_period_end}
+    product_footprint = ProductFootprint(**product_footprint_data)
+    assert product_footprint.validity_period_end == validity_period_end
+
+
+@pytest.mark.parametrize("validity_period_end", ["2022-01-01", datetime.now(), 1643723400, 1.0, None])
+def test_product_footprint_invalid_validity_period_end(valid_product_footprint_data, validity_period_end):
+    product_footprint_data = {**valid_product_footprint_data, "validity_period_end": validity_period_end}
+    with pytest.raises(ValueError, match="validity_period_end must be an instance of DateTime"):
+        ProductFootprint(**product_footprint_data)
+
+
+@pytest.mark.parametrize("company_name", [123, 1.0, None, [], {}, ""])
+def test_product_footprint_invalid_company_name(valid_product_footprint_data, company_name):
+    invalid_product_footprint_data = {**valid_product_footprint_data, "company_name": company_name}
+    with pytest.raises(ValueError, match="company_name must be a string"):
+        ProductFootprint(**invalid_product_footprint_data)
+
+
+def test_product_footprint_company_name(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+    assert product_footprint.company_name == "Company Name"
+
+
+@pytest.mark.parametrize("product_description", [123, 1.0, None, [], {}, ""])
+def test_product_footprint_invalid_product_description(valid_product_footprint_data, product_description):
+    invalid_product_footprint_data = {**valid_product_footprint_data, "product_description": product_description}
+    with pytest.raises(ValueError, match="product_description must be a string"):
+        ProductFootprint(**invalid_product_footprint_data)
+
+
+def test_product_footprint_product_description(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+    assert product_footprint.product_description == "Product Description"
+
+
+@pytest.mark.parametrize("product_name_company", [123, 1.0, None, [], {}, ""])
+def test_product_footprint_invalid_product_name_company(valid_product_footprint_data, product_name_company):
+    invalid_product_footprint_data = {**valid_product_footprint_data, "product_name_company": product_name_company}
+    with pytest.raises(ValueError, match="product_name_company must be a string"):
+        ProductFootprint(**invalid_product_footprint_data)
+
+
+def test_product_footprint_product_name_company(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+    assert product_footprint.product_name_company == "Product Name Company"
+
+@pytest.mark.parametrize("company_ids", [
+    [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")],  # list with a single item
+    [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp"), CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp2")],  # list with multiple items
+])
+def test_product_footprint_company_ids(valid_product_footprint_data, company_ids):
+    product_footprint_data = {**valid_product_footprint_data, "company_ids": company_ids}
+    product_footprint = ProductFootprint(**product_footprint_data)
+    assert len(product_footprint.company_ids) == len(company_ids)
+    for company_id in product_footprint.company_ids:
+        assert isinstance(company_id, CompanyId)
+
+
+@pytest.mark.parametrize("company_ids", [123, 1.0, None, "string", {}, CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")])
+def test_product_footprint_invalid_company_ids(valid_product_footprint_data, company_ids):
+    invalid_product_footprint_data = {**valid_product_footprint_data, "company_ids": company_ids}
+    with pytest.raises(ValueError, match="company_ids must be a list of CompanyId"):
+        ProductFootprint(**invalid_product_footprint_data)
+
+
+@pytest.mark.parametrize("product_ids", [
+    [ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product")],  # list with a single item
+    [ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product"), ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product2")],  # list with multiple items
+])
+def test_product_footprint_product_ids(valid_product_footprint_data, product_ids):
+    product_footprint_data = {**valid_product_footprint_data, "product_ids": product_ids}
+    product_footprint = ProductFootprint(**product_footprint_data)
+    assert len(product_footprint.product_ids) == len(product_ids)
+    for product_id in product_footprint.product_ids:
+        assert isinstance(product_id, ProductId)
+
+
+@pytest.mark.parametrize("product_ids", [123, 1.0, None, "string", {}, ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product")])
+def test_product_footprint_invalid_product_ids(valid_product_footprint_data, product_ids):
+    invalid_product_footprint_data = {**valid_product_footprint_data, "product_ids": product_ids}
+    with pytest.raises(ValueError, match="product_ids must be a list of ProductId"):
+        ProductFootprint(**invalid_product_footprint_data)
+
+
+@pytest.mark.parametrize("company_ids", [
+    ["string"],  # list with a single invalid item
+    [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp"), "string"],  # list with a mix of valid and invalid items
+    [1, 2, 3],  # list with invalid items of a different type
+    [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp"), CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp"), "string"],  # list with multiple valid items and an invalid item
+])
+def test_product_footprint_invalid_company_ids_list(valid_product_footprint_data, company_ids):
+    invalid_product_footprint_data = {**valid_product_footprint_data, "company_ids": company_ids}
+    with pytest.raises(ValueError, match="company_ids must be a list of CompanyId"):
+        ProductFootprint(**invalid_product_footprint_data)
+
+
+@pytest.mark.parametrize("product_ids", [
+    ["string"],  # list with a single invalid item
+    [ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product"), "string"],  # list with a mix of valid and invalid items
+    [1, 2, 3],  # list with invalid items of a different type
+    [ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product"), ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product"), "string"],  # list with multiple valid items and an invalid item
+])
+def test_product_footprint_invalid_product_ids_list(valid_product_footprint_data, product_ids):
+    invalid_product_footprint_data = {**valid_product_footprint_data, "product_ids": product_ids}
+    with pytest.raises(ValueError, match="product_ids must be a list of ProductId"):
+        ProductFootprint(**invalid_product_footprint_data)
+
+
+@pytest.mark.xfail(reason="Functionality not implemented yet")
+def test_product_footprint_duplicate_company_ids(valid_product_footprint_data):
+    company_ids = [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp"), CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")]
+    product_footprint_data = {**valid_product_footprint_data, "company_ids": company_ids}
+    with pytest.raises(ValueError, match="Duplicate company_ids are not allowed"):
+        ProductFootprint(**product_footprint_data)
+
+@pytest.mark.xfail(reason="Functionality not implemented yet")
+def test_product_footprint_duplicate_product_ids(valid_product_footprint_data):
+    product_ids = [ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product"), ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product")]
+    product_footprint_data = {**valid_product_footprint_data, "product_ids": product_ids}
+    with pytest.raises(ValueError, match="Duplicate product_ids are not allowed"):
+        ProductFootprint(**product_footprint_data)
