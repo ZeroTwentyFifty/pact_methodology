@@ -97,27 +97,21 @@ def test_carbon_footprint_attributes(valid_carbon_footprint_data):
 
 
 def test_carbon_footprint_invalid_declared_unit(valid_carbon_footprint_data):
-    invalid_data = valid_carbon_footprint_data.copy()
-    invalid_data["declared_unit"] = "invalid unit"
-    with pytest.raises(ValueError) as excinfo:
+    invalid_data = {**valid_carbon_footprint_data, "declared_unit": "invalid unit"}
+    with pytest.raises(ValueError, match="declared_unit 'invalid unit' is not valid. It must be one of the following: liter, kilogram, cubic meter, kilowatt hour, megajoule, ton kilometer, square meter"):
         CarbonFootprint(**invalid_data)
-    assert str(excinfo.value) == "declared_unit 'invalid unit' is not valid. It must be one of the following: liter, kilogram, cubic meter, kilowatt hour, megajoule, ton kilometer, square meter"
 
 
 def test_carbon_footprint_invalid_unitary_product_amount(valid_carbon_footprint_data):
-    invalid_data = valid_carbon_footprint_data.copy()
-    invalid_data["unitary_product_amount"] = 0.0
-    with pytest.raises(ValueError) as excinfo:
+    invalid_data = {**valid_carbon_footprint_data, "unitary_product_amount": 0.0}
+    with pytest.raises(ValueError, match="unitary_product_amount must be strictly greater than 0"):
         CarbonFootprint(**invalid_data)
-    assert str(excinfo.value) == "unitary_product_amount must be strictly greater than 0"
 
 
 def test_carbon_footprint_invalid_p_cf_excluding_biogenic(valid_carbon_footprint_data):
-    invalid_data = valid_carbon_footprint_data.copy()
-    invalid_data["p_cf_excluding_biogenic"] = -0.5
-    with pytest.raises(ValueError) as excinfo:
+    invalid_data = {**valid_carbon_footprint_data, "p_cf_excluding_biogenic": -0.5}
+    with pytest.raises(ValueError, match="p_cf_excluding_biogenic must be equal to or greater than 0"):
         CarbonFootprint(**invalid_data)
-    assert str(excinfo.value) == "p_cf_excluding_biogenic must be equal to or greater than 0"
 
 
 def test_carbon_footprint_invalid_fossil_ghg_emissions(valid_carbon_footprint_data):
