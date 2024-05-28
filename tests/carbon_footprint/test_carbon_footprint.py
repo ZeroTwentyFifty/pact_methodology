@@ -1,5 +1,8 @@
 import pytest
 
+from pathfinder_framework.assurance.assurance import (
+    Assurance, Coverage, Level, Boundary
+)
 from pathfinder_framework.carbon_footprint.carbon_footprint import CarbonFootprint
 from pathfinder_framework.carbon_footprint.characterization_factors import CharacterizationFactors
 from pathfinder_framework.carbon_footprint.cross_sectoral_standard import CrossSectoralStandard
@@ -40,7 +43,17 @@ def valid_carbon_footprint_data():
         "aircraft_ghg_emissions": 1.0,
         "packaging_ghg_emissions": 1.0,
         "allocation_rules_description": "Example allocation rules description",
-        "uncertainty_assessment_description": "Example uncertainty assessment description"
+        "uncertainty_assessment_description": "Example uncertainty assessment description",
+        "assurance": Assurance(
+            assurance=True,
+            provider_name="Example provider name",
+            coverage=Coverage.PCF_SYSTEM,
+            level=Level.REASONABLE,
+            boundary=Boundary.GATE_TO_GATE,
+            completed_at=DateTime.now(),
+            standard_name="Example standard name",
+            comments="Example comments",
+        )
     }
 
 
@@ -80,6 +93,8 @@ def test_carbon_footprint_attributes(valid_carbon_footprint_data):
     assert carbon_footprint.packaging_ghg_emissions == valid_carbon_footprint_data["packaging_ghg_emissions"]
     assert carbon_footprint.allocation_rules_description == valid_carbon_footprint_data["allocation_rules_description"]
     assert carbon_footprint.uncertainty_assessment_description == valid_carbon_footprint_data["uncertainty_assessment_description"]
+    assert isinstance(carbon_footprint.assurance, Assurance)
+
 
 def test_carbon_footprint_invalid_declared_unit(valid_carbon_footprint_data):
     invalid_data = valid_carbon_footprint_data.copy()
@@ -404,12 +419,40 @@ def test_carbon_footprint_valid_uncertainty_assessment_description(valid_carbon_
     valid_data["uncertainty_assessment_description"] = uncertainty_assessment_description
     CarbonFootprint(**valid_data)
 
+
 @pytest.mark.parametrize("uncertainty_assessment_description, expected_error", [
     (1, "uncertainty_assessment_description must be a string"),
 ])
 def test_carbon_footprint_invalid_uncertainty_assessment_description(valid_carbon_footprint_data, uncertainty_assessment_description, expected_error):
     invalid_data = valid_carbon_footprint_data.copy()
     invalid_data["uncertainty_assessment_description"] = uncertainty_assessment_description
+    with pytest.raises(ValueError) as excinfo:
+        CarbonFootprint(**invalid_data)
+    assert str(excinfo.value) == expected_error
+
+
+@pytest.mark.parametrize("assurance", [None, Assurance(
+    assurance=True,
+    provider_name="Example provider name",
+    coverage=Coverage.PCF_SYSTEM,
+    level=Level.REASONABLE,
+    boundary=Boundary.GATE_TO_GATE,
+    completed_at=DateTime.now(),
+    standard_name="Example standard name",
+    comments="Example comments",
+)])
+def test_carbon_footprint_valid_assurance(valid_carbon_footprint_data, assurance):
+    valid_data = valid_carbon_footprint_data.copy()
+    valid_data["assurance"] = assurance
+    CarbonFootprint(**valid_data)
+
+
+@pytest.mark.parametrize("assurance, expected_error", [
+    (1, "assurance must be an instance of Assurance"),
+])
+def test_carbon_footprint_invalid_assurance(valid_carbon_footprint_data, assurance, expected_error):
+    invalid_data = valid_carbon_footprint_data.copy()
+    invalid_data["assurance"] = assurance
     with pytest.raises(ValueError) as excinfo:
         CarbonFootprint(**invalid_data)
     assert str(excinfo.value) == expected_error

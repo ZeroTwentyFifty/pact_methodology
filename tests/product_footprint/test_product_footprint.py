@@ -3,6 +3,9 @@ import pytest
 from datetime import datetime
 
 from pathfinder_framework.carbon_footprint.carbon_footprint import CarbonFootprint
+from pathfinder_framework.assurance.assurance import (
+    Assurance, Coverage, Level, Boundary
+)
 from pathfinder_framework.product_footprint.id import ProductFootprintId
 from pathfinder_framework.product_footprint.product_footprint import ProductFootprint
 from pathfinder_framework.product_footprint.status import ProductFootprintStatus
@@ -10,7 +13,6 @@ from pathfinder_framework.urn import CompanyId, ProductId
 from pathfinder_framework.product_footprint.cpc import CPCCodeLookup, CPC
 from pathfinder_framework.product_footprint.version import Version
 from pathfinder_framework.datetime import DateTime
-from pathfinder_framework.carbon_footprint.carbon_footprint import CarbonFootprint
 from pathfinder_framework.carbon_footprint.characterization_factors import CharacterizationFactors
 from pathfinder_framework.carbon_footprint.cross_sectoral_standard import CrossSectoralStandard
 from pathfinder_framework.carbon_footprint.declared_unit import DeclaredUnit
@@ -72,7 +74,17 @@ def valid_carbon_footprint_data():
         "aircraft_ghg_emissions": 1.0,
         "packaging_ghg_emissions": 1.0,
         "allocation_rules_description": "Example allocation rules description",
-        "uncertainty_assessment_description": "Example uncertainty assessment description"
+        "uncertainty_assessment_description": "Example uncertainty assessment description",
+        "assurance": Assurance(
+            assurance=True,
+            provider_name="Example provider name",
+            coverage=Coverage.PCF_SYSTEM,
+            level=Level.REASONABLE,
+            boundary=Boundary.GATE_TO_GATE,
+            completed_at=DateTime.now(),
+            standard_name="Example standard name",
+            comments="Example comments",
+        )
     }
 
 
