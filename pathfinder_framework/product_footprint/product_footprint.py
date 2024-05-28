@@ -35,7 +35,12 @@ class ProductFootprint:
         pcf (CarbonFootprint): The carbon footprint of the given product with value conforming to the data type CarbonFootprint.
     """
 
-    def __init__(self, *, id: ProductFootprintId | None = None, spec_version: str = "2.0.0", version: Version, created: DateTime, updated: DateTime, status: ProductFootprintStatus, status_comment: str, validity_period_start: DateTime, validity_period_end: DateTime, company_name: str, company_ids: list[CompanyId], product_description: str, product_ids: list[ProductId], product_category_cpc: CPC, product_name_company: str, comment: str, extensions: dict, pcf: CarbonFootprint):
+    def __init__(self, *, id: ProductFootprintId | None = None, spec_version: str = "2.0.0", version: Version,
+                 created: DateTime, updated: DateTime, status: ProductFootprintStatus, status_comment: str,
+                 validity_period_start: DateTime, validity_period_end: DateTime, company_name: str,
+                 company_ids: list[CompanyId], product_description: str, product_ids: list[ProductId],
+                 product_category_cpc: CPC, product_name_company: str, comment: str, extensions: dict,
+                 pcf: CarbonFootprint):
         """
         Initializes a new ProductFootprint instance.
 
