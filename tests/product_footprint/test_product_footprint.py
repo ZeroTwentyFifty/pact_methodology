@@ -455,3 +455,50 @@ def test_product_footprint_duplicate_product_ids(valid_product_footprint_data):
     product_footprint_data = {**valid_product_footprint_data, "product_ids": product_ids}
     with pytest.raises(ValueError, match="Duplicate product_ids are not allowed"):
         ProductFootprint(**product_footprint_data)
+
+def test_product_footprint_product_category_cpc(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+    assert isinstance(product_footprint.product_category_cpc, CPC)
+
+
+@pytest.mark.parametrize("product_category_cpc", [123, 1.0, None, "string", {}, []])
+def test_product_footprint_invalid_product_category_cpc(valid_product_footprint_data, product_category_cpc):
+    invalid_product_footprint_data = {**valid_product_footprint_data, "product_category_cpc": product_category_cpc}
+    with pytest.raises(ValueError, match="product_category_cpc must be an instance of CPC"):
+        ProductFootprint(**invalid_product_footprint_data)
+
+
+def test_product_footprint_comment(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+    assert isinstance(product_footprint.comment, str)
+
+
+@pytest.mark.parametrize("comment", [123, 1.0, None, {}, []])
+def test_product_footprint_invalid_comment(valid_product_footprint_data, comment):
+    invalid_product_footprint_data = {**valid_product_footprint_data, "comment": comment}
+    with pytest.raises(ValueError, match="comment must be a string"):
+        ProductFootprint(**invalid_product_footprint_data)
+
+
+def test_product_footprint_extensions(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+    assert isinstance(product_footprint.extensions, dict)
+
+
+@pytest.mark.parametrize("extensions", [123, 1.0, None, "string", []])
+def test_product_footprint_invalid_extensions(valid_product_footprint_data, extensions):
+    invalid_product_footprint_data = {**valid_product_footprint_data, "extensions": extensions}
+    with pytest.raises(ValueError, match="extensions must be a dictionary"):
+        ProductFootprint(**invalid_product_footprint_data)
+
+
+def test_product_footprint_pcf(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+    assert isinstance(product_footprint.pcf, CarbonFootprint)
+
+
+@pytest.mark.parametrize("pcf", [123, 1.0, None, "string", {}, []])
+def test_product_footprint_invalid_pcf(valid_product_footprint_data, pcf):
+    invalid_product_footprint_data = {**valid_product_footprint_data, "pcf": pcf}
+    with pytest.raises(ValueError, match="pcf must be an instance of CarbonFootprint"):
+        ProductFootprint(**invalid_product_footprint_data)

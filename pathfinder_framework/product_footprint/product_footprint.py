@@ -101,6 +101,8 @@ class ProductFootprint:
             raise ValueError("comment must be a string")
         if not isinstance(extensions, dict):
             raise ValueError("extensions must be a dictionary")
+        if not isinstance(pcf, CarbonFootprint):
+            raise ValueError("pcf must be an instance of CarbonFootprint")
 
         self.id = id if id else ProductFootprintId()
         self.spec_version = spec_version
