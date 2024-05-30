@@ -348,7 +348,7 @@ def test_product_footprint_invalid_validity_period_end(valid_product_footprint_d
 @pytest.mark.parametrize("company_name", [123, 1.0, None, [], {}, ""])
 def test_product_footprint_invalid_company_name(valid_product_footprint_data, company_name):
     invalid_product_footprint_data = {**valid_product_footprint_data, "company_name": company_name}
-    with pytest.raises(ValueError, match="company_name must be a string"):
+    with pytest.raises(ValueError, match="company_name must be a non-empty string"):
         ProductFootprint(**invalid_product_footprint_data)
 
 
@@ -360,7 +360,7 @@ def test_product_footprint_company_name(valid_product_footprint_data):
 @pytest.mark.parametrize("product_description", [123, 1.0, None, [], {}, ""])
 def test_product_footprint_invalid_product_description(valid_product_footprint_data, product_description):
     invalid_product_footprint_data = {**valid_product_footprint_data, "product_description": product_description}
-    with pytest.raises(ValueError, match="product_description must be a string"):
+    with pytest.raises(ValueError, match="product_description must be a non-empty string"):
         ProductFootprint(**invalid_product_footprint_data)
 
 
@@ -372,7 +372,7 @@ def test_product_footprint_product_description(valid_product_footprint_data):
 @pytest.mark.parametrize("product_name_company", [123, 1.0, None, [], {}, ""])
 def test_product_footprint_invalid_product_name_company(valid_product_footprint_data, product_name_company):
     invalid_product_footprint_data = {**valid_product_footprint_data, "product_name_company": product_name_company}
-    with pytest.raises(ValueError, match="product_name_company must be a string"):
+    with pytest.raises(ValueError, match="product_name_company must be a non-empty string"):
         ProductFootprint(**invalid_product_footprint_data)
 
 
