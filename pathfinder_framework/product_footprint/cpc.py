@@ -30,6 +30,11 @@ class CPC:
         self.class_ = code[:4]
         self.subclass = code[:5]
 
+    def __eq__(self, other):
+        if not isinstance(other, CPC):
+            return False
+        return self.code == other.code
+
 
 class CPCCodeLookup:
     """A lookup table for CPC codes.
