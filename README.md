@@ -1,7 +1,7 @@
 # pathfinder_framework
 
 [![Documentation Status](https://readthedocs.org/projects/pathfinder-framework/badge/?version=latest)](https://pathfinder-framework.readthedocs.io/en/latest/?badge=latest)
-
+![CI/CD](https://github.com/ZeroTwentyFifty/pathfinder_framework/actions/workflows/app.yml/badge.svg)
 
 A Python implementation of the WBCSD PACT Pathfinder Framework, designed to streamline the calculation and reporting of product carbon footprints (PCFs).
 
