@@ -87,3 +87,16 @@ def test_valid_product_ids(product_id):
 def test_invalid_product_ids(product_id):
     with pytest.raises(ValueError):
         ProductId(value=product_id)
+
+def test_company_id_hash():
+    company_id = CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+    assert hash(company_id) == hash("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+
+
+def test_company_id_hash_multiple():
+    company_id1 = CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+    company_id2 = CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+    company_id3 = CompanyId("urn:pathfinder:company:customcode:buyer-assigned:other-corp")
+
+    assert hash(company_id1) == hash(company_id2)
+    assert hash(company_id1) != hash(company_id3)

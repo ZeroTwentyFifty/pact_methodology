@@ -28,6 +28,11 @@ class URN:
     def __hash__(self):
         return hash(self.value)
 
+    def __eq__(self, other):
+        if not isinstance(other, URN):
+            return False
+        return self.value == other.value
+
 
 class CompanyId(URN):
     BUYER_ASSIGNED_PATTERN = re.compile(r"^urn:pathfinder:company:customcode:buyer-assigned:[a-zA-Z0-9-]+$")
@@ -40,18 +45,12 @@ class CompanyId(URN):
                 self.VENDOR_ASSIGNED_PATTERN.match(self.value)):
             raise ValueError("CompanyId does not conform to the required format")
 
-    def __hash__(self):
-        return hash(self.value)
-
 
 class ProductId(URN):
     BUYER_ASSIGNED_PATTERN = re.compile(r"^urn:pathfinder:product:customcode:buyer-assigned:[a-zA-Z0-9-]+$")
     VENDOR_ASSIGNED_PATTERN = re.compile(r"^urn:pathfinder:product:customcode:vendor-assigned:[a-zA-Z0-9-]+$")
     CAS_PATTERN = re.compile(r"^urn:pathfinder:product:id:cas:\b\d{2,7}-\d{2}-\d\b$")
     IUPAC_INCHI_PATTERN = re.compile(r"^urn:pathfinder:product:id:iupac-inchi:.*$")
-
-    def __hash__(self):
-        return hash(self.value)
 
     def _validate(self):
         super()._validate()
