@@ -1,3 +1,4 @@
+from pathfinder_framework.exceptions import DuplicateIdError
 from pathfinder_framework.urn import ProductId
 
 
@@ -27,7 +28,7 @@ class ProductIdList:
         if not isinstance(product_ids, list) or not all(isinstance(product_id, ProductId) for product_id in product_ids):
             raise ValueError("product_ids must be a list of ProductId")
         if len(set(product_ids)) != len(product_ids):
-            raise ValueError("Duplicate product_ids are not allowed")
+            raise DuplicateIdError("Duplicate product_ids are not allowed")
         self.product_ids = product_ids
 
     def __iter__(self):
@@ -98,7 +99,7 @@ class ProductIdList:
         if not isinstance(product_id, ProductId):
             raise ValueError("product_id must be an instance of ProductId")
         if product_id in self.product_ids:
-            raise ValueError("Duplicate product_ids are not allowed")
+            raise DuplicateIdError("Duplicate product_ids are not allowed")
         self.product_ids.append(product_id)
 
     def insert(self, index, product_id):
@@ -116,7 +117,7 @@ class ProductIdList:
         if not isinstance(product_id, ProductId):
             raise ValueError("product_id must be an instance of ProductId")
         if product_id in self.product_ids:
-            raise ValueError("Duplicate product_ids are not allowed")
+            raise DuplicateIdError("Duplicate product_ids are not allowed")
         self.product_ids.insert(index, product_id)
 
     def remove(self, product_id):

@@ -1,5 +1,6 @@
 import pytest
 
+from pathfinder_framework.exceptions import DuplicateIdError
 from pathfinder_framework.urn import CompanyId
 from pathfinder_framework.product_footprint.company_id_list import CompanyIdList
 
@@ -30,8 +31,19 @@ def test_company_id_list_invalid_company_ids_list(company_ids):
         CompanyIdList(company_ids)
 
 
-@pytest.mark.xfail(reason="Functionality not implemented yet")
 def test_company_id_list_duplicate_company_ids():
     company_ids = [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp"), CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")]
-    with pytest.raises(ValueError, match="Duplicate company_ids are not allowed"):
+    with pytest.raises(DuplicateIdError, match="Duplicate company_ids are not allowed"):
         CompanyIdList(company_ids)
+
+def test_company_id_list_append_duplicate_company_id():
+    company_ids = [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")]
+    company_id_list = CompanyIdList(company_ids)
+    with pytest.raises(DuplicateIdError, match="Duplicate company_ids are not allowed"):
+        company_id_list.append(company_ids[0])
+
+def test_company_id_list_insert_duplicate_company_id():
+    company_ids = [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")]
+    company_id_list = CompanyIdList(company_ids)
+    with pytest.raises(DuplicateIdError, match="Duplicate company_ids are not allowed"):
+        company_id_list.insert(0, company_ids[0])

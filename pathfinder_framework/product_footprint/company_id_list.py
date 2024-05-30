@@ -1,4 +1,5 @@
 from pathfinder_framework.urn import CompanyId
+from pathfinder_framework.exceptions import DuplicateIdError
 
 
 class CompanyIdList:
@@ -27,7 +28,7 @@ class CompanyIdList:
         if not isinstance(company_ids, list) or not all(isinstance(company_id, CompanyId) for company_id in company_ids):
             raise ValueError("company_ids must be a list of CompanyId")
         if len(set(company_ids)) != len(company_ids):
-            raise ValueError("Duplicate company_ids are not allowed")
+            raise DuplicateIdError("Duplicate company_ids are not allowed")
         self.company_ids = company_ids
 
     def __iter__(self):
@@ -98,7 +99,7 @@ class CompanyIdList:
         if not isinstance(company_id, CompanyId):
             raise ValueError("company_id must be an instance of CompanyId")
         if company_id in self.company_ids:
-            raise ValueError("Duplicate company_ids are not allowed")
+            raise DuplicateIdError("Duplicate company_ids are not allowed")
         self.company_ids.append(company_id)
 
     def insert(self, index, company_id):
@@ -116,7 +117,7 @@ class CompanyIdList:
         if not isinstance(company_id, CompanyId):
             raise ValueError("company_id must be an instance of CompanyId")
         if company_id in self.company_ids:
-            raise ValueError("Duplicate company_ids are not allowed")
+            raise DuplicateIdError("Duplicate company_ids are not allowed")
         self.company_ids.insert(index, company_id)
 
     def remove(self, company_id):
