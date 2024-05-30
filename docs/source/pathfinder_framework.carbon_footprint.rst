@@ -12,6 +12,14 @@ pathfinder\_framework.carbon\_footprint.biogenic\_accounting\_methodology module
    :undoc-members:
    :show-inheritance:
 
+pathfinder\_framework.carbon\_footprint.carbon\_footprint module
+----------------------------------------------------------------
+
+.. automodule:: pathfinder_framework.carbon_footprint.carbon_footprint
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 pathfinder\_framework.carbon\_footprint.characterization\_factors module
 ------------------------------------------------------------------------
 
@@ -48,6 +56,14 @@ pathfinder\_framework.carbon\_footprint.product\_or\_sector\_specific\_rule\_ope
 --------------------------------------------------------------------------------------------
 
 .. automodule:: pathfinder_framework.carbon_footprint.product_or_sector_specific_rule_operator
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+pathfinder\_framework.carbon\_footprint.reference\_period module
+----------------------------------------------------------------
+
+.. automodule:: pathfinder_framework.carbon_footprint.reference_period
    :members:
    :undoc-members:
    :show-inheritance:
