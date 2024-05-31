@@ -23,7 +23,7 @@ from pathfinder_framework.carbon_footprint.geographical_scope import (
 )
 from pathfinder_framework.data_quality_indicators.data_quality_indicators import DataQualityIndicators
 from pathfinder_framework.product_footprint.validity_period import ValidityPeriod
-
+from pathfinder_framework.data_model_extension.data_model_extension import DataModelExtension
 
 @pytest.fixture(scope="module")
 def company_ids() -> list[CompanyId]:
@@ -104,6 +104,7 @@ def valid_product_footprint_data(valid_carbon_footprint_data):
     version = Version(1)
 
     validity_period = ValidityPeriod(DateTime.now(), DateTime.now())
+    extensions = [DataModelExtension(spec_version="2.0.0", data_schema="https://example.com/schema", data={"key": "value"})]
 
     return {
         "id": ProductFootprintId(),
@@ -120,7 +121,7 @@ def valid_product_footprint_data(valid_carbon_footprint_data):
         "product_category_cpc": valid_cpc,
         "product_name_company": "Product Name Company",
         "comment": "This is a comment",
-        "extensions": {"key": "value"},
+        "extensions": extensions,
         "pcf": CarbonFootprint(**valid_carbon_footprint_data)
     }
 
@@ -142,7 +143,8 @@ def test_product_footprint_initialization(valid_product_footprint_data):
     assert product_footprint.product_category_cpc == CPCCodeLookup().lookup('0111')
     assert product_footprint.product_name_company == "Product Name Company"
     assert product_footprint.comment == "This is a comment"
-    assert product_footprint.extensions == {"key": "value"}
+    assert isinstance(product_footprint.extensions, list)
+    assert all(isinstance(ext, DataModelExtension) for ext in product_footprint.extensions)
     assert isinstance(product_footprint.pcf, CarbonFootprint)
 
 
@@ -399,13 +401,14 @@ def test_product_footprint_invalid_comment(valid_product_footprint_data, comment
 
 def test_product_footprint_extensions(valid_product_footprint_data):
     product_footprint = ProductFootprint(**valid_product_footprint_data)
-    assert isinstance(product_footprint.extensions, dict)
+    assert isinstance(product_footprint.extensions, list)
+    assert all(isinstance(ext, DataModelExtension) for ext in product_footprint.extensions)
 
 
-@pytest.mark.parametrize("extensions", [123, 1.0, None, "string", []])
+@pytest.mark.parametrize("extensions", [123, 1.0, None, "string", {}])
 def test_product_footprint_invalid_extensions(valid_product_footprint_data, extensions):
     invalid_product_footprint_data = {**valid_product_footprint_data, "extensions": extensions}
-    with pytest.raises(ValueError, match="extensions must be a dictionary"):
+    with pytest.raises(ValueError, match="extensions must be a list of DataModelExtension objects"):
         ProductFootprint(**invalid_product_footprint_data)
 
 

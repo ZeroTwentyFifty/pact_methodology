@@ -66,3 +66,29 @@ class DataModelExtension:
         self.data_schema = data_schema
         self.data = data
         self.documentation = documentation
+
+    def __eq__(self, other):
+        """
+        Returns True if the other object is a DataModelExtension with the same attributes.
+
+        Args:
+            other (object): The object to compare with.
+
+        Returns:
+            bool: True if the objects are equal, False otherwise.
+        """
+        if not isinstance(other, DataModelExtension):
+            return False
+        return (self.spec_version == other.spec_version and
+                self.data_schema == other.data_schema and
+                self.data == other.data and
+                self.documentation == other.documentation)
+
+    def __repr__(self):
+        """
+        Returns a string representation of the DataModelExtension object.
+
+        Returns:
+            str: A string representation of the DataModelExtension object.
+        """
+        return f"DataModelExtension(spec_version={self.spec_version}, data_schema={self.data_schema}, data={self.data}, documentation={self.documentation})"
