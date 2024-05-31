@@ -80,3 +80,25 @@ def test_data_model_extension_init_invalid_documentation_netloc(valid_data_model
     invalid_data = {**valid_data_model_extension, "documentation": "https:///shipment/1.0.0/documentation.html"}
     with pytest.raises(ValueError, match="Invalid documentation URL"):
         DataModelExtension(**invalid_data)
+
+
+def test_data_model_extension_eq(valid_data_model_extension):
+    data_model_extension1 = DataModelExtension(**valid_data_model_extension)
+    data_model_extension2 = DataModelExtension(**valid_data_model_extension)
+    assert data_model_extension1 == data_model_extension2
+
+
+def test_data_model_extension_neq(valid_data_model_extension):
+    data_model_extension1 = DataModelExtension(**valid_data_model_extension)
+    data_model_extension2 = DataModelExtension(
+        **{
+            **valid_data_model_extension,
+            "data_schema": "https://zerotwentyfifty.com/extension/1.0.0/schema.json"
+        })
+    assert data_model_extension1 != data_model_extension2
+
+
+def test_data_model_extension_repr(valid_data_model_extension):
+    data_model_extension = DataModelExtension(**valid_data_model_extension)
+    expected_repr = f"DataModelExtension(spec_version={data_model_extension.spec_version}, data_schema={data_model_extension.data_schema}, data={data_model_extension.data}, documentation={data_model_extension.documentation})"
+    assert repr(data_model_extension) == expected_repr

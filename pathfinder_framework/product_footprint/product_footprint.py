@@ -8,6 +8,7 @@ from pathfinder_framework.product_footprint.cpc import CPC
 from pathfinder_framework.product_footprint.version import Version
 from pathfinder_framework.datetime import DateTime
 from pathfinder_framework.product_footprint.validity_period import ValidityPeriod
+from pathfinder_framework.data_model_extension.data_model_extension import DataModelExtension
 
 
 class ProductFootprint:
@@ -31,7 +32,7 @@ class ProductFootprint:
         product_category_cpc (str): The category of the product according to the CPC (Central Product Classification) system.
         product_name_company (str): The name of the product as used by the company.
         comment (str): A comment about the ProductFootprint.
-        extensions (dict): A dictionary of additional metadata about the ProductFootprint.
+        extensions (list[DataModelExtension]): A list of DataModelExtension objects.
         pcf (CarbonFootprint): The carbon footprint of the given product with value conforming to the data type CarbonFootprint.
     """
 
@@ -39,7 +40,7 @@ class ProductFootprint:
                  created: DateTime, updated: DateTime, status: ProductFootprintStatus, status_comment: str,
                  validity_period: ValidityPeriod, company_name: str, company_ids: list[CompanyId],
                  product_description: str, product_ids: list[ProductId], product_category_cpc: CPC,
-                 product_name_company: str, comment: str, extensions: dict, pcf: CarbonFootprint):
+                 product_name_company: str, comment: str, extensions: list[DataModelExtension], pcf: CarbonFootprint):
         """
         Initializes a new ProductFootprint instance.
 
@@ -59,7 +60,7 @@ class ProductFootprint:
             product_category_cpc (str): The category of the product according to the CPC (Central Product Classification) system.
             product_name_company (str): The name of the product as used by the company.
             comment (str): A comment about the ProductFootprint.
-            extensions (dict): A dictionary of additional metadata about the ProductFootprint.
+            extensions (list[DataModelExtension]): A list of DataModelExtension objects.
             pcf (CarbonFootprint): The carbon footprint of the given product with value conforming to the data type CarbonFootprint.
         """
 
@@ -95,8 +96,8 @@ class ProductFootprint:
             raise ValueError("product_name_company must be a non-empty string")
         if not isinstance(comment, str):
             raise ValueError("comment must be a string")
-        if not isinstance(extensions, dict):
-            raise ValueError("extensions must be a dictionary")
+        if not isinstance(extensions, list) or not all(isinstance(ext, DataModelExtension) for ext in extensions):
+            raise ValueError("extensions must be a list of DataModelExtension objects")
         if not isinstance(pcf, CarbonFootprint):
             raise ValueError("pcf must be an instance of CarbonFootprint")
 
