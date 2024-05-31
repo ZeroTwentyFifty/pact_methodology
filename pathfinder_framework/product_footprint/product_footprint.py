@@ -7,6 +7,7 @@ from pathfinder_framework.urn import CompanyId, ProductId
 from pathfinder_framework.product_footprint.cpc import CPC
 from pathfinder_framework.product_footprint.version import Version
 from pathfinder_framework.datetime import DateTime
+from pathfinder_framework.product_footprint.validity_period import ValidityPeriod
 
 
 class ProductFootprint:
@@ -22,8 +23,7 @@ class ProductFootprint:
         updated (DateTime): The date and time when the ProductFootprint was last updated.
         status (ProductFootprintStatus): The status of the ProductFootprint.
         status_comment (str): A comment describing the status of the ProductFootprint.
-        validity_period_start (DateTime): The start date of the validity period for the ProductFootprint.
-        validity_period_end (DateTime): The end date of the validity period for the ProductFootprint.
+        validity_period (ValidityPeriod): The validity period for the ProductFootprint.
         company_name (str): The name of the company that owns the ProductFootprint.
         company_ids (list[CompanyId]): A list of CompanyIds for the company that owns the ProductFootprint.
         product_description (str): A description of the product.
@@ -37,10 +37,9 @@ class ProductFootprint:
 
     def __init__(self, *, id: ProductFootprintId | None = None, spec_version: str = "2.0.0", version: Version,
                  created: DateTime, updated: DateTime, status: ProductFootprintStatus, status_comment: str,
-                 validity_period_start: DateTime, validity_period_end: DateTime, company_name: str,
-                 company_ids: list[CompanyId], product_description: str, product_ids: list[ProductId],
-                 product_category_cpc: CPC, product_name_company: str, comment: str, extensions: dict,
-                 pcf: CarbonFootprint):
+                 validity_period: ValidityPeriod, company_name: str, company_ids: list[CompanyId],
+                 product_description: str, product_ids: list[ProductId], product_category_cpc: CPC,
+                 product_name_company: str, comment: str, extensions: dict, pcf: CarbonFootprint):
         """
         Initializes a new ProductFootprint instance.
 
@@ -52,8 +51,7 @@ class ProductFootprint:
             updated (DateTime): The date and time when the ProductFootprint was last updated.
             status (ProductFootprintStatus): The status of the ProductFootprint.
             status_comment (str): A comment describing the status of the ProductFootprint.
-            validity_period_start (DateTime): The start date of the validity period for the ProductFootprint.
-            validity_period_end (DateTime): The end date of the validity period for the ProductFootprint.
+            validity_period (ValidityPeriod): The validity period for the ProductFootprint.
             company_name (str): The name of the company that owns the ProductFootprint.
             company_ids (list[CompanyId]): A list of CompanyIds for the company that owns the ProductFootprint.
             product_description (str): A description of the product.
@@ -81,10 +79,8 @@ class ProductFootprint:
             raise ValueError("status must be an instance of ProductFootprintStatus")
         if not isinstance(status_comment, str):
             raise ValueError("status_comment must be a string")
-        if not isinstance(validity_period_start, DateTime):
-            raise ValueError("validity_period_start must be an instance of DateTime")
-        if not isinstance(validity_period_end, DateTime):
-            raise ValueError("validity_period_end must be an instance of DateTime")
+        if not isinstance(validity_period, ValidityPeriod):
+            raise ValueError("validity_period must be an instance of ValidityPeriod")
         if not isinstance(company_name, str) or not company_name:
             raise ValueError("company_name must be a non-empty string")
         if not isinstance(company_ids, list) or not all(isinstance(company_id, CompanyId) for company_id in company_ids):
@@ -111,8 +107,7 @@ class ProductFootprint:
         self.updated = updated
         self.status = status
         self.status_comment = status_comment
-        self.validity_period_start = validity_period_start
-        self.validity_period_end = validity_period_end
+        self.validity_period = validity_period
         self.company_name = company_name
         self.company_ids = company_ids
         self.product_description = product_description
