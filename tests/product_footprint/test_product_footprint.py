@@ -236,34 +236,6 @@ def test_product_footprint_valid_validity_period(valid_product_footprint_data):
     assert product_footprint.validity_period == validity_period
 
 
-# @pytest.mark.parametrize("validity_period_start", [DateTime.now()])
-# def test_product_footprint_valid_validity_period_start(valid_product_footprint_data, validity_period_start):
-#     product_footprint_data = {**valid_product_footprint_data, "validity_period_start": validity_period_start}
-#     product_footprint = ProductFootprint(**product_footprint_data)
-#     assert product_footprint.validity_period_start == validity_period_start
-#
-#
-# @pytest.mark.parametrize("validity_period_start", ["2022-01-01", datetime.now(), 1643723400, 1.0, None])
-# def test_product_footprint_invalid_validity_period_start(valid_product_footprint_data, validity_period_start):
-#     product_footprint_data = {**valid_product_footprint_data, "validity_period_start": validity_period_start}
-#     with pytest.raises(ValueError, match="validity_period_start must be an instance of DateTime"):
-#         ProductFootprint(**product_footprint_data)
-#
-#
-# @pytest.mark.parametrize("validity_period_end", [DateTime.now()])
-# def test_product_footprint_valid_validity_period_end(valid_product_footprint_data, validity_period_end):
-#     product_footprint_data = {**valid_product_footprint_data, "validity_period_end": validity_period_end}
-#     product_footprint = ProductFootprint(**product_footprint_data)
-#     assert product_footprint.validity_period_end == validity_period_end
-#
-#
-# @pytest.mark.parametrize("validity_period_end", ["2022-01-01", datetime.now(), 1643723400, 1.0, None])
-# def test_product_footprint_invalid_validity_period_end(valid_product_footprint_data, validity_period_end):
-#     product_footprint_data = {**valid_product_footprint_data, "validity_period_end": validity_period_end}
-#     with pytest.raises(ValueError, match="validity_period_end must be an instance of DateTime"):
-#         ProductFootprint(**product_footprint_data)
-
-
 @pytest.mark.parametrize("company_name", [123, 1.0, None, [], {}, ""])
 def test_product_footprint_invalid_company_name(valid_product_footprint_data, company_name):
     invalid_product_footprint_data = {**valid_product_footprint_data, "company_name": company_name}
