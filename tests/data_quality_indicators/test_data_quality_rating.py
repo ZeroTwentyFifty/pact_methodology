@@ -1,6 +1,8 @@
 import pytest
 
-from pathfinder_framework.data_quality_indicators.data_quality_rating import DataQualityRating
+from pathfinder_framework.data_quality_indicators.data_quality_rating import (
+    DataQualityRating,
+)
 
 
 @pytest.mark.parametrize("rating", [1, 2, 3])
