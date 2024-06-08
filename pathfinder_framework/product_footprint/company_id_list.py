@@ -25,7 +25,9 @@ class CompanyIdList:
             ValueError: If company_ids is not a list of CompanyId objects.
             ValueError: If there are duplicate CompanyId objects in the list.
         """
-        if not isinstance(company_ids, list) or not all(isinstance(company_id, CompanyId) for company_id in company_ids):
+        if not isinstance(company_ids, list) or not all(
+            isinstance(company_id, CompanyId) for company_id in company_ids
+        ):
             raise ValueError("company_ids must be a list of CompanyId")
         if len(set(company_ids)) != len(company_ids):
             raise DuplicateIdError("Duplicate company_ids are not allowed")

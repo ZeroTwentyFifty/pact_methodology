@@ -49,7 +49,7 @@ class Version:
         return f"Version({self.version})"
 
     @classmethod
-    def get_latest_version(cls, *versions: 'Version') -> 'Version':
+    def get_latest_version(cls, *versions: "Version") -> "Version":
         """
         Returns the latest version from a list of versions.
 

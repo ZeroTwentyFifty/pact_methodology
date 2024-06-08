@@ -17,6 +17,7 @@ class CrossSectoralStandard(str, Enum):
     For more information, please refer to the official documentation:
         https://wbcsd.github.io/tr/2023/data-exchange-protocol-20231207/#dt-crosssectoralstandard
     """
-    GHG_PROTOCOL = 'GHG Protocol Product standard'
-    ISO_14067 = 'ISO Standard 14067'
-    ISO_14044 = 'ISO Standard 14044'
+
+    GHG_PROTOCOL = "GHG Protocol Product standard"
+    ISO_14067 = "ISO Standard 14067"
+    ISO_14044 = "ISO Standard 14044"

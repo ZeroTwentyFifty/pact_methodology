@@ -48,9 +48,17 @@ class Assurance:
         ValueError: If any of the arguments are of the wrong type.
     """
 
-    def __init__(self, assurance: bool, provider_name: str, coverage: Coverage | None = None, level: Level | None = None,
-                 boundary: Boundary | None = None, completed_at: DateTime | None = None, standard_name: str | None = None,
-                 comments: str | None = None):
+    def __init__(
+        self,
+        assurance: bool,
+        provider_name: str,
+        coverage: Coverage | None = None,
+        level: Level | None = None,
+        boundary: Boundary | None = None,
+        completed_at: DateTime | None = None,
+        standard_name: str | None = None,
+        comments: str | None = None,
+    ):
         if not isinstance(assurance, bool):
             raise ValueError("assurance must be a boolean")
         if not isinstance(provider_name, str):
@@ -80,7 +88,7 @@ class Assurance:
     def to_dict(self) -> dict:
         assurance_dict = {
             "assurance": self.assurance,
-            "provider_name": self.provider_name
+            "provider_name": self.provider_name,
         }
 
         if self.coverage is not None:

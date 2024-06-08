@@ -25,7 +25,9 @@ class ProductIdList:
             ValueError: If product_ids is not a list of ProductId objects.
             ValueError: If there are duplicate ProductId objects in the list.
         """
-        if not isinstance(product_ids, list) or not all(isinstance(product_id, ProductId) for product_id in product_ids):
+        if not isinstance(product_ids, list) or not all(
+            isinstance(product_id, ProductId) for product_id in product_ids
+        ):
             raise ValueError("product_ids must be a list of ProductId")
         if len(set(product_ids)) != len(product_ids):
             raise DuplicateIdError("Duplicate product_ids are not allowed")

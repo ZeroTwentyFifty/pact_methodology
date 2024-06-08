@@ -1,13 +1,22 @@
 from pathfinder_framework.carbon_footprint.reference_period import ReferencePeriod
-from pathfinder_framework.data_quality_indicators.data_quality_rating import DataQualityRating
+from pathfinder_framework.data_quality_indicators.data_quality_rating import (
+    DataQualityRating,
+)
 
 
 class DataQualityIndicators:
 
-    def __init__(self, *, reference_period: ReferencePeriod, coverage_percent: float | None = None,
-                 technological_dqr: DataQualityRating | None = None, temporal_dqr: DataQualityRating | None = None,
-                 geographical_dqr: DataQualityRating | None = None, completeness_dqr: DataQualityRating | None = None,
-                 reliability_dqr: DataQualityRating | None = None):
+    def __init__(
+        self,
+        *,
+        reference_period: ReferencePeriod,
+        coverage_percent: float | None = None,
+        technological_dqr: DataQualityRating | None = None,
+        temporal_dqr: DataQualityRating | None = None,
+        geographical_dqr: DataQualityRating | None = None,
+        completeness_dqr: DataQualityRating | None = None,
+        reliability_dqr: DataQualityRating | None = None,
+    ):
         """Represents quantitative data quality indicators.
 
         Attributes:
@@ -32,15 +41,25 @@ class DataQualityIndicators:
                         including 2025 or later.
         """
 
-        if technological_dqr is not None and not isinstance(technological_dqr, DataQualityRating):
-            raise TypeError("technological_dqr must be an instance of DataQualityRating")
+        if technological_dqr is not None and not isinstance(
+            technological_dqr, DataQualityRating
+        ):
+            raise TypeError(
+                "technological_dqr must be an instance of DataQualityRating"
+            )
         if temporal_dqr is not None and not isinstance(temporal_dqr, DataQualityRating):
             raise TypeError("temporal_dqr must be an instance of DataQualityRating")
-        if geographical_dqr is not None and not isinstance(geographical_dqr, DataQualityRating):
+        if geographical_dqr is not None and not isinstance(
+            geographical_dqr, DataQualityRating
+        ):
             raise TypeError("geographical_dqr must be an instance of DataQualityRating")
-        if completeness_dqr is not None and not isinstance(completeness_dqr, DataQualityRating):
+        if completeness_dqr is not None and not isinstance(
+            completeness_dqr, DataQualityRating
+        ):
             raise TypeError("completeness_dqr must be an instance of DataQualityRating")
-        if reliability_dqr is not None and not isinstance(reliability_dqr, DataQualityRating):
+        if reliability_dqr is not None and not isinstance(
+            reliability_dqr, DataQualityRating
+        ):
             raise TypeError("reliability_dqr must be an instance of DataQualityRating")
 
         self.coverage_percent = coverage_percent
@@ -50,8 +69,14 @@ class DataQualityIndicators:
         self.completeness_dqr = completeness_dqr
         self.reliability_dqr = reliability_dqr
 
-        required_attributes_after_2025 = ["coverage_percent", "technological_dqr", "temporal_dqr",
-                                          "geographical_dqr", "completeness_dqr", "reliability_dqr"]
+        required_attributes_after_2025 = [
+            "coverage_percent",
+            "technological_dqr",
+            "temporal_dqr",
+            "geographical_dqr",
+            "completeness_dqr",
+            "reliability_dqr",
+        ]
 
         if reference_period is not None and reference_period.includes_2025_or_later():
             for attr in required_attributes_after_2025:

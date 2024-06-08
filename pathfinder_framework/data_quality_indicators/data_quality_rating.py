@@ -9,7 +9,6 @@ following the Pathfinder Framework guidelines. A higher DQR indicates higher dat
 This module provides the `DataQualityRating` class to encapsulate and validate DQR values.
 """
 
-
 from dataclasses import dataclass
 
 

@@ -21,15 +21,17 @@ class DateTime:
             ValueError: If the value is not a valid ISO 8601 date and time string with UTC timezone.
         """
         try:
-            dt = datetime.fromisoformat(value.replace('Z', '+00:00'))
+            dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
             if dt.tzinfo is None or dt.tzinfo.utcoffset(dt) != timedelta(0):
-                raise ValueError("Invalid ISO 8601 date and time string, timezone must be UTC")
-            self.value = dt.isoformat().replace('+00:00', 'Z')
+                raise ValueError(
+                    "Invalid ISO 8601 date and time string, timezone must be UTC"
+                )
+            self.value = dt.isoformat().replace("+00:00", "Z")
         except ValueError:
             raise ValueError("Invalid ISO 8601 date and time string")
 
     @classmethod
-    def now(cls) -> 'DateTime':
+    def now(cls) -> "DateTime":
         """
         Creates a new DateTime object representing the current date and time in UTC.
 
@@ -52,7 +54,7 @@ class DateTime:
             return False
         return self.value == other.value
 
-    def __lt__(self, other: 'DateTime') -> bool:
+    def __lt__(self, other: "DateTime") -> bool:
         """
         Compares this DateTime object with another DateTime object for less than.
 
@@ -64,9 +66,11 @@ class DateTime:
         """
         if not isinstance(other, DateTime):
             raise TypeError("Other object must be a DateTime instance")
-        return datetime.fromisoformat(self.value.replace('Z', '+00:00')) < datetime.fromisoformat(other.value.replace('Z', '+00:00'))
+        return datetime.fromisoformat(
+            self.value.replace("Z", "+00:00")
+        ) < datetime.fromisoformat(other.value.replace("Z", "+00:00"))
 
-    def __le__(self, other: 'DateTime') -> bool:
+    def __le__(self, other: "DateTime") -> bool:
         """
         Compares this DateTime object with another DateTime object for less than or equal.
 
@@ -78,9 +82,11 @@ class DateTime:
         """
         if not isinstance(other, DateTime):
             raise TypeError("Other object must be a DateTime instance")
-        return datetime.fromisoformat(self.value.replace('Z', '+00:00')) <= datetime.fromisoformat(other.value.replace('Z', '+00:00'))
+        return datetime.fromisoformat(
+            self.value.replace("Z", "+00:00")
+        ) <= datetime.fromisoformat(other.value.replace("Z", "+00:00"))
 
-    def __gt__(self, other: 'DateTime') -> bool:
+    def __gt__(self, other: "DateTime") -> bool:
         """
         Compares this DateTime object with another DateTime object for greater than.
 
@@ -92,9 +98,11 @@ class DateTime:
         """
         if not isinstance(other, DateTime):
             raise TypeError("Other object must be a DateTime instance")
-        return datetime.fromisoformat(self.value.replace('Z', '+00:00')) > datetime.fromisoformat(other.value.replace('Z', '+00:00'))
+        return datetime.fromisoformat(
+            self.value.replace("Z", "+00:00")
+        ) > datetime.fromisoformat(other.value.replace("Z", "+00:00"))
 
-    def __ge__(self, other: 'DateTime') -> bool:
+    def __ge__(self, other: "DateTime") -> bool:
         """
         Compares this DateTime object with another DateTime object for greater than or equal.
 
@@ -106,7 +114,9 @@ class DateTime:
         """
         if not isinstance(other, DateTime):
             raise TypeError("Other object must be a DateTime instance")
-        return datetime.fromisoformat(self.value.replace('Z', '+00:00')) >= datetime.fromisoformat(other.value.replace('Z', '+00:00'))
+        return datetime.fromisoformat(
+            self.value.replace("Z", "+00:00")
+        ) >= datetime.fromisoformat(other.value.replace("Z", "+00:00"))
 
     def __repr__(self) -> str:
         """
@@ -134,7 +144,7 @@ class DateTime:
         Returns:
             int: The year.
         """
-        return datetime.fromisoformat(self.value.replace('Z', '+00:00')).year
+        return datetime.fromisoformat(self.value.replace("Z", "+00:00")).year
 
     @property
     def month(self) -> int:
@@ -144,7 +154,7 @@ class DateTime:
         Returns:
             int: The month.
         """
-        return datetime.fromisoformat(self.value.replace('Z', '+00:00')).month
+        return datetime.fromisoformat(self.value.replace("Z", "+00:00")).month
 
     @property
     def day(self) -> int:
@@ -154,7 +164,7 @@ class DateTime:
         Returns:
             int: The day.
         """
-        return datetime.fromisoformat(self.value.replace('Z', '+00:00')).day
+        return datetime.fromisoformat(self.value.replace("Z", "+00:00")).day
 
     @property
     def time(self) -> str:
@@ -164,4 +174,6 @@ class DateTime:
         Returns:
             str: The time.
         """
-        return datetime.fromisoformat(self.value.replace('Z', '+00:00')).strftime('%H:%M:%S')
+        return datetime.fromisoformat(self.value.replace("Z", "+00:00")).strftime(
+            "%H:%M:%S"
+        )

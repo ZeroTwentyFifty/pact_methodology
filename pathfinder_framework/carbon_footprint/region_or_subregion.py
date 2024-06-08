@@ -32,25 +32,26 @@ class RegionOrSubregion(str, Enum):
     For more information, please refer to the official documentation:
         https://wbcsd.github.io/tr/2023/data-exchange-protocol-20231207/#dt-regionorsubregion
     """
-    AFRICA = 'Africa'
-    AMERICAS = 'Americas'
-    ASIA = 'Asia'
-    EUROPE = 'Europe'
-    OCEANIA = 'Oceania'
-    AUSTRALIA_AND_NEW_ZEALAND = 'Australia and New Zealand'
-    CENTRAL_ASIA = 'Central Asia'
-    EASTERN_ASIA = 'Eastern Asia'
-    EASTERN_EUROPE = 'Eastern Europe'
-    LATIN_AMERICA_AND_THE_CARIBBEAN = 'Latin America and the Caribbean'
-    MELANESIA = 'Melanesia'
-    MICRONESIA = 'Micronesia'
-    NORTHERN_AFRICA = 'Northern Africa'
-    NORTHERN_AMERICA = 'Northern America'
-    NORTHERN_EUROPE = 'Northern Europe'
-    POLYNESIA = 'Polynesia'
-    SOUTH_EASTERN_ASIA = 'South-eastern Asia'
-    SOUTHERN_ASIA = 'Southern Asia'
-    SOUTHERN_EUROPE = 'Southern Europe'
-    SUB_SAHARAN_AFRICA = 'Sub-Saharan Africa'
-    WESTERN_ASIA = 'Western Asia'
-    WESTERN_EUROPE = 'Western Europe'
+
+    AFRICA = "Africa"
+    AMERICAS = "Americas"
+    ASIA = "Asia"
+    EUROPE = "Europe"
+    OCEANIA = "Oceania"
+    AUSTRALIA_AND_NEW_ZEALAND = "Australia and New Zealand"
+    CENTRAL_ASIA = "Central Asia"
+    EASTERN_ASIA = "Eastern Asia"
+    EASTERN_EUROPE = "Eastern Europe"
+    LATIN_AMERICA_AND_THE_CARIBBEAN = "Latin America and the Caribbean"
+    MELANESIA = "Melanesia"
+    MICRONESIA = "Micronesia"
+    NORTHERN_AFRICA = "Northern Africa"
+    NORTHERN_AMERICA = "Northern America"
+    NORTHERN_EUROPE = "Northern Europe"
+    POLYNESIA = "Polynesia"
+    SOUTH_EASTERN_ASIA = "South-eastern Asia"
+    SOUTHERN_ASIA = "Southern Asia"
+    SOUTHERN_EUROPE = "Southern Europe"
+    SUB_SAHARAN_AFRICA = "Sub-Saharan Africa"
+    WESTERN_ASIA = "Western Asia"
+    WESTERN_EUROPE = "Western Europe"

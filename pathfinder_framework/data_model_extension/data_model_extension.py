@@ -18,7 +18,10 @@ class DataModelExtension:
             Must be a string representing a URL with the HTTPS schema.
 
     """
-    def __init__(self, spec_version: str, data_schema: str, data: dict, documentation: str = None):
+
+    def __init__(
+        self, spec_version: str, data_schema: str, data: dict, documentation: str = None
+    ):
         """
         Initializes a DataModelExtension object.
 
@@ -37,7 +40,11 @@ class DataModelExtension:
         """
         try:
             semvar_version = Version(spec_version)
-            if semvar_version.major != 2 or semvar_version.minor != 0 or semvar_version.micro != 0:
+            if (
+                semvar_version.major != 2
+                or semvar_version.minor != 0
+                or semvar_version.micro != 0
+            ):
                 raise ValueError("Invalid spec version")
         except InvalidVersion:
             raise ValueError("Invalid spec version")
@@ -79,10 +86,12 @@ class DataModelExtension:
         """
         if not isinstance(other, DataModelExtension):
             return False
-        return (self.spec_version == other.spec_version and
-                self.data_schema == other.data_schema and
-                self.data == other.data and
-                self.documentation == other.documentation)
+        return (
+            self.spec_version == other.spec_version
+            and self.data_schema == other.data_schema
+            and self.data == other.data
+            and self.documentation == other.documentation
+        )
 
     def __repr__(self):
         """
