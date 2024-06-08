@@ -1,7 +1,10 @@
 import pytest
 
 from pathfinder_framework.assurance.assurance import (
-    Assurance, Coverage, Level, Boundary
+    Assurance,
+    Coverage,
+    Level,
+    Boundary,
 )
 from pathfinder_framework.datetime import DateTime
 
@@ -13,7 +16,15 @@ def test_assurance_init():
 
 
 def test_assurance_to_dict():
-    assurance = Assurance(True, "My Auditor", Coverage.PCF_SYSTEM, Level.LIMITED, Boundary.CRADLE_TO_GATE, DateTime("2022-12-08T14:47:32Z"), "ISO 14044")
+    assurance = Assurance(
+        True,
+        "My Auditor",
+        Coverage.PCF_SYSTEM,
+        Level.LIMITED,
+        Boundary.CRADLE_TO_GATE,
+        DateTime("2022-12-08T14:47:32Z"),
+        "ISO 14044",
+    )
     expected_dict = {
         "assurance": True,
         "provider_name": "My Auditor",
@@ -21,7 +32,7 @@ def test_assurance_to_dict():
         "level": "limited",
         "boundary": "Cradle-to-Gate",
         "completed_at": "2022-12-08T14:47:32Z",
-        "standard_name": "ISO 14044"
+        "standard_name": "ISO 14044",
     }
     assert assurance.to_dict() == expected_dict
 
@@ -62,7 +73,13 @@ def test_assurance_init_with_invalid_boundary():
 
 
 def test_assurance_init_with_valid_enum_values():
-    assurance = Assurance(True, "My Auditor", coverage=Coverage.PCF_SYSTEM, level=Level.LIMITED, boundary=Boundary.GATE_TO_GATE)
+    assurance = Assurance(
+        True,
+        "My Auditor",
+        coverage=Coverage.PCF_SYSTEM,
+        level=Level.LIMITED,
+        boundary=Boundary.GATE_TO_GATE,
+    )
     assert assurance.coverage == Coverage.PCF_SYSTEM
     assert assurance.level == Level.LIMITED
     assert assurance.boundary == Boundary.GATE_TO_GATE
@@ -92,7 +109,10 @@ def test_assurance_init_with_invalid_provider_name(provider_name):
     assert str(excinfo.value) == "provider_name must be a string"
 
 
-@pytest.mark.parametrize("completed_at", [DateTime("2022-12-08T14:47:32Z"), DateTime("2023-01-01T00:00:00Z"), None])
+@pytest.mark.parametrize(
+    "completed_at",
+    [DateTime("2022-12-08T14:47:32Z"), DateTime("2023-01-01T00:00:00Z"), None],
+)
 def test_assurance_init_with_valid_completed_at(completed_at):
     Assurance(True, "My Auditor", completed_at=completed_at)
 

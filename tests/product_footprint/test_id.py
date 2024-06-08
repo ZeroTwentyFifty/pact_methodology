@@ -35,4 +35,4 @@ def test_product_footprint_id_version():
 
 def test_product_footprint_id_init_invalid_uuid():
     with pytest.raises(ValueError):
-        ProductFootprintId('invalid-uuid-string')
+        ProductFootprintId("invalid-uuid-string")

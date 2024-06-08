@@ -16,12 +16,16 @@ def test_valid_iso_8601_string_with_offset():
 
 def test_invalid_iso_8601_string_with_offset():
     with pytest.raises(ValueError):
-        DateTime("2020-03-01T00:00:00+01:00")  # This is a valid ISO 8601 string, but not in the correct format
+        DateTime(
+            "2020-03-01T00:00:00+01:00"
+        )  # This is a valid ISO 8601 string, but not in the correct format
 
 
 def test_invalid_iso_8601_string_without_tzinfo():
     with pytest.raises(ValueError):
-        DateTime("2020-03-01T00:00:00")  # This is a valid ISO 8601 string, but not in the correct format
+        DateTime(
+            "2020-03-01T00:00:00"
+        )  # This is a valid ISO 8601 string, but not in the correct format
 
 
 def test_invalid_iso_8601_string_different_timezone():
@@ -53,10 +57,14 @@ def test_str():
 
 def test_now():
     dt = DateTime.now()
-    assert dt.value.endswith('Z')
+    assert dt.value.endswith("Z")
     # Check that the value is within the last minute (to account for possible delays)
-    assert datetime.fromisoformat(dt.value.replace('Z', '+00:00')) > datetime.now(timezone.utc) - timedelta(minutes=1)
-    assert datetime.fromisoformat(dt.value.replace('Z', '+00:00')) < datetime.now(timezone.utc) + timedelta(minutes=1)
+    assert datetime.fromisoformat(dt.value.replace("Z", "+00:00")) > datetime.now(
+        timezone.utc
+    ) - timedelta(minutes=1)
+    assert datetime.fromisoformat(dt.value.replace("Z", "+00:00")) < datetime.now(
+        timezone.utc
+    ) + timedelta(minutes=1)
 
 
 def test_now_multiple_calls():
@@ -69,13 +77,15 @@ def test_now_multiple_calls():
 def test_now_format():
     dt = DateTime.now()
     # Check that the value is in the correct format
-    datetime.fromisoformat(dt.value.replace('Z', '+00:00'))
+    datetime.fromisoformat(dt.value.replace("Z", "+00:00"))
 
 
 def test_now_timezone():
     dt = DateTime.now()
     # Check that the value has the correct timezone
-    assert datetime.fromisoformat(dt.value.replace('Z', '+00:00')).tzinfo == timezone.utc
+    assert (
+        datetime.fromisoformat(dt.value.replace("Z", "+00:00")).tzinfo == timezone.utc
+    )
 
 
 def test_year():

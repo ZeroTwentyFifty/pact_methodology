@@ -1,6 +1,9 @@
 import pytest
 
-from pathfinder_framework.carbon_footprint.geographical_scope import CarbonFootprintGeographicalScope, GeographicalGranularity
+from pathfinder_framework.carbon_footprint.geographical_scope import (
+    CarbonFootprintGeographicalScope,
+    GeographicalGranularity,
+)
 from pathfinder_framework.carbon_footprint.region_or_subregion import RegionOrSubregion
 
 
@@ -14,7 +17,10 @@ from pathfinder_framework.carbon_footprint.region_or_subregion import RegionOrSu
     ],
 )
 def test_carbon_footprint_geographical_scope_successful_instantiation(
-    global_scope, geography_country_subdivision, geography_country, geography_region_or_subregion
+    global_scope,
+    geography_country_subdivision,
+    geography_country,
+    geography_region_or_subregion,
 ):
     CarbonFootprintGeographicalScope(
         global_scope=global_scope,
@@ -34,7 +40,11 @@ def test_carbon_footprint_geographical_scope_successful_instantiation(
     ],
 )
 def test_carbon_footprint_geographical_scope_failed_instantiation(
-    global_scope, geography_country_subdivision, geography_country, geography_region_or_subregion, expected_error
+    global_scope,
+    geography_country_subdivision,
+    geography_country,
+    geography_region_or_subregion,
+    expected_error,
 ):
     with pytest.raises(expected_error):
         CarbonFootprintGeographicalScope(
@@ -61,7 +71,9 @@ def test_geography_country_scope():
 
 
 def test_geography_region_or_subregion_scope():
-    scope = CarbonFootprintGeographicalScope(geography_region_or_subregion=RegionOrSubregion.AFRICA)
+    scope = CarbonFootprintGeographicalScope(
+        geography_region_or_subregion=RegionOrSubregion.AFRICA
+    )
     assert scope.scope == RegionOrSubregion.AFRICA
 
 
@@ -81,7 +93,9 @@ def test_geography_country_scope_granularity():
 
 
 def test_geography_region_or_subregion_scope_granularity():
-    scope = CarbonFootprintGeographicalScope(geography_region_or_subregion=RegionOrSubregion.AFRICA)
+    scope = CarbonFootprintGeographicalScope(
+        geography_region_or_subregion=RegionOrSubregion.AFRICA
+    )
     assert scope.granularity == GeographicalGranularity.REGION_OR_SUBREGION
 
 
@@ -105,22 +119,30 @@ def test_carbon_footprint_geographical_scope_invalid_country_codes(country_code)
         CarbonFootprintGeographicalScope(geography_country=country_code)
 
 
-@pytest.mark.parametrize("subdivision_code", ["US-CA", "FR-IDF", "GB-ENG", "CN-SH", "JP-13"])
+@pytest.mark.parametrize(
+    "subdivision_code", ["US-CA", "FR-IDF", "GB-ENG", "CN-SH", "JP-13"]
+)
 def test_carbon_footprint_geographical_scope_valid_subdivision_codes(subdivision_code):
-    scope = CarbonFootprintGeographicalScope(geography_country_subdivision=subdivision_code)
+    scope = CarbonFootprintGeographicalScope(
+        geography_country_subdivision=subdivision_code
+    )
     assert scope.granularity == GeographicalGranularity.COUNTRY_SUBDIVISION
     assert scope.scope == subdivision_code
 
 
-@pytest.mark.parametrize("subdivision_code", ["US-XX", "FR-ABC", "GB-123", "CN-11", "CN-", "JP-  ", None])
-def test_carbon_footprint_geographical_scope_invalid_subdivision_codes(subdivision_code):
+@pytest.mark.parametrize(
+    "subdivision_code", ["US-XX", "FR-ABC", "GB-123", "CN-11", "CN-", "JP-  ", None]
+)
+def test_carbon_footprint_geographical_scope_invalid_subdivision_codes(
+    subdivision_code,
+):
     with pytest.raises(ValueError):
         CarbonFootprintGeographicalScope(geography_country_subdivision=subdivision_code)
 
 
 def test_no_scope_raises_value_error():
     with pytest.raises(
-            ValueError,
-            match="At least one argument must be provided from: global_scope, geography_country_subdivision, geography_country, or geography_region_or_subregion"
+        ValueError,
+        match="At least one argument must be provided from: global_scope, geography_country_subdivision, geography_country, or geography_region_or_subregion",
     ):
         CarbonFootprintGeographicalScope()
