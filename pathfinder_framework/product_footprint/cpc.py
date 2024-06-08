@@ -45,20 +45,18 @@ class CPCCodeLookup:
     """
 
     def __init__(self):
-        """Initializes a CPCCodeLookup object.
-
-        """
+        """Initializes a CPCCodeLookup object."""
         self.filename = os.path.join(os.path.dirname(__file__), "cpc_v21.csv")
         self.cpc_codes = {}
         self.load_cpc_codes()
 
     def load_cpc_codes(self) -> None:
         """Loads the CPC codes from the CSV file."""
-        with open(self.filename, 'r') as file:
+        with open(self.filename, "r") as file:
             reader = csv.DictReader(file)
             for row in reader:
-                code = row['CPC21code']
-                title = row['CPC21title']
+                code = row["CPC21code"]
+                title = row["CPC21title"]
                 self.cpc_codes[code] = CPC(code, title)
 
     def lookup(self, cpc_code: str) -> CPC | None:

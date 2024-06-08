@@ -22,10 +22,11 @@ class DeclaredUnit(str, Enum):
     And the SI Unit reference:
         https://www.bipm.org/documents/20126/41483022/SI-Brochure-9-EN.pdf/2d2b50bf-f2b4-9661-f402-5f9d66e4b507
     """
-    LITER = 'liter'
-    KILOGRAM = 'kilogram'
-    CUBIC_METER = 'cubic meter'
-    KILOWATT_HOUR = 'kilowatt hour'
-    MEGAJOULE = 'megajoule'
-    TON_KILOMETER = 'ton kilometer'
-    SQUARE_METER = 'square meter'
+
+    LITER = "liter"
+    KILOGRAM = "kilogram"
+    CUBIC_METER = "cubic meter"
+    KILOWATT_HOUR = "kilowatt hour"
+    MEGAJOULE = "megajoule"
+    TON_KILOMETER = "ton kilometer"
+    SQUARE_METER = "square meter"

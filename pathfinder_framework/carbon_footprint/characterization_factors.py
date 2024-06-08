@@ -15,5 +15,6 @@ class CharacterizationFactors(str, Enum):
     For more information, please refer to the official documentation:
         https://wbcsd.github.io/tr/2023/data-exchange-protocol-20231207/#element-attrdef-carbonfootprint-characterizationfactors
     """
-    AR5 = 'AR5'
-    AR6 = 'AR6'
+
+    AR5 = "AR5"
+    AR6 = "AR6"

@@ -1,5 +1,7 @@
 from pathfinder_framework.carbon_footprint.carbon_footprint import CarbonFootprint
-from pathfinder_framework.data_model_extension.data_model_extension import DataModelExtension
+from pathfinder_framework.data_model_extension.data_model_extension import (
+    DataModelExtension,
+)
 from pathfinder_framework.datetime import DateTime
 from pathfinder_framework.product_footprint.id import ProductFootprintId
 from pathfinder_framework.product_footprint.status import ProductFootprintStatus
@@ -34,11 +36,27 @@ class ProductFootprint:
         pcf (CarbonFootprint): The carbon footprint of the given product with value conforming to the data type CarbonFootprint.
     """
 
-    def __init__(self, *, id: ProductFootprintId | None = None, spec_version: str = "2.0.0", version: Version,
-                 created: DateTime, updated: DateTime, status: ProductFootprintStatus, status_comment: str,
-                 validity_period: ValidityPeriod, company_name: str, company_ids: list[CompanyId],
-                 product_description: str, product_ids: list[ProductId], product_category_cpc: CPC,
-                 product_name_company: str, comment: str, extensions: list[DataModelExtension], pcf: CarbonFootprint):
+    def __init__(
+        self,
+        *,
+        id: ProductFootprintId | None = None,
+        spec_version: str = "2.0.0",
+        version: Version,
+        created: DateTime,
+        updated: DateTime,
+        status: ProductFootprintStatus,
+        status_comment: str,
+        validity_period: ValidityPeriod,
+        company_name: str,
+        company_ids: list[CompanyId],
+        product_description: str,
+        product_ids: list[ProductId],
+        product_category_cpc: CPC,
+        product_name_company: str,
+        comment: str,
+        extensions: list[DataModelExtension],
+        pcf: CarbonFootprint,
+    ):
         """
         Initializes a new ProductFootprint instance.
 
@@ -82,9 +100,13 @@ class ProductFootprint:
             raise ValueError("validity_period must be an instance of ValidityPeriod")
         if not isinstance(company_name, str) or not company_name:
             raise ValueError("company_name must be a non-empty string")
-        if not isinstance(company_ids, list) or not all(isinstance(company_id, CompanyId) for company_id in company_ids):
+        if not isinstance(company_ids, list) or not all(
+            isinstance(company_id, CompanyId) for company_id in company_ids
+        ):
             raise ValueError("company_ids must be a list of CompanyId")
-        if not isinstance(product_ids, list) or not all(isinstance(product_id, ProductId) for product_id in product_ids):
+        if not isinstance(product_ids, list) or not all(
+            isinstance(product_id, ProductId) for product_id in product_ids
+        ):
             raise ValueError("product_ids must be a list of ProductId")
         if not isinstance(product_description, str) or not product_description:
             raise ValueError("product_description must be a non-empty string")
@@ -94,7 +116,9 @@ class ProductFootprint:
             raise ValueError("product_name_company must be a non-empty string")
         if not isinstance(comment, str):
             raise ValueError("comment must be a string")
-        if not isinstance(extensions, list) or not all(isinstance(ext, DataModelExtension) for ext in extensions):
+        if not isinstance(extensions, list) or not all(
+            isinstance(ext, DataModelExtension) for ext in extensions
+        ):
             raise ValueError("extensions must be a list of DataModelExtension objects")
         if not isinstance(pcf, CarbonFootprint):
             raise ValueError("pcf must be an instance of CarbonFootprint")

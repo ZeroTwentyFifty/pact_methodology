@@ -17,7 +17,8 @@ class BiogenicAccountingMethodology(str, Enum):
     For more information, please refer to the official documentation:
         https://wbcsd.github.io/tr/2023/data-exchange-protocol-20231207/#element-attrdef-carbonfootprint-biogenicaccountingmethodology
     """
-    PEF = 'PEF'
-    ISO = 'ISO'
-    GHGP = 'GHGP'
-    QUANTIS = 'Quantis'
+
+    PEF = "PEF"
+    ISO = "ISO"
+    GHGP = "GHGP"
+    QUANTIS = "Quantis"

@@ -47,6 +47,6 @@ class ValidityPeriod:
         """
         if not isinstance(reference_period_end, DateTime):
             raise ValueError("Reference period end date must be a DateTime object")
-        dt = datetime.fromisoformat(reference_period_end.value.replace('Z', '+00:00'))
+        dt = datetime.fromisoformat(reference_period_end.value.replace("Z", "+00:00"))
         max_end_date = DateTime((dt + timedelta(days=3 * 366)).isoformat())
         return self.start >= reference_period_end and self.end <= max_end_date

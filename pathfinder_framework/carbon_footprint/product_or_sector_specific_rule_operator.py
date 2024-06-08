@@ -15,6 +15,7 @@ class ProductOrSectorSpecificRuleOperator(str, Enum):
     For more information, please refer to the official documentation:
         https://wbcsd.github.io/tr/2023/data-exchange-protocol-20231207/#dt-productorsectorspecificruleoperator
     """
-    PEF = 'PEF'
-    EPD_INTERNATIONAL = 'EPD International'
-    OTHER = 'Other'
+
+    PEF = "PEF"
+    EPD_INTERNATIONAL = "EPD International"
+    OTHER = "Other"

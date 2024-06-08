@@ -42,22 +42,34 @@ class CarbonFootprintGeographicalScope:
         granularity (GeographicalGranularity): The granularity of the geographical scope.
     """
 
-    def __init__(self, *, global_scope: bool = False, geography_country_subdivision: str = None,
-                 geography_country: str = None,
-                 geography_region_or_subregion: RegionOrSubregion | str = None) -> None:
+    def __init__(
+        self,
+        *,
+        global_scope: bool = False,
+        geography_country_subdivision: str = None,
+        geography_country: str = None,
+        geography_region_or_subregion: RegionOrSubregion | str = None,
+    ) -> None:
 
         self.scope: str | RegionOrSubregion
         self.granularity: GeographicalGranularity
 
-        if global_scope and (geography_country_subdivision or geography_country or geography_region_or_subregion):
+        if global_scope and (
+            geography_country_subdivision
+            or geography_country
+            or geography_region_or_subregion
+        ):
             raise ValueError(
                 "Cannot provide geography_country_subdivision, geography_country, or geography_region_or_subregion "
                 "when global_scope is True"
             )
         if (
-            geography_country_subdivision and geography_country
-            or geography_country_subdivision and geography_region_or_subregion
-            or geography_country and geography_region_or_subregion
+            geography_country_subdivision
+            and geography_country
+            or geography_country_subdivision
+            and geography_region_or_subregion
+            or geography_country
+            and geography_region_or_subregion
         ):
             raise ValueError("Cannot provide more than one geographical field")
 
@@ -66,7 +78,9 @@ class CarbonFootprintGeographicalScope:
             self.granularity = GeographicalGranularity.GLOBAL
         elif geography_country_subdivision:
             if pycountry.subdivisions.get(code=geography_country_subdivision) is None:
-                raise ValueError(f"Invalid country subdivision code: {geography_country_subdivision}")
+                raise ValueError(
+                    f"Invalid country subdivision code: {geography_country_subdivision}"
+                )
             self.scope = geography_country_subdivision
             self.granularity = GeographicalGranularity.COUNTRY_SUBDIVISION
         elif geography_country:
@@ -76,7 +90,9 @@ class CarbonFootprintGeographicalScope:
             self.granularity = GeographicalGranularity.COUNTRY
         elif geography_region_or_subregion:
             if not isinstance(geography_region_or_subregion, RegionOrSubregion):
-                raise ValueError("geography_region_or_subregion must be a RegionOrSubregion")
+                raise ValueError(
+                    "geography_region_or_subregion must be a RegionOrSubregion"
+                )
             self.scope = geography_region_or_subregion
             self.granularity = GeographicalGranularity.REGION_OR_SUBREGION
         else:
