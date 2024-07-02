@@ -13,6 +13,7 @@ from pathfinder_framework.carbon_footprint.reference_period import ReferencePeri
 from pathfinder_framework.data_quality_indicators.data_quality_indicators import (
     DataQualityIndicators,
 )
+from pathfinder_framework.carbon_footprint.biogenic_accounting_methodology import BiogenicAccountingMethodology
 
 
 class CarbonFootprint:
@@ -47,9 +48,7 @@ class CarbonFootprint:
         allocation_rules_description (str | None): If present, a description of any allocation rules applied and the rationale explaining how the selected approach aligns with Pathfinder Framework rules (see Section 3.3.1.4).
         uncertainty_assessment_description (str | None): If present, the results, key drivers, and a short qualitative description of the uncertainty assessment.
         assurance (Assurance | None): If present, the Assurance information in accordance with the Pathfinder Framework.
-
-    Note: The following attributes are not currently defined but will be affected by the 2025 check:
-        - biogenicAccountingMethodology
+        biogenic_accounting_methodology (BiogenicAccountingMethodology | None): The methodology used for biogenic carbon accounting.
     """
 
     def __init__(
@@ -81,6 +80,7 @@ class CarbonFootprint:
         allocation_rules_description=None,
         uncertainty_assessment_description=None,
         assurance=None,
+        biogenic_accounting_methodology=None,
     ):
         if not isinstance(declared_unit, DeclaredUnit):
             raise ValueError(
@@ -187,6 +187,10 @@ class CarbonFootprint:
             raise ValueError("uncertainty_assessment_description must be a string")
         if assurance is not None and not isinstance(assurance, Assurance):
             raise ValueError("assurance must be an instance of Assurance")
+        if biogenic_accounting_methodology is not None and not isinstance(
+            biogenic_accounting_methodology, BiogenicAccountingMethodology
+        ):
+            raise ValueError("biogenic_accounting_methodology must be an instance of BiogenicAccountingMethodology")
 
         self.declared_unit = declared_unit
         self.unitary_product_amount = unitary_product_amount
@@ -217,6 +221,7 @@ class CarbonFootprint:
         self.allocation_rules_description = allocation_rules_description
         self.uncertainty_assessment_description = uncertainty_assessment_description
         self.assurance = assurance
+        self.biogenic_accounting_methodology = biogenic_accounting_methodology
 
         required_attributes_before_2025 = ["primary_data_share", "dqi"]
         required_attributes_after_2025 = [
@@ -227,6 +232,7 @@ class CarbonFootprint:
             "land_management_ghg_emissions",
             "other_biogenic_ghg_emissions",
             "biogenic_carbon_withdrawal",
+            "biogenic_accounting_methodology",
         ]
 
         if reference_period.includes_2025_or_later():

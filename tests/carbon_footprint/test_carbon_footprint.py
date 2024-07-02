@@ -23,6 +23,7 @@ from pathfinder_framework.carbon_footprint.geographical_scope import (
 from pathfinder_framework.data_quality_indicators.data_quality_indicators import (
     DataQualityIndicators,
 )
+from pathfinder_framework.carbon_footprint.biogenic_accounting_methodology import BiogenicAccountingMethodology
 
 
 @pytest.fixture
@@ -71,6 +72,7 @@ def valid_carbon_footprint_data():
             standard_name="Example standard name",
             comments="Example comments",
         ),
+        "biogenic_accounting_methodology": BiogenicAccountingMethodology.GHGP,
     }
 
 
@@ -178,6 +180,10 @@ def test_carbon_footprint_attributes(valid_carbon_footprint_data):
         == valid_carbon_footprint_data["uncertainty_assessment_description"]
     )
     assert isinstance(carbon_footprint.assurance, Assurance)
+    assert (
+        carbon_footprint.biogenic_accounting_methodology
+        == valid_carbon_footprint_data["biogenic_accounting_methodology"]
+    )
 
 
 def test_carbon_footprint_invalid_declared_unit(valid_carbon_footprint_data):
@@ -396,6 +402,7 @@ def test_carbon_footprint_invalid_attribute_type(
         "land_management_ghg_emissions",
         "other_biogenic_ghg_emissions",
         "biogenic_carbon_withdrawal",
+        "biogenic_accounting_methodology",
     ],
 )
 def test_carbon_footprint_attribute_optional_before_2025(
@@ -417,6 +424,7 @@ def test_carbon_footprint_attribute_optional_before_2025(
         "land_management_ghg_emissions",
         "other_biogenic_ghg_emissions",
         "biogenic_carbon_withdrawal",
+        "biogenic_accounting_methodology",
     ],
 )
 def test_carbon_footprint_missing_attributes_valid_before_2025(
@@ -440,6 +448,7 @@ def test_carbon_footprint_missing_attributes_valid_before_2025(
         "land_management_ghg_emissions",
         "other_biogenic_ghg_emissions",
         "biogenic_carbon_withdrawal",
+        "biogenic_accounting_methodology",
     ],
 )
 def test_carbon_footprint_missing_attributes_invalid_after_2025(
