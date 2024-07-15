@@ -14,6 +14,7 @@ from pathfinder_framework.data_quality_indicators.data_quality_indicators import
     DataQualityIndicators,
 )
 from pathfinder_framework.carbon_footprint.biogenic_accounting_methodology import BiogenicAccountingMethodology
+from pathfinder_framework.carbon_footprint.product_or_sector_specific_rule import ProductOrSectorSpecificRule
 
 
 class CarbonFootprint:
@@ -49,6 +50,7 @@ class CarbonFootprint:
         uncertainty_assessment_description (str | None): If present, the results, key drivers, and a short qualitative description of the uncertainty assessment.
         assurance (Assurance | None): If present, the Assurance information in accordance with the Pathfinder Framework.
         biogenic_accounting_methodology (BiogenicAccountingMethodology | None): The methodology used for biogenic carbon accounting.
+        product_or_sector_specific_rules (list[ProductOrSectorSpecificRule] | None): If present, refers to a set of product or sector specific rules published by a specific operator and applied during product carbon footprint calculation.
     """
 
     def __init__(
@@ -81,6 +83,7 @@ class CarbonFootprint:
         uncertainty_assessment_description=None,
         assurance=None,
         biogenic_accounting_methodology=None,
+        product_or_sector_specific_rules=None
     ):
         if not isinstance(declared_unit, DeclaredUnit):
             raise ValueError(
@@ -191,7 +194,13 @@ class CarbonFootprint:
             biogenic_accounting_methodology, BiogenicAccountingMethodology
         ):
             raise ValueError("biogenic_accounting_methodology must be an instance of BiogenicAccountingMethodology")
-
+        if product_or_sector_specific_rules is not None and not all(
+                isinstance(rule, ProductOrSectorSpecificRule)
+                for rule in product_or_sector_specific_rules
+        ):
+            raise ValueError(
+                "product_or_sector_specific_rules must be a list of ProductOrSectorSpecificRule"
+            )
         self.declared_unit = declared_unit
         self.unitary_product_amount = unitary_product_amount
         self.p_cf_excluding_biogenic = p_cf_excluding_biogenic
@@ -222,6 +231,7 @@ class CarbonFootprint:
         self.uncertainty_assessment_description = uncertainty_assessment_description
         self.assurance = assurance
         self.biogenic_accounting_methodology = biogenic_accounting_methodology
+        self.product_or_sector_specific_rules = product_or_sector_specific_rules
 
         required_attributes_before_2025 = ["primary_data_share", "dqi"]
         required_attributes_after_2025 = [
