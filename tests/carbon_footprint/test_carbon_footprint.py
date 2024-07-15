@@ -24,6 +24,8 @@ from pathfinder_framework.data_quality_indicators.data_quality_indicators import
     DataQualityIndicators,
 )
 from pathfinder_framework.carbon_footprint.biogenic_accounting_methodology import BiogenicAccountingMethodology
+from pathfinder_framework.carbon_footprint.product_or_sector_specific_rule import ProductOrSectorSpecificRule
+from pathfinder_framework.carbon_footprint.product_or_sector_specific_rule_operator import ProductOrSectorSpecificRuleOperator
 
 
 @pytest.fixture
@@ -73,6 +75,11 @@ def valid_carbon_footprint_data():
             comments="Example comments",
         ),
         "biogenic_accounting_methodology": BiogenicAccountingMethodology.GHGP,
+        "product_or_sector_specific_rules": [ProductOrSectorSpecificRule(
+            operator=ProductOrSectorSpecificRuleOperator.OTHER,
+            rule_names=["Rule1"],
+            other_operator_name="Custom Operator",
+        )]
     }
 
 
@@ -184,7 +191,10 @@ def test_carbon_footprint_attributes(valid_carbon_footprint_data):
         carbon_footprint.biogenic_accounting_methodology
         == valid_carbon_footprint_data["biogenic_accounting_methodology"]
     )
-
+    assert (
+        carbon_footprint.product_or_sector_specific_rules
+        == valid_carbon_footprint_data["product_or_sector_specific_rules"]
+    )
 
 def test_carbon_footprint_invalid_declared_unit(valid_carbon_footprint_data):
     invalid_data = {**valid_carbon_footprint_data, "declared_unit": "invalid unit"}
@@ -739,6 +749,39 @@ def test_carbon_footprint_invalid_assurance(
 ):
     invalid_data = valid_carbon_footprint_data.copy()
     invalid_data["assurance"] = assurance
+    with pytest.raises(ValueError) as excinfo:
+        CarbonFootprint(**invalid_data)
+    assert str(excinfo.value) == expected_error
+
+
+@pytest.mark.parametrize(
+    "product_or_sector_specific_rules",
+    [
+        None,
+        [ProductOrSectorSpecificRule(
+            operator=ProductOrSectorSpecificRuleOperator.OTHER,
+            rule_names=["Rule1"],
+            other_operator_name="Custom Operator",
+        )],
+    ],
+)
+def test_carbon_footprint_valid_product_or_sector_specific_rules(valid_carbon_footprint_data, product_or_sector_specific_rules):
+    valid_data = valid_carbon_footprint_data.copy()
+    valid_data["product_or_sector_specific_rules"] = product_or_sector_specific_rules
+    CarbonFootprint(**valid_data)
+
+
+@pytest.mark.parametrize(
+    "product_or_sector_specific_rules, expected_error",
+    [
+        ([1], "product_or_sector_specific_rules must be a list of ProductOrSectorSpecificRule"),
+    ],
+)
+def test_carbon_footprint_invalid_product_or_sector_specific_rules(
+    valid_carbon_footprint_data, product_or_sector_specific_rules, expected_error
+):
+    invalid_data = valid_carbon_footprint_data.copy()
+    invalid_data["product_or_sector_specific_rules"] = product_or_sector_specific_rules
     with pytest.raises(ValueError) as excinfo:
         CarbonFootprint(**invalid_data)
     assert str(excinfo.value) == expected_error
