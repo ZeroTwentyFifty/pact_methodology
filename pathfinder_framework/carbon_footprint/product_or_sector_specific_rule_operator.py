@@ -7,7 +7,7 @@ class ProductOrSectorSpecificRuleOperator(str, Enum):
 
     - PEF: for EU / PEF Methodology PCRs
     - EPD International: for PCRs authored or published by EPD International
-    - Other: for a PCR not published by the operators mentioned above
+    - OTHER: for a PCR not published by the operators mentioned above
 
     4.13.1. JSON Representation
     Each value is encoded as a JSON String.
