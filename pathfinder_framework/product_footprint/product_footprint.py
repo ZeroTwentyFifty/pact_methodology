@@ -34,6 +34,7 @@ class ProductFootprint:
         comment (str): A comment about the ProductFootprint.
         extensions (list[DataModelExtension]): A list of DataModelExtension objects.
         pcf (CarbonFootprint): The carbon footprint of the given product with value conforming to the data type CarbonFootprint.
+        preceding_pf_ids (list[ProductFootprintId]): A list of preceding ProductFootprintIds.
     """
 
     def __init__(
@@ -56,6 +57,7 @@ class ProductFootprint:
         comment: str,
         extensions: list[DataModelExtension],
         pcf: CarbonFootprint,
+        preceding_pf_ids: list[ProductFootprintId] | None = None,
     ):
         """
         Initializes a new ProductFootprint instance.
@@ -78,6 +80,7 @@ class ProductFootprint:
             comment (str): A comment about the ProductFootprint.
             extensions (list[DataModelExtension]): A list of DataModelExtension objects.
             pcf (CarbonFootprint): The carbon footprint of the given product with value conforming to the data type CarbonFootprint.
+            preceding_pf_ids (list[ProductFootprintId] | None): A list of preceding ProductFootprintIds.
         """
 
         if not isinstance(pcf, CarbonFootprint):
@@ -123,6 +126,14 @@ class ProductFootprint:
         if not isinstance(pcf, CarbonFootprint):
             raise ValueError("pcf must be an instance of CarbonFootprint")
 
+        if preceding_pf_ids is not None:
+            if not isinstance(preceding_pf_ids, list) or not all(
+                isinstance(pf_id, ProductFootprintId) for pf_id in preceding_pf_ids
+            ):
+                raise ValueError("preceding_pf_ids must be a list of ProductFootprintId")
+            if len(preceding_pf_ids) != len(set(preceding_pf_ids)):
+                raise ValueError("preceding_pf_ids must not contain duplicates")
+
         self.id = id if id else ProductFootprintId()
         self.spec_version = spec_version
         self.version = version
@@ -140,6 +151,7 @@ class ProductFootprint:
         self.comment = comment
         self.extensions = extensions
         self.pcf = pcf
+        self.preceding_pf_ids = preceding_pf_ids
 
     def __repr__(self) -> str:
         """Returns a string representation of the ProductFootprint instance."""
