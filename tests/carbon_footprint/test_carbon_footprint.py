@@ -43,6 +43,7 @@ def valid_carbon_footprint_data():
         "cross_sectoral_standards_used": [CrossSectoralStandard.GHG_PROTOCOL],
         "boundary_processes_description": "boundary processes description",
         "exempted_emissions_percent": 1.0,
+        "exempted_emissions_description": "Rationale for exclusion",
         "reference_period": ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
         "packaging_emissions_included": True,
         "geographical_scope": CarbonFootprintGeographicalScope(
@@ -140,6 +141,10 @@ def test_carbon_footprint_attributes(valid_carbon_footprint_data):
     assert (
         carbon_footprint.exempted_emissions_percent
         == valid_carbon_footprint_data["exempted_emissions_percent"]
+    )
+    assert (
+        carbon_footprint.exempted_emissions_description
+        == valid_carbon_footprint_data["exempted_emissions_description"]
     )
     assert isinstance(carbon_footprint.reference_period, ReferencePeriod)
     assert (
@@ -308,6 +313,14 @@ def test_carbon_footprint_invalid_exempted_emissions_percent(
     assert (
         str(excinfo.value) == "exempted_emissions_percent must be between 0.0 and 5.0"
     )
+
+
+def test_carbon_footprint_invalid_exempted_emissions_description(valid_carbon_footprint_data):
+    invalid_data = valid_carbon_footprint_data.copy()
+    invalid_data["exempted_emissions_description"] = 123  # Invalid type
+    with pytest.raises(ValueError) as excinfo:
+        CarbonFootprint(**invalid_data)
+    assert str(excinfo.value) == "exempted_emissions_description must be a string"
 
 
 def test_carbon_footprint_invalid_reference_period(valid_carbon_footprint_data):
