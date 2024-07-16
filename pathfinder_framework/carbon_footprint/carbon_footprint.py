@@ -32,6 +32,7 @@ class CarbonFootprint:
         ipcc_characterization_factors_sources (list[str]): The characterization factors from one or more IPCC Assessment Reports used in the calculation of the PCF.
         cross_sectoral_standards_used (list[CrossSectoralStandard]): The cross-sectoral standards applied for calculating or allocating GHG emissions.
         exempted_emissions_percent (float): The Percentage of emissions excluded from PCF, expressed as a decimal number between 0.0 and 5 including.
+        exempted_emissions_description (str): Rationale behind exclusion of specific PCF emissions, can be the empty string if no emissions were excluded.
         reference_period (ReferencePeriod): The period over which the data was recorded for the Carbon Footprint_
         packaging_emissions_included (bool): A boolean flag indicating whether packaging emissions are included in the PCF (pCfExcludingBiogenic, pCfIncludingBiogenic).
         geographical_scope (CarbonFootprintGeographicalScope): The geographical scope of the carbon footprint.
@@ -66,6 +67,7 @@ class CarbonFootprint:
         cross_sectoral_standards_used,
         boundary_processes_description,
         exempted_emissions_percent,
+        exempted_emissions_description,
         reference_period,
         packaging_emissions_included,
         geographical_scope,
@@ -120,6 +122,8 @@ class CarbonFootprint:
             raise ValueError("boundary_processes_description must not be empty")
         if not 0.0 <= exempted_emissions_percent <= 5.0:
             raise ValueError("exempted_emissions_percent must be between 0.0 and 5.0")
+        if not isinstance(exempted_emissions_description, str):
+            raise ValueError("exempted_emissions_description must be a string")
         if not isinstance(reference_period, ReferencePeriod):
             raise ValueError("reference_period must be an instance of ReferencePeriod")
         if not isinstance(packaging_emissions_included, bool):
@@ -214,6 +218,7 @@ class CarbonFootprint:
         self.cross_sectoral_standards_used = cross_sectoral_standards_used
         self.boundary_processes_description = boundary_processes_description
         self.exempted_emissions_percent = exempted_emissions_percent
+        self.exempted_emissions_description = exempted_emissions_description
         self.reference_period = reference_period
         self.packaging_emissions_included = packaging_emissions_included
         self.geographical_scope = geographical_scope

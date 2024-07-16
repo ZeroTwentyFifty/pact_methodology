@@ -74,6 +74,7 @@ def valid_carbon_footprint_data():
         "cross_sectoral_standards_used": [CrossSectoralStandard.GHG_PROTOCOL],
         "boundary_processes_description": "boundary processes description",
         "exempted_emissions_percent": 1.0,
+        "exempted_emissions_description": "Rationale for exclusion",
         "reference_period": ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
         "packaging_emissions_included": True,
         "geographical_scope": CarbonFootprintGeographicalScope(
