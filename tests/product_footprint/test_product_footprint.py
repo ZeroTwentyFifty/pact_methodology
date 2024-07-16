@@ -151,6 +151,7 @@ def valid_product_footprint_data(valid_carbon_footprint_data):
         "comment": "This is a comment",
         "extensions": extensions,
         "pcf": CarbonFootprint(**valid_carbon_footprint_data),
+        "preceding_pf_ids": [ProductFootprintId(), ProductFootprintId()],
     }
 
 
@@ -180,6 +181,10 @@ def test_product_footprint_initialization(valid_product_footprint_data):
         isinstance(ext, DataModelExtension) for ext in product_footprint.extensions
     )
     assert isinstance(product_footprint.pcf, CarbonFootprint)
+    assert isinstance(product_footprint.preceding_pf_ids, list)
+    assert all(
+        isinstance(pf_id, ProductFootprintId) for pf_id in product_footprint.preceding_pf_ids
+    )
 
 
 def test_product_footprint_spec_version(valid_product_footprint_data):
@@ -585,3 +590,51 @@ def test_product_footprint_invalid_pcf(valid_product_footprint_data, pcf):
     invalid_product_footprint_data = {**valid_product_footprint_data, "pcf": pcf}
     with pytest.raises(ValueError, match="pcf must be an instance of CarbonFootprint"):
         ProductFootprint(**invalid_product_footprint_data)
+
+
+@pytest.mark.parametrize(
+    "preceding_pf_ids",
+    [
+        [ProductFootprintId(), ProductFootprintId()],  # list with multiple items
+        [],  # empty list
+    ],
+)
+def test_product_footprint_preceding_pf_ids(valid_product_footprint_data, preceding_pf_ids):
+    product_footprint_data = {
+        **valid_product_footprint_data,
+        "preceding_pf_ids": preceding_pf_ids,
+    }
+    product_footprint = ProductFootprint(**product_footprint_data)
+    assert len(product_footprint.preceding_pf_ids) == len(preceding_pf_ids)
+    for pf_id in product_footprint.preceding_pf_ids:
+        assert isinstance(pf_id, ProductFootprintId)
+
+
+@pytest.mark.parametrize(
+    "preceding_pf_ids",
+    [
+        123,
+        1.0,
+        "string",
+        {},
+        ProductFootprintId(),
+    ],
+)
+def test_product_footprint_invalid_preceding_pf_ids(valid_product_footprint_data, preceding_pf_ids):
+    invalid_product_footprint_data = {
+        **valid_product_footprint_data,
+        "preceding_pf_ids": preceding_pf_ids,
+    }
+    with pytest.raises(ValueError, match="preceding_pf_ids must be a list of ProductFootprintId"):
+        ProductFootprint(**invalid_product_footprint_data)
+
+
+def test_product_footprint_duplicate_preceding_pf_ids(valid_product_footprint_data):
+    pf_id = ProductFootprintId()
+    preceding_pf_ids = [pf_id, pf_id]
+    product_footprint_data = {
+        **valid_product_footprint_data,
+        "preceding_pf_ids": preceding_pf_ids,
+    }
+    with pytest.raises(ValueError, match="preceding_pf_ids must not contain duplicates"):
+        ProductFootprint(**product_footprint_data)
