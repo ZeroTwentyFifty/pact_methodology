@@ -44,7 +44,7 @@ class ProductFootprint:
         spec_version: str = "2.0.0",
         version: Version,
         created: DateTime,
-        updated: DateTime,
+        updated: DateTime | None = None,
         status: ProductFootprintStatus,
         status_comment: str,
         validity_period: ValidityPeriod,
@@ -67,7 +67,7 @@ class ProductFootprint:
             spec_version (str): The version of the ProductFootprint data specification. Currently, hardcoded to "2.0.0", but may be updated in the future to support different versions.
             version (Version): The version of the ProductFootprint.
             created (DateTime): The date and time when the ProductFootprint was created.
-            updated (DateTime): The date and time when the ProductFootprint was last updated.
+            updated (DateTime | None): The date and time when the ProductFootprint was last updated.
             status (ProductFootprintStatus): The status of the ProductFootprint.
             status_comment (str): A comment describing the status of the ProductFootprint.
             validity_period (ValidityPeriod): The validity period for the ProductFootprint.
@@ -93,8 +93,9 @@ class ProductFootprint:
             raise ValueError("version must be an instance of Version")
         if not isinstance(created, DateTime):
             raise ValueError("created must be an instance of DateTime")
-        if not isinstance(updated, DateTime):
-            raise ValueError("updated must be an instance of DateTime")
+        if updated is not None:
+            if not isinstance(updated, DateTime):
+                raise ValueError("updated must be an instance of DateTime")
         if not isinstance(status, ProductFootprintStatus):
             raise ValueError("status must be an instance of ProductFootprintStatus")
         if not isinstance(status_comment, str):
