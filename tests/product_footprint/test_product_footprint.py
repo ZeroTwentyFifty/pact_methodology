@@ -264,7 +264,7 @@ def test_product_footprint_invalid_status(valid_product_footprint_data, status):
         ProductFootprint(**product_footprint_data)
 
 
-@pytest.mark.parametrize("status_comment", ["This is a comment", "Another comment"])
+@pytest.mark.parametrize("status_comment", ["This is a comment", "Another comment", None])
 def test_product_footprint_valid_status_comment(
     valid_product_footprint_data, status_comment
 ):
@@ -276,7 +276,7 @@ def test_product_footprint_valid_status_comment(
     assert product_footprint.status_comment == status_comment
 
 
-@pytest.mark.parametrize("status_comment", [1, 1.0, datetime.now(), None])
+@pytest.mark.parametrize("status_comment", [1, 1.0, datetime.now()])
 def test_product_footprint_invalid_status_comment(
     valid_product_footprint_data, status_comment
 ):
