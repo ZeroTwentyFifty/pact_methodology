@@ -46,7 +46,7 @@ class ProductFootprint:
         created: DateTime,
         updated: DateTime | None = None,
         status: ProductFootprintStatus,
-        status_comment: str,
+        status_comment: str | None = None,
         validity_period: ValidityPeriod,
         company_name: str,
         company_ids: list[CompanyId],
@@ -69,7 +69,7 @@ class ProductFootprint:
             created (DateTime): The date and time when the ProductFootprint was created.
             updated (DateTime | None): The date and time when the ProductFootprint was last updated.
             status (ProductFootprintStatus): The status of the ProductFootprint.
-            status_comment (str): A comment describing the status of the ProductFootprint.
+            status_comment (str | None): A comment describing the status of the ProductFootprint.
             validity_period (ValidityPeriod): The validity period for the ProductFootprint.
             company_name (str): The name of the company that owns the ProductFootprint.
             company_ids (list[CompanyId]): A list of CompanyIds for the company that owns the ProductFootprint.
@@ -98,7 +98,7 @@ class ProductFootprint:
                 raise ValueError("updated must be an instance of DateTime")
         if not isinstance(status, ProductFootprintStatus):
             raise ValueError("status must be an instance of ProductFootprintStatus")
-        if not isinstance(status_comment, str):
+        if status_comment is not None and not isinstance(status_comment, str):
             raise ValueError("status_comment must be a string")
         if not isinstance(validity_period, ValidityPeriod):
             raise ValueError("validity_period must be an instance of ValidityPeriod")
