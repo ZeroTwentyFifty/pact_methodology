@@ -230,7 +230,7 @@ def test_product_footprint_invalid_created(valid_product_footprint_data, created
         ProductFootprint(**product_footprint_data)
 
 
-@pytest.mark.parametrize("updated", [DateTime.now()])
+@pytest.mark.parametrize("updated", [DateTime.now(), None])
 def test_product_footprint_valid_updated(valid_product_footprint_data, updated):
     product_footprint_data = {**valid_product_footprint_data, "updated": updated}
     product_footprint = ProductFootprint(**product_footprint_data)
@@ -238,7 +238,7 @@ def test_product_footprint_valid_updated(valid_product_footprint_data, updated):
 
 
 @pytest.mark.parametrize(
-    "updated", ["2022-01-01", datetime.now(), 1643723400, 1.0, None]
+    "updated", ["2022-01-01", datetime.now(), 1643723400, 1.0]
 )
 def test_product_footprint_invalid_updated(valid_product_footprint_data, updated):
     product_footprint_data = {**valid_product_footprint_data, "updated": updated}
