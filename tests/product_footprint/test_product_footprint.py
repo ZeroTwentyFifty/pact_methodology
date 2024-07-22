@@ -126,7 +126,7 @@ def valid_product_footprint_data(valid_carbon_footprint_data):
     valid_cpc = cpc_code_lookup.lookup("0111")
     version = Version(1)
 
-    validity_period = ValidityPeriod(DateTime.now(), DateTime.now())
+    validity_period = ValidityPeriod(start=DateTime.now(), end=DateTime.now())
     extensions = [
         DataModelExtension(
             spec_version="2.0.0",
@@ -290,7 +290,7 @@ def test_product_footprint_invalid_status_comment(
 
 def test_product_footprint_valid_validity_period(valid_product_footprint_data):
     validity_period = ValidityPeriod(
-        DateTime("2022-01-01T00:00:00Z"), DateTime("2025-12-31T23:59:59Z")
+        start=DateTime("2022-01-01T00:00:00Z"), end=DateTime("2025-12-31T23:59:59Z")
     )
     product_footprint_data = {
         **valid_product_footprint_data,
