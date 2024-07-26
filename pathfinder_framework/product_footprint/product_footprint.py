@@ -47,7 +47,7 @@ class ProductFootprint:
         updated: DateTime | None = None,
         status: ProductFootprintStatus,
         status_comment: str | None = None,
-        validity_period: ValidityPeriod,
+        validity_period: ValidityPeriod | None = None,
         company_name: str,
         company_ids: list[CompanyId],
         product_description: str,
@@ -100,8 +100,9 @@ class ProductFootprint:
             raise ValueError("status must be an instance of ProductFootprintStatus")
         if status_comment is not None and not isinstance(status_comment, str):
             raise ValueError("status_comment must be a string")
-        if not isinstance(validity_period, ValidityPeriod):
-            raise ValueError("validity_period must be an instance of ValidityPeriod")
+        if validity_period is not None:
+            if not isinstance(validity_period, ValidityPeriod):
+                raise ValueError("validity_period must be an instance of ValidityPeriod")
         if not isinstance(company_name, str) or not company_name:
             raise ValueError("company_name must be a non-empty string")
         if not isinstance(company_ids, list) or not all(
@@ -142,7 +143,6 @@ class ProductFootprint:
         self.updated = updated
         self.status = status
         self.status_comment = status_comment
-        self.validity_period = validity_period
         self.company_name = company_name
         self.company_ids = company_ids
         self.product_description = product_description
@@ -153,6 +153,7 @@ class ProductFootprint:
         self.extensions = extensions
         self.pcf = pcf
         self.preceding_pf_ids = preceding_pf_ids
+        self.validity_period = validity_period if validity_period else ValidityPeriod(reference_period_end=self.pcf.reference_period.end)
 
     def __repr__(self) -> str:
         """Returns a string representation of the ProductFootprint instance."""

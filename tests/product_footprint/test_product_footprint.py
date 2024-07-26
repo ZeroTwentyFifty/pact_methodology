@@ -59,8 +59,16 @@ def version() -> Version:
     return Version(1)
 
 
+@pytest.fixture(scope="module")
+def start_and_end_time() -> (DateTime, DateTime):
+    return DateTime.now(), DateTime.now()
+
+
 @pytest.fixture
-def valid_carbon_footprint_data():
+def valid_carbon_footprint_data(start_and_end_time):
+
+    start_time, end_time = start_and_end_time
+
     return {
         "declared_unit": DeclaredUnit.KILOGRAM,
         "unitary_product_amount": 1.0,
@@ -75,7 +83,7 @@ def valid_carbon_footprint_data():
         "boundary_processes_description": "boundary processes description",
         "exempted_emissions_percent": 1.0,
         "exempted_emissions_description": "Rationale for exclusion",
-        "reference_period": ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
+        "reference_period": ReferencePeriod(start=start_time, end=end_time),
         "packaging_emissions_included": True,
         "geographical_scope": CarbonFootprintGeographicalScope(
             global_scope=True,
@@ -298,6 +306,15 @@ def test_product_footprint_valid_validity_period(valid_product_footprint_data):
     }
     product_footprint = ProductFootprint(**product_footprint_data)
     assert product_footprint.validity_period == validity_period
+
+
+def test_product_footprint_empty_validity_period(valid_product_footprint_data):
+    product_footprint_data = {
+        **valid_product_footprint_data,
+        "validity_period": None,
+    }
+    product_footprint = ProductFootprint(**product_footprint_data)
+    assert isinstance(product_footprint.validity_period, ValidityPeriod)
 
 
 @pytest.mark.parametrize("company_name", [123, 1.0, None, [], {}, ""])
