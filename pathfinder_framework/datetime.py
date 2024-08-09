@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta, timezone
 
+from dateutil.relativedelta import relativedelta
+
 
 class DateTime:
     """
@@ -39,6 +41,22 @@ class DateTime:
             DateTime: A new DateTime object representing the current date and time in UTC.
         """
         return cls(datetime.now(timezone.utc).isoformat())
+
+    @classmethod
+    def create_datetime_years_from_now(cls, years: int) -> "DateTime":
+        """
+        Creates a new DateTime object representing the date that is
+        a specified number of years from the current date in UTC.
+
+        Args:
+            years (int): The number of years to add.
+
+        Returns:
+            DateTime: A new DateTime object years in the future.
+        """
+        now = datetime.now(timezone.utc)
+        future_dt = now + relativedelta(years=years)
+        return cls(future_dt.isoformat())
 
     def __eq__(self, other: object) -> bool:
         """

@@ -134,3 +134,17 @@ def test_greater_than_or_equal():
     assert dt1 >= dt2
     dt3 = DateTime("2020-03-02T00:00:00Z")
     assert dt1 >= dt3
+
+
+@pytest.mark.parametrize("years, expected_year", [
+    (1, 2025),
+    (2, 2026),
+    (3, 2027),
+    (0, 2024),
+    (-1, 2023)
+])
+def test_from_years_from_now(years: int, expected_year: int):
+    future_date = DateTime.create_datetime_years_from_now(years)
+    future_year = future_date.year
+
+    assert future_year == expected_year
