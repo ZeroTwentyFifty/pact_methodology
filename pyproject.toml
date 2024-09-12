@@ -6,7 +6,7 @@ authors = ["JohnVonNeumann <louis@zerotwentyfifty.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.11"
 pycountry = "^23.12.11"
 casregnum = "^1.0.1"
 urnparse = "^0.2.1"
