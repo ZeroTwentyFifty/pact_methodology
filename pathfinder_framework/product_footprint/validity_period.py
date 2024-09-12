@@ -8,39 +8,31 @@ class ValidityPeriod:
     """
     Represents a validity period with a start and end date.
 
-    Ultimately, because the ValidityPeriod is modelled as an entity in this library
-    it changes the ProductFootprint entity slightly. The nature of the change in
-    v2.2 effectively means that whilst the validity period is optional, as they have
-    stated, you then use the reference period end, and that assigns a validity period
-    now no longer making the validity period optional, the docs would indicate that
-    a PF can have an undefined period of validity, but the max is 3 years.
+    Attributes:
+        start (DateTime): The start date of the validity period.
+        end (DateTime): The end date of the validity period.
     """
 
-    @classmethod
-    def three_years_from_end(cls, end_date: DateTime) -> DateTime:
-        """
-        Calculate the date that is 3 years from the given end date.
-        """
-        dt = datetime.fromisoformat(end_date.value.replace("Z", "+00:00"))
-        return DateTime((dt + relativedelta(years=3)).isoformat())
 
-    def __init__(self, *, start=None, end=None, reference_period_end=None) -> None:
+    def __init__(
+        self,
+        *,
+        start: DateTime = None,
+        end: DateTime = None,
+        reference_period_end: DateTime = None
+    ) -> None:
         """
         Represents a validity period with a start and end date.
 
         Args:
-            start: The start date of the validity period. Defaults to None.
-            end: The end date of the validity period. Defaults to None.
-            reference_period_end: The reference date to calculate default start and end if not provided. Defaults to None.
+            start (DateTime, optional): The start date of the validity period. Defaults to None.
+            end (DateTime, optional): The end date of the validity period. Defaults to None.
+            reference_period_end (DateTime, optional): The reference date to calculate default start and end if not provided. Defaults to None.
 
         Raises:
-            ValueError: If start and end dates are not provided and reference_period_end is also not provided.
-            ValueError: If start or end is not a DateTime object.
+            ValueError: If start or end dates are not provided and reference period end date is not provided.
+            ValueError: If start or end dates are not DateTime objects.
             ValueError: If start date is not before end date.
-
-        Attributes:
-            start (DateTime): The start date of the validity period.
-            end (DateTime): The end date of the validity period.
         """
         if not (start and end):
             if reference_period_end is None:
@@ -60,9 +52,32 @@ class ValidityPeriod:
             self.start = start
             self.end = end
 
+    @classmethod
+    def three_years_from_end(cls, end_date: DateTime) -> DateTime:
+        """
+        Calculate the date that is 3 years from the given end date.
+
+        Args:
+            end_date (DateTime): The end date to calculate from.
+
+        Returns:
+            DateTime: The date that is 3 years from the given end date.
+        """
+        dt = datetime.fromisoformat(end_date.iso_string.replace("Z", "+00:00"))
+        return DateTime((dt + relativedelta(years=3)).isoformat())
+
     def is_valid(self, reference_period_end: DateTime) -> bool:
         """
         Checks if the validity period is valid with respect to the reference period end date.
+
+        Args:
+            reference_period_end (DateTime): The reference period end date.
+
+        Returns:
+            bool: True if the validity period is valid, False otherwise.
+
+        Raises:
+            ValueError: If reference period end date is not a DateTime object.
         """
         if not isinstance(reference_period_end, DateTime):
             raise ValueError("Reference period end date must be a DateTime object")
