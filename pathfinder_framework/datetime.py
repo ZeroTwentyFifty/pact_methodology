@@ -10,6 +10,7 @@ class DateTime:
     Attributes:
         value (str): The date and time string in ISO 8601 format with UTC timezone, always represented with 'Z'
                     instead of '+00:00'.
+
     """
 
     def __init__(self, value: str) -> None:
@@ -23,8 +24,8 @@ class DateTime:
             ValueError: If the value is not a valid ISO 8601 date and time string with UTC timezone.
         """
         try:
-            dt = datetime.fromisoformat(value.replace("Z", "+00:00"))
-            if dt.tzinfo is None or dt.tzinfo.utcoffset(dt) != timedelta(0):
+            dt = datetime.fromisoformat(value)
+            if dt.tzinfo is None or dt.tzinfo != timezone.utc:
                 raise ValueError(
                     "Invalid ISO 8601 date and time string, timezone must be UTC"
                 )
