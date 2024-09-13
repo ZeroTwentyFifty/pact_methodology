@@ -2,6 +2,7 @@ import pytest
 
 from datetime import datetime
 
+from pathfinder_framework.carbon_footprint.biogenic_accounting_methodology import BiogenicAccountingMethodology
 from pathfinder_framework.carbon_footprint.carbon_footprint import CarbonFootprint
 from pathfinder_framework.assurance.assurance import (
     Assurance,
@@ -61,7 +62,7 @@ def version() -> Version:
 
 @pytest.fixture(scope="module")
 def start_and_end_time() -> (DateTime, DateTime):
-    return DateTime.now(), DateTime.now()
+    return DateTime.now(), DateTime.create_datetime_years_from_now(3)
 
 
 @pytest.fixture
@@ -114,6 +115,7 @@ def valid_carbon_footprint_data(start_and_end_time):
             standard_name="Example standard name",
             comments="Example comments",
         ),
+        "biogenic_accounting_methodology": BiogenicAccountingMethodology.GHGP
     }
 
 
@@ -123,7 +125,7 @@ def carbon_footprint(valid_carbon_footprint_data):
 
 
 @pytest.fixture
-def valid_product_footprint_data(valid_carbon_footprint_data):
+def valid_product_footprint_data(valid_carbon_footprint_data, carbon_footprint):
     company_ids = [
         CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
     ]
@@ -134,7 +136,7 @@ def valid_product_footprint_data(valid_carbon_footprint_data):
     valid_cpc = cpc_code_lookup.lookup("0111")
     version = Version(1)
 
-    validity_period = ValidityPeriod(start=DateTime.now(), end=DateTime.now())
+    validity_period = ValidityPeriod(reference_period_end=carbon_footprint.reference_period.end)
     extensions = [
         DataModelExtension(
             spec_version="2.0.0",
@@ -315,6 +317,17 @@ def test_product_footprint_empty_validity_period(valid_product_footprint_data):
     }
     product_footprint = ProductFootprint(**product_footprint_data)
     assert isinstance(product_footprint.validity_period, ValidityPeriod)
+
+
+def test_product_footprint_default_reference_period(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+    # The start date of the validity period should be equal to the end date of the reference period.
+    expected_start_date = product_footprint.pcf.reference_period.end
+    assert DateTime.same_day(product_footprint.validity_period.start, expected_start_date)
+
+    # The end date should be 3 years after the start date.
+    expected_end_date = ValidityPeriod.three_years_from_end(product_footprint.validity_period.start)
+    assert product_footprint.validity_period.end == expected_end_date
 
 
 @pytest.mark.parametrize("company_name", [123, 1.0, None, [], {}, ""])
