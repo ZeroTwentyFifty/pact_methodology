@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pathfinder-framework"
+name = "pact-methodology"
 version = "0.1.0"
 description = ""
 authors = ["JohnVonNeumann <louis@zerotwentyfifty.com>"]
