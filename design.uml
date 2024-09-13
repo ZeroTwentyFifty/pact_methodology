@@ -16,3 +16,35 @@
 | + __init__(start, end) |
 | + is_valid(reference_period_end) |
 +-----------------------+
+
+
+@startuml
+skinparam class {
+    FontName Arial
+    FontSize 14
+    ArrowColor Black
+}
+
+class DateTime {
+    + iso_datetime : DateTime
+    + iso_string : str
+
+    constructor (value : str)
+    method now() : DateTime
+    method create_datetime_years_from_now(years : int) : DateTime
+    static method same_day(first : DateTime, second : DateTime) : bool
+    method ==(other : object) : bool
+    method <(other : DateTime) : bool
+    method <=(other : DateTime) : bool
+    method >(other : DateTime) : bool
+    method >=(other : DateTime) : bool
+    method __repr__() : str
+    method __str__() : str
+    property date
+    property year : int
+    property month : int
+    property day : int
+    property time : str
+}
+
+@enduml
