@@ -70,7 +70,7 @@ class ProductFootprint:
             updated (DateTime | None): The date and time when the ProductFootprint was last updated.
             status (ProductFootprintStatus): The status of the ProductFootprint.
             status_comment (str | None): A comment describing the status of the ProductFootprint.
-            validity_period (ValidityPeriod): The validity period for the ProductFootprint.
+            validity_period (ValidityPeriod | None): The validity period for the ProductFootprint.
             company_name (str): The name of the company that owns the ProductFootprint.
             company_ids (list[CompanyId]): A list of CompanyIds for the company that owns the ProductFootprint.
             product_description (str): A description of the product.
