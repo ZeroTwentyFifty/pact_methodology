@@ -1,13 +1,13 @@
 import pytest
 
-from pathfinder_framework.carbon_footprint.reference_period import ReferencePeriod
-from pathfinder_framework.data_quality_indicators.data_quality_indicators import (
+from pact_methodology.carbon_footprint.reference_period import ReferencePeriod
+from pact_methodology.data_quality_indicators.data_quality_indicators import (
     DataQualityIndicators,
 )
-from pathfinder_framework.data_quality_indicators.data_quality_rating import (
+from pact_methodology.data_quality_indicators.data_quality_rating import (
     DataQualityRating,
 )
-from pathfinder_framework.datetime import DateTime
+from pact_methodology.datetime import DateTime
 
 
 @pytest.fixture

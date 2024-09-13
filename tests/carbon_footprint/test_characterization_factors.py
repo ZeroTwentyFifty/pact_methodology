@@ -1,6 +1,6 @@
 import pytest
 
-from pathfinder_framework.carbon_footprint.characterization_factors import (
+from pact_methodology.carbon_footprint.characterization_factors import (
     CharacterizationFactors,
 )
 

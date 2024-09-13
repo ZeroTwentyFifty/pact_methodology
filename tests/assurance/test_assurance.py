@@ -1,12 +1,12 @@
 import pytest
 
-from pathfinder_framework.assurance.assurance import (
+from pact_methodology.assurance.assurance import (
     Assurance,
     Coverage,
     Level,
     Boundary,
 )
-from pathfinder_framework.datetime import DateTime
+from pact_methodology.datetime import DateTime
 
 
 def test_assurance_init():

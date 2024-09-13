@@ -1,5 +1,5 @@
-from pathfinder_framework.carbon_footprint.reference_period import ReferencePeriod
-from pathfinder_framework.data_quality_indicators.data_quality_rating import (
+from pact_methodology.carbon_footprint.reference_period import ReferencePeriod
+from pact_methodology.data_quality_indicators.data_quality_rating import (
     DataQualityRating,
 )
 

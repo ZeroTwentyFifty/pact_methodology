@@ -1,4 +1,4 @@
-from pathfinder_framework.carbon_footprint.product_or_sector_specific_rule_operator import (
+from pact_methodology.carbon_footprint.product_or_sector_specific_rule_operator import (
     ProductOrSectorSpecificRuleOperator,
 )
 

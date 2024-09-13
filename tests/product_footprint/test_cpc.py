@@ -1,6 +1,6 @@
 import pytest
 
-from pathfinder_framework.product_footprint.cpc import CPCCodeLookup, CPC
+from pact_methodology.product_footprint.cpc import CPCCodeLookup, CPC
 
 
 @pytest.fixture

@@ -1,4 +1,4 @@
-from pathfinder_framework.carbon_footprint.cross_sectoral_standard import (
+from pact_methodology.carbon_footprint.cross_sectoral_standard import (
     CrossSectoralStandard,
 )
 

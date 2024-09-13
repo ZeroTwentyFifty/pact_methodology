@@ -1,14 +1,14 @@
-from pathfinder_framework.carbon_footprint.carbon_footprint import CarbonFootprint
-from pathfinder_framework.data_model_extension.data_model_extension import (
+from pact_methodology.carbon_footprint.carbon_footprint import CarbonFootprint
+from pact_methodology.data_model_extension.data_model_extension import (
     DataModelExtension,
 )
-from pathfinder_framework.datetime import DateTime
-from pathfinder_framework.product_footprint.id import ProductFootprintId
-from pathfinder_framework.product_footprint.status import ProductFootprintStatus
-from pathfinder_framework.product_footprint.cpc import CPC
-from pathfinder_framework.product_footprint.version import Version
-from pathfinder_framework.product_footprint.validity_period import ValidityPeriod
-from pathfinder_framework.urn import CompanyId, ProductId
+from pact_methodology.datetime import DateTime
+from pact_methodology.product_footprint.id import ProductFootprintId
+from pact_methodology.product_footprint.status import ProductFootprintStatus
+from pact_methodology.product_footprint.cpc import CPC
+from pact_methodology.product_footprint.version import Version
+from pact_methodology.product_footprint.validity_period import ValidityPeriod
+from pact_methodology.urn import CompanyId, ProductId
 
 
 class ProductFootprint:

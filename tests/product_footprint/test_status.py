@@ -1,4 +1,4 @@
-from pathfinder_framework.product_footprint.status import ProductFootprintStatus
+from pact_methodology.product_footprint.status import ProductFootprintStatus
 
 
 def test_product_footprint_status_values():

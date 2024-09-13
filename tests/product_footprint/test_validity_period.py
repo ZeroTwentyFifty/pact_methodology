@@ -2,8 +2,8 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from pathfinder_framework.datetime import DateTime
-from pathfinder_framework.product_footprint.validity_period import ValidityPeriod
+from pact_methodology.datetime import DateTime
+from pact_methodology.product_footprint.validity_period import ValidityPeriod
 
 
 def test_validity_period_init_with_start_and_end():

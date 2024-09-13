@@ -28,7 +28,7 @@ At our core, we are driven by a powerful purpose - to empower organizations to s
 **Installation**
 
 ```bash
-pip install pathfinder_framework
+pip install pact_methodology
 ```
 
 Use code with caution.

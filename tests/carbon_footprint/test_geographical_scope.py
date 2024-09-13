@@ -1,10 +1,10 @@
 import pytest
 
-from pathfinder_framework.carbon_footprint.geographical_scope import (
+from pact_methodology.carbon_footprint.geographical_scope import (
     CarbonFootprintGeographicalScope,
     GeographicalGranularity,
 )
-from pathfinder_framework.carbon_footprint.region_or_subregion import RegionOrSubregion
+from pact_methodology.carbon_footprint.region_or_subregion import RegionOrSubregion
 
 
 @pytest.mark.parametrize(

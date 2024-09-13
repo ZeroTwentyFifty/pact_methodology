@@ -1,6 +1,6 @@
 from enum import Enum
 
-from pathfinder_framework.datetime import DateTime
+from pact_methodology.datetime import DateTime
 
 
 class Coverage(str, Enum):

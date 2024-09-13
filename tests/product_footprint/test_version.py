@@ -1,6 +1,6 @@
 import pytest
 
-from pathfinder_framework.product_footprint.version import Version
+from pact_methodology.product_footprint.version import Version
 
 
 def test_init_with_valid_version():

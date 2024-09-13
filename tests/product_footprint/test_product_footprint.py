@@ -2,39 +2,39 @@ import pytest
 
 from datetime import datetime
 
-from pathfinder_framework.carbon_footprint.biogenic_accounting_methodology import BiogenicAccountingMethodology
-from pathfinder_framework.carbon_footprint.carbon_footprint import CarbonFootprint
-from pathfinder_framework.assurance.assurance import (
+from pact_methodology.carbon_footprint.biogenic_accounting_methodology import BiogenicAccountingMethodology
+from pact_methodology.carbon_footprint.carbon_footprint import CarbonFootprint
+from pact_methodology.assurance.assurance import (
     Assurance,
     Coverage,
     Level,
     Boundary,
 )
-from pathfinder_framework.product_footprint.id import ProductFootprintId
-from pathfinder_framework.product_footprint.product_footprint import ProductFootprint
-from pathfinder_framework.product_footprint.status import ProductFootprintStatus
-from pathfinder_framework.urn import CompanyId, ProductId
-from pathfinder_framework.product_footprint.cpc import CPCCodeLookup, CPC
-from pathfinder_framework.product_footprint.version import Version
-from pathfinder_framework.datetime import DateTime
-from pathfinder_framework.carbon_footprint.characterization_factors import (
+from pact_methodology.product_footprint.id import ProductFootprintId
+from pact_methodology.product_footprint.product_footprint import ProductFootprint
+from pact_methodology.product_footprint.status import ProductFootprintStatus
+from pact_methodology.urn import CompanyId, ProductId
+from pact_methodology.product_footprint.cpc import CPCCodeLookup, CPC
+from pact_methodology.product_footprint.version import Version
+from pact_methodology.datetime import DateTime
+from pact_methodology.carbon_footprint.characterization_factors import (
     CharacterizationFactors,
 )
-from pathfinder_framework.carbon_footprint.cross_sectoral_standard import (
+from pact_methodology.carbon_footprint.cross_sectoral_standard import (
     CrossSectoralStandard,
 )
-from pathfinder_framework.carbon_footprint.declared_unit import DeclaredUnit
-from pathfinder_framework.datetime import DateTime
-from pathfinder_framework.carbon_footprint.reference_period import ReferencePeriod
-from pathfinder_framework.carbon_footprint.geographical_scope import (
+from pact_methodology.carbon_footprint.declared_unit import DeclaredUnit
+from pact_methodology.datetime import DateTime
+from pact_methodology.carbon_footprint.reference_period import ReferencePeriod
+from pact_methodology.carbon_footprint.geographical_scope import (
     CarbonFootprintGeographicalScope,
     GeographicalGranularity,
 )
-from pathfinder_framework.data_quality_indicators.data_quality_indicators import (
+from pact_methodology.data_quality_indicators.data_quality_indicators import (
     DataQualityIndicators,
 )
-from pathfinder_framework.product_footprint.validity_period import ValidityPeriod
-from pathfinder_framework.data_model_extension.data_model_extension import (
+from pact_methodology.product_footprint.validity_period import ValidityPeriod
+from pact_methodology.data_model_extension.data_model_extension import (
     DataModelExtension,
 )
 

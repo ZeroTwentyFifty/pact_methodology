@@ -1,7 +1,7 @@
 import pytest
 
-from pathfinder_framework.carbon_footprint.reference_period import ReferencePeriod
-from pathfinder_framework.datetime import DateTime
+from pact_methodology.carbon_footprint.reference_period import ReferencePeriod
+from pact_methodology.datetime import DateTime
 
 
 def test_reference_period_init():

@@ -2,7 +2,7 @@ import uuid
 
 import pytest
 
-from pathfinder_framework.product_footprint.id import ProductFootprintId
+from pact_methodology.product_footprint.id import ProductFootprintId
 
 
 def test_product_footprint_id_init():
