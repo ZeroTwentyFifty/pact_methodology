@@ -1,5 +1,5 @@
-from pathfinder_framework.urn import CompanyId
-from pathfinder_framework.exceptions import DuplicateIdError
+from pact_methodology.urn import CompanyId
+from pact_methodology.exceptions import DuplicateIdError
 
 
 class CompanyIdList:

@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime, timedelta, timezone
 
-from pathfinder_framework.datetime import DateTime
+from pact_methodology.datetime import DateTime
 
 
 def test_valid_iso_8601_string():

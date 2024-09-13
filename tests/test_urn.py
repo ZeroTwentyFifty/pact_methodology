@@ -1,6 +1,6 @@
 import pytest
 
-from pathfinder_framework.urn import URN, CompanyId, ProductId
+from pact_methodology.urn import URN, CompanyId, ProductId
 
 
 def test_valid_urn():

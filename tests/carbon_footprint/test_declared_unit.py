@@ -1,4 +1,4 @@
-from pathfinder_framework.carbon_footprint.declared_unit import DeclaredUnit
+from pact_methodology.carbon_footprint.declared_unit import DeclaredUnit
 
 
 def test_declared_unit_values():

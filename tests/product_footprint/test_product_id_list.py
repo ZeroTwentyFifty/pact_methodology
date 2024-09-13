@@ -1,8 +1,8 @@
 import pytest
 
-from pathfinder_framework.exceptions import DuplicateIdError
-from pathfinder_framework.urn import ProductId
-from pathfinder_framework.product_footprint.product_id_list import ProductIdList
+from pact_methodology.exceptions import DuplicateIdError
+from pact_methodology.urn import ProductId
+from pact_methodology.product_footprint.product_id_list import ProductIdList
 
 
 def test_product_id_list_valid_product_ids():

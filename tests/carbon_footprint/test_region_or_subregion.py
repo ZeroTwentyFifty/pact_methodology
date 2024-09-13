@@ -1,4 +1,4 @@
-from pathfinder_framework.carbon_footprint.region_or_subregion import RegionOrSubregion
+from pact_methodology.carbon_footprint.region_or_subregion import RegionOrSubregion
 
 
 def test_region_or_subregion_values():

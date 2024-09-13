@@ -1,6 +1,6 @@
 import pytest
 
-from pathfinder_framework.carbon_footprint.biogenic_accounting_methodology import (
+from pact_methodology.carbon_footprint.biogenic_accounting_methodology import (
     BiogenicAccountingMethodology,
 )
 

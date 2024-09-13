@@ -2,7 +2,7 @@ from enum import Enum
 
 import pycountry
 
-from pathfinder_framework.carbon_footprint.region_or_subregion import RegionOrSubregion
+from pact_methodology.carbon_footprint.region_or_subregion import RegionOrSubregion
 
 
 class GeographicalGranularity(Enum):

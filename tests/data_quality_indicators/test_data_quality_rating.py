@@ -1,6 +1,6 @@
 import pytest
 
-from pathfinder_framework.data_quality_indicators.data_quality_rating import (
+from pact_methodology.data_quality_indicators.data_quality_rating import (
     DataQualityRating,
 )
 

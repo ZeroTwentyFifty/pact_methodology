@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
-from pathfinder_framework.datetime import DateTime
+from pact_methodology.datetime import DateTime
 
 
 class ValidityPeriod:

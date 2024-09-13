@@ -1,6 +1,6 @@
 import pytest
 
-from pathfinder_framework.data_model_extension.data_model_extension import (
+from pact_methodology.data_model_extension.data_model_extension import (
     DataModelExtension,
 )
 

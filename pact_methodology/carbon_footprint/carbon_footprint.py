@@ -1,20 +1,20 @@
-from pathfinder_framework.assurance.assurance import Assurance
-from pathfinder_framework.carbon_footprint.characterization_factors import (
+from pact_methodology.assurance.assurance import Assurance
+from pact_methodology.carbon_footprint.characterization_factors import (
     CharacterizationFactors,
 )
-from pathfinder_framework.carbon_footprint.cross_sectoral_standard import (
+from pact_methodology.carbon_footprint.cross_sectoral_standard import (
     CrossSectoralStandard,
 )
-from pathfinder_framework.carbon_footprint.declared_unit import DeclaredUnit
-from pathfinder_framework.carbon_footprint.geographical_scope import (
+from pact_methodology.carbon_footprint.declared_unit import DeclaredUnit
+from pact_methodology.carbon_footprint.geographical_scope import (
     CarbonFootprintGeographicalScope,
 )
-from pathfinder_framework.carbon_footprint.reference_period import ReferencePeriod
-from pathfinder_framework.data_quality_indicators.data_quality_indicators import (
+from pact_methodology.carbon_footprint.reference_period import ReferencePeriod
+from pact_methodology.data_quality_indicators.data_quality_indicators import (
     DataQualityIndicators,
 )
-from pathfinder_framework.carbon_footprint.biogenic_accounting_methodology import BiogenicAccountingMethodology
-from pathfinder_framework.carbon_footprint.product_or_sector_specific_rule import ProductOrSectorSpecificRule
+from pact_methodology.carbon_footprint.biogenic_accounting_methodology import BiogenicAccountingMethodology
+from pact_methodology.carbon_footprint.product_or_sector_specific_rule import ProductOrSectorSpecificRule
 
 
 class CarbonFootprint:

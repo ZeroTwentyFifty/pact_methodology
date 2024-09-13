@@ -1,6 +1,6 @@
 from __future__ import annotations  # For forward references within the module
 
-from pathfinder_framework.datetime import DateTime
+from pact_methodology.datetime import DateTime
 
 
 class ReferencePeriod:

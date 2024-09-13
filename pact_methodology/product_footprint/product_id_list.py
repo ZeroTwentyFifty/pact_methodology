@@ -1,5 +1,5 @@
-from pathfinder_framework.exceptions import DuplicateIdError
-from pathfinder_framework.urn import ProductId
+from pact_methodology.exceptions import DuplicateIdError
+from pact_methodology.urn import ProductId
 
 
 class ProductIdList:
