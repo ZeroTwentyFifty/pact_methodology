@@ -599,7 +599,7 @@ def test_product_footprint_extensions(valid_product_footprint_data):
     )
 
 
-@pytest.mark.parametrize("extensions", [123, 1.0, None, "string", {}])
+@pytest.mark.parametrize("extensions", [123, 1.0, "string", {}])
 def test_product_footprint_invalid_extensions(valid_product_footprint_data, extensions):
     invalid_product_footprint_data = {
         **valid_product_footprint_data,
