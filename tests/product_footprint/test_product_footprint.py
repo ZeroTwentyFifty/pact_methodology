@@ -200,7 +200,7 @@ def test_product_footprint_initialization(valid_product_footprint_data):
 
 def test_product_footprint_spec_version(valid_product_footprint_data):
     product_footprint = ProductFootprint(**valid_product_footprint_data)
-    assert product_footprint.spec_version == "2.0.0"
+    assert product_footprint.spec_version == "2.2.0"
 
 
 def test_product_footprint_invalid_spec_version(valid_product_footprint_data):

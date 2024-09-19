@@ -41,7 +41,7 @@ class ProductFootprint:
         self,
         *,
         id: ProductFootprintId | None = None,
-        spec_version: str = "2.0.0",
+        spec_version: str = "2.2.0",
         version: Version,
         created: DateTime,
         updated: DateTime | None = None,
@@ -87,7 +87,7 @@ class ProductFootprint:
             raise ValueError("pcf must be an instance of CarbonFootprint")
         if not isinstance(id, (ProductFootprintId, type(None))):
             raise ValueError("id must be an instance of ProductFootprintId or None")
-        if spec_version != "2.0.0":
+        if spec_version != "2.2.0":
             raise ValueError("Invalid spec version")
         if not isinstance(version, Version):
             raise ValueError("version must be an instance of Version")
