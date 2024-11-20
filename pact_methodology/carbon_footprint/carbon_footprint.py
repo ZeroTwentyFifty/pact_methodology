@@ -16,7 +16,6 @@ from pact_methodology.data_quality_indicators.data_quality_indicators import (
 from pact_methodology.carbon_footprint.biogenic_accounting_methodology import BiogenicAccountingMethodology
 from pact_methodology.carbon_footprint.product_or_sector_specific_rule import ProductOrSectorSpecificRule
 
-
 class CarbonFootprint:
     """
     A CarbonFootprint represents the carbon footprint of a product and related data in accordance with the Pathfinder Framework.
@@ -31,9 +30,10 @@ class CarbonFootprint:
         characterization_factors (CharacterizationFactors): The IPCC version of the GWP characterization factors used in the calculation of the PCF.
         ipcc_characterization_factors_sources (list[str]): The characterization factors from one or more IPCC Assessment Reports used in the calculation of the PCF.
         cross_sectoral_standards_used (list[CrossSectoralStandard]): The cross-sectoral standards applied for calculating or allocating GHG emissions.
+        boundary_processes_description (str): Description of boundary processes.
         exempted_emissions_percent (float): The Percentage of emissions excluded from PCF, expressed as a decimal number between 0.0 and 5 including.
         exempted_emissions_description (str): Rationale behind exclusion of specific PCF emissions, can be the empty string if no emissions were excluded.
-        reference_period (ReferencePeriod): The period over which the data was recorded for the Carbon Footprint_
+        reference_period (ReferencePeriod): The period over which the data was recorded for the Carbon Footprint.
         packaging_emissions_included (bool): A boolean flag indicating whether packaging emissions are included in the PCF (pCfExcludingBiogenic, pCfIncludingBiogenic).
         geographical_scope (CarbonFootprintGeographicalScope): The geographical scope of the carbon footprint.
         p_cf_including_biogenic (float | None): Carbon footprint including all biogenic emissions, expressed per declared unit.
@@ -87,124 +87,6 @@ class CarbonFootprint:
         biogenic_accounting_methodology=None,
         product_or_sector_specific_rules=None
     ):
-        if not isinstance(declared_unit, DeclaredUnit):
-            raise ValueError(
-                f"declared_unit '{declared_unit}' is not valid. It must be one of the following: {', '.join([unit.value for unit in DeclaredUnit])}"
-            )
-        if unitary_product_amount <= 0:
-            raise ValueError("unitary_product_amount must be strictly greater than 0")
-        if p_cf_excluding_biogenic < 0:
-            raise ValueError(
-                "p_cf_excluding_biogenic must be equal to or greater than 0"
-            )
-        if fossil_ghg_emissions < 0:
-            raise ValueError("fossil_ghg_emissions must be equal to or greater than 0")
-        if fossil_carbon_content < 0:
-            raise ValueError("fossil_carbon_content must be equal to or greater than 0")
-        if biogenic_carbon_content < 0:
-            raise ValueError(
-                "biogenic_carbon_content must be equal to or greater than 0"
-            )
-        if not isinstance(characterization_factors, CharacterizationFactors):
-            raise ValueError(
-                "characterization_factors must be an instance of CharacterizationFactors"
-            )
-        if not ipcc_characterization_factors_sources:
-            raise ValueError("ipcc_characterization_factors_sources must not be empty")
-        if not all(
-            isinstance(standard, CrossSectoralStandard)
-            for standard in cross_sectoral_standards_used
-        ):
-            raise ValueError(
-                "cross_sectoral_standards_used must be a list of CrossSectoralStandard"
-            )
-        if not boundary_processes_description:
-            raise ValueError("boundary_processes_description must not be empty")
-        if not 0.0 <= exempted_emissions_percent <= 5.0:
-            raise ValueError("exempted_emissions_percent must be between 0.0 and 5.0")
-        if not isinstance(exempted_emissions_description, str):
-            raise ValueError("exempted_emissions_description must be a string")
-        if not isinstance(reference_period, ReferencePeriod):
-            raise ValueError("reference_period must be an instance of ReferencePeriod")
-        if not isinstance(packaging_emissions_included, bool):
-            raise ValueError("packaging_emissions_included must be a boolean")
-        if not isinstance(geographical_scope, CarbonFootprintGeographicalScope):
-            raise ValueError(
-                "geographical_scope must be an instance of CarbonFootprintGeographicalScope"
-            )
-        if p_cf_including_biogenic is not None and not isinstance(
-            p_cf_including_biogenic, (int, float)
-        ):
-            raise ValueError("p_cf_including_biogenic must be a number")
-        if (
-            not isinstance(primary_data_share, (int, float))
-            and primary_data_share is not None
-        ):
-            raise ValueError("primaryDataShare must be a number")
-        if dqi is not None and not isinstance(dqi, DataQualityIndicators):
-            raise ValueError("dqi must be an instance of DataQualityIndicators")
-        if d_luc_ghg_emissions is not None and (
-            not isinstance(d_luc_ghg_emissions, (int, float)) or d_luc_ghg_emissions < 0
-        ):
-            raise ValueError("d_luc_ghg_emissions must be a non-negative number")
-        if land_management_ghg_emissions is not None and (
-            not isinstance(land_management_ghg_emissions, (int, float))
-        ):
-            raise ValueError("land_management_ghg_emissions must be a number")
-        if other_biogenic_ghg_emissions is not None and (
-            not isinstance(other_biogenic_ghg_emissions, (int, float))
-            or other_biogenic_ghg_emissions < 0
-        ):
-            raise ValueError(
-                "other_biogenic_ghg_emissions must be a non-negative number"
-            )
-        if biogenic_carbon_withdrawal is not None and (
-            not isinstance(biogenic_carbon_withdrawal, (int, float))
-            or biogenic_carbon_withdrawal > 0
-        ):
-            raise ValueError("biogenic_carbon_withdrawal must be a non-positive number")
-        if iluc_ghg_emissions is not None and (
-            not isinstance(iluc_ghg_emissions, (int, float)) or iluc_ghg_emissions < 0
-        ):
-            raise ValueError("iluc_ghg_emissions must be a non-negative number")
-        if aircraft_ghg_emissions is not None and (
-            not isinstance(aircraft_ghg_emissions, (int, float))
-            or aircraft_ghg_emissions < 0
-        ):
-            raise ValueError("aircraft_ghg_emissions must be a non-negative number")
-        if packaging_emissions_included and (
-            packaging_ghg_emissions is None
-            or not isinstance(packaging_ghg_emissions, (int, float))
-            or packaging_ghg_emissions < 0
-        ):
-            raise ValueError(
-                "packaging_ghg_emissions must be a non-negative number if packaging_emissions_included is true"
-            )
-        elif packaging_ghg_emissions is not None and not packaging_emissions_included:
-            raise ValueError(
-                "packaging_ghg_emissions must not be defined if packaging_emissions_included is false"
-            )
-        if allocation_rules_description is not None and not isinstance(
-            allocation_rules_description, str
-        ):
-            raise ValueError("allocation_rules_description must be a string")
-        if uncertainty_assessment_description is not None and not isinstance(
-            uncertainty_assessment_description, str
-        ):
-            raise ValueError("uncertainty_assessment_description must be a string")
-        if assurance is not None and not isinstance(assurance, Assurance):
-            raise ValueError("assurance must be an instance of Assurance")
-        if biogenic_accounting_methodology is not None and not isinstance(
-            biogenic_accounting_methodology, BiogenicAccountingMethodology
-        ):
-            raise ValueError("biogenic_accounting_methodology must be an instance of BiogenicAccountingMethodology")
-        if product_or_sector_specific_rules is not None and not all(
-                isinstance(rule, ProductOrSectorSpecificRule)
-                for rule in product_or_sector_specific_rules
-        ):
-            raise ValueError(
-                "product_or_sector_specific_rules must be a list of ProductOrSectorSpecificRule"
-            )
         self.declared_unit = declared_unit
         self.unitary_product_amount = unitary_product_amount
         self.p_cf_excluding_biogenic = p_cf_excluding_biogenic
@@ -212,9 +94,7 @@ class CarbonFootprint:
         self.fossil_carbon_content = fossil_carbon_content
         self.biogenic_carbon_content = biogenic_carbon_content
         self.characterization_factors = characterization_factors
-        self.ipcc_characterization_factors_sources = (
-            ipcc_characterization_factors_sources
-        )
+        self.ipcc_characterization_factors_sources = ipcc_characterization_factors_sources
         self.cross_sectoral_standards_used = cross_sectoral_standards_used
         self.boundary_processes_description = boundary_processes_description
         self.exempted_emissions_percent = exempted_emissions_percent
@@ -264,3 +144,307 @@ class CarbonFootprint:
                 raise ValueError(
                     "At least one of 'primary_data_share' or 'dqi' must be defined for reporting periods before 2025"
                 )
+
+    @property
+    def declared_unit(self):
+        return self._declared_unit
+
+    @declared_unit.setter
+    def declared_unit(self, value):
+        if not isinstance(value, DeclaredUnit):
+            raise ValueError(
+                f"declared_unit '{value}' is not valid. It must be one of the following: {', '.join([unit.value for unit in DeclaredUnit])}"
+            )
+        self._declared_unit = value
+
+    @property
+    def unitary_product_amount(self):
+        return self._unitary_product_amount
+
+    @unitary_product_amount.setter
+    def unitary_product_amount(self, value):
+        if value <= 0:
+            raise ValueError("unitary_product_amount must be strictly greater than 0")
+        self._unitary_product_amount = value
+
+    @property
+    def p_cf_excluding_biogenic(self):
+        return self._p_cf_excluding_biogenic
+
+    @p_cf_excluding_biogenic.setter
+    def p_cf_excluding_biogenic(self, value):
+        if value < 0:
+            raise ValueError("p_cf_excluding_biogenic must be equal to or greater than 0")
+        self._p_cf_excluding_biogenic = value
+
+    @property
+    def fossil_ghg_emissions(self):
+        return self._fossil_ghg_emissions
+
+    @fossil_ghg_emissions.setter
+    def fossil_ghg_emissions(self, value):
+        if value < 0:
+            raise ValueError("fossil_ghg_emissions must be equal to or greater than 0")
+        self._fossil_ghg_emissions = value
+
+    @property
+    def fossil_carbon_content(self):
+        return self._fossil_carbon_content
+
+    @fossil_carbon_content.setter
+    def fossil_carbon_content(self, value):
+        if value < 0:
+            raise ValueError("fossil_carbon_content must be equal to or greater than 0")
+        self._fossil_carbon_content = value
+
+    @property
+    def biogenic_carbon_content(self):
+        return self._biogenic_carbon_content
+
+    @biogenic_carbon_content.setter
+    def biogenic_carbon_content(self, value):
+        if value < 0:
+            raise ValueError("biogenic_carbon_content must be equal to or greater than 0")
+        self._biogenic_carbon_content = value
+
+    @property
+    def characterization_factors(self):
+        return self._characterization_factors
+
+    @characterization_factors.setter
+    def characterization_factors(self, value):
+        if not isinstance(value, CharacterizationFactors):
+            raise ValueError("characterization_factors must be an instance of CharacterizationFactors")
+        self._characterization_factors = value
+
+    @property
+    def ipcc_characterization_factors_sources(self):
+        return self._ipcc_characterization_factors_sources
+
+    @ipcc_characterization_factors_sources.setter
+    def ipcc_characterization_factors_sources(self, value):
+        if not value:
+            raise ValueError("ipcc_characterization_factors_sources must not be empty")
+        self._ipcc_characterization_factors_sources = value
+
+    @property
+    def cross_sectoral_standards_used(self):
+        return self._cross_sectoral_standards_used
+
+    @cross_sectoral_standards_used.setter
+    def cross_sectoral_standards_used(self, value):
+        if not all(isinstance(standard, CrossSectoralStandard) for standard in value):
+            raise ValueError("cross_sectoral_standards_used must be a list of CrossSectoralStandard")
+        self._cross_sectoral_standards_used = value
+
+    @property
+    def boundary_processes_description(self):
+        return self._boundary_processes_description
+
+    @boundary_processes_description.setter
+    def boundary_processes_description(self, value):
+        if not value:
+            raise ValueError("boundary_processes_description must not be empty")
+        self._boundary_processes_description = value
+
+    @property
+    def exempted_emissions_percent(self):
+        return self._exempted_emissions_percent
+
+    @exempted_emissions_percent.setter
+    def exempted_emissions_percent(self, value):
+        if not 0.0 <= value <= 5.0:
+            raise ValueError("exempted_emissions_percent must be between 0.0 and 5.0")
+        self._exempted_emissions_percent = value
+
+    @property
+    def exempted_emissions_description(self):
+        return self._exempted_emissions_description
+
+    @exempted_emissions_description.setter
+    def exempted_emissions_description(self, value):
+        if not isinstance(value, str):
+            raise ValueError("exempted_emissions_description must be a string")
+        self._exempted_emissions_description = value
+
+    @property
+    def reference_period(self):
+        return self._reference_period
+
+    @reference_period.setter
+    def reference_period(self, value):
+        if not isinstance(value, ReferencePeriod):
+            raise ValueError("reference_period must be an instance of ReferencePeriod")
+        self._reference_period = value
+
+    @property
+    def packaging_emissions_included(self):
+        return self._packaging_emissions_included
+
+    @packaging_emissions_included.setter
+    def packaging_emissions_included(self, value):
+        if not isinstance(value, bool):
+            raise ValueError("packaging_emissions_included must be a boolean")
+        self._packaging_emissions_included = value
+
+    @property
+    def geographical_scope(self):
+        return self._geographical_scope
+
+    @geographical_scope.setter
+    def geographical_scope(self, value):
+        if not isinstance(value, CarbonFootprintGeographicalScope):
+            raise ValueError("geographical_scope must be an instance of CarbonFootprintGeographicalScope")
+        self._geographical_scope = value
+
+    @property
+    def p_cf_including_biogenic(self):
+        return self._p_cf_including_biogenic
+
+    @p_cf_including_biogenic.setter
+    def p_cf_including_biogenic(self, value):
+        if value is not None and not isinstance(value, (int, float)):
+            raise ValueError("p_cf_including_biogenic must be a number")
+        self._p_cf_including_biogenic = value
+
+    @property
+    def primary_data_share(self):
+        return self._primary_data_share
+
+    @primary_data_share.setter
+    def primary_data_share(self, value):
+        if not isinstance(value, (int, float)) and value is not None:
+            raise ValueError("primary_data_share must be a number")
+        self._primary_data_share = value
+
+    @property
+    def dqi(self):
+        return self._dqi
+
+    @dqi.setter
+    def dqi(self, value):
+        if value is not None and not isinstance(value, DataQualityIndicators):
+            raise ValueError("dqi must be an instance of DataQualityIndicators")
+        self._dqi = value
+
+    @property
+    def d_luc_ghg_emissions(self):
+        return self._d_luc_ghg_emissions
+
+    @d_luc_ghg_emissions.setter
+    def d_luc_ghg_emissions(self, value):
+        if value is not None and (not isinstance(value, (int, float)) or value < 0):
+            raise ValueError("d_luc_ghg_emissions must be a non-negative number")
+        self._d_luc_ghg_emissions = value
+
+    @property
+    def land_management_ghg_emissions(self):
+        return self._land_management_ghg_emissions
+
+    @land_management_ghg_emissions.setter
+    def land_management_ghg_emissions(self, value):
+        if value is not None and not isinstance(value, (int, float)):
+            raise ValueError("land_management_ghg_emissions must be a number")
+        self._land_management_ghg_emissions = value
+
+    @property
+    def other_biogenic_ghg_emissions(self):
+        return self._other_biogenic_ghg_emissions
+
+    @other_biogenic_ghg_emissions.setter
+    def other_biogenic_ghg_emissions(self, value):
+        if value is not None and (not isinstance(value, (int, float)) or value < 0):
+            raise ValueError("other_biogenic_ghg_emissions must be a non-negative number")
+        self._other_biogenic_ghg_emissions = value
+
+    @property
+    def biogenic_carbon_withdrawal(self):
+        return self._biogenic_carbon_withdrawal
+
+    @biogenic_carbon_withdrawal.setter
+    def biogenic_carbon_withdrawal(self, value):
+        if value is not None and (not isinstance(value, (int, float)) or value > 0):
+            raise ValueError("biogenic_carbon_withdrawal must be a non-positive number")
+        self._biogenic_carbon_withdrawal = value
+
+    @property
+    def iluc_ghg_emissions(self):
+        return self._iluc_ghg_emissions
+
+    @iluc_ghg_emissions.setter
+    def iluc_ghg_emissions(self, value):
+        if value is not None and (not isinstance(value, (int, float)) or value < 0):
+            raise ValueError("iluc_ghg_emissions must be a non-negative number")
+        self._iluc_ghg_emissions = value
+
+    @property
+    def aircraft_ghg_emissions(self):
+        return self._aircraft_ghg_emissions
+
+    @aircraft_ghg_emissions.setter
+    def aircraft_ghg_emissions(self, value):
+        if value is not None and (not isinstance(value, (int, float)) or value < 0):
+            raise ValueError("aircraft_ghg_emissions must be a non-negative number")
+        self._aircraft_ghg_emissions = value
+
+    @property
+    def packaging_ghg_emissions(self):
+        return self._packaging_ghg_emissions
+
+    @packaging_ghg_emissions.setter
+    def packaging_ghg_emissions(self, value):
+        if self.packaging_emissions_included and (value is None or not isinstance(value, (int, float)) or value < 0):
+            raise ValueError("packaging_ghg_emissions must be a non-negative number if packaging_emissions_included is true")
+        elif value is not None and not self.packaging_emissions_included:
+            raise ValueError("packaging_ghg_emissions must not be defined if packaging_emissions_included is false")
+        self._packaging_ghg_emissions = value
+
+    @property
+    def allocation_rules_description(self):
+        return self._allocation_rules_description
+
+    @allocation_rules_description.setter
+    def allocation_rules_description(self, value):
+        if value is not None and not isinstance(value, str):
+            raise ValueError("allocation_rules_description must be a string")
+        self._allocation_rules_description = value
+
+    @property
+    def uncertainty_assessment_description(self):
+        return self._uncertainty_assessment_description
+
+    @uncertainty_assessment_description.setter
+    def uncertainty_assessment_description(self, value):
+        if value is not None and not isinstance(value, str):
+            raise ValueError("uncertainty_assessment_description must be a string")
+        self._uncertainty_assessment_description = value
+
+    @property
+    def assurance(self):
+        return self._assurance
+
+    @assurance.setter
+    def assurance(self, value):
+        if value is not None and not isinstance(value, Assurance):
+            raise ValueError("assurance must be an instance of Assurance")
+        self._assurance = value
+
+    @property
+    def biogenic_accounting_methodology(self):
+        return self._biogenic_accounting_methodology
+
+    @biogenic_accounting_methodology.setter
+    def biogenic_accounting_methodology(self, value):
+        if value is not None and not isinstance(value, BiogenicAccountingMethodology):
+            raise ValueError("biogenic_accounting_methodology must be an instance of BiogenicAccountingMethodology")
+        self._biogenic_accounting_methodology = value
+
+    @property
+    def product_or_sector_specific_rules(self):
+        return self._product_or_sector_specific_rules
+
+    @product_or_sector_specific_rules.setter
+    def product_or_sector_specific_rules(self, value):
+        if value is not None and not all(isinstance(rule, ProductOrSectorSpecificRule) for rule in value):
+            raise ValueError("product_or_sector_specific_rules must be a list of ProductOrSectorSpecificRule")
+        self._product_or_sector_specific_rules = value
