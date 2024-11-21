@@ -24,8 +24,18 @@
 
 </p>
 
-[![Documentation Status](https://readthedocs.org/projects/pathfinder-framework/badge/?version=latest)](https://pathfinder-framework.readthedocs.io/en/latest/?badge=latest)
-![CI/CD](https://github.com/ZeroTwentyFifty/pathfinder_framework/actions/workflows/app.yml/badge.svg)
+<p align="center">
+    <a href="https://github.com/ZeroTwentyFifty/pact_methodology/actions"><img src="https://img.shields.io/badge/coverage-pytest--cov-red.svg"></a>
+    <a href="https://img.shields.io/badge/license-MIT-blue.svg"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="license"></a>
+    <a href="https://github.com/ZeroTwentyFifty/pact_methodology/stargazers"><img src="https://img.shields.io/github/stars/ZeroTwentyFifty/pact_methodology" alt="Github Stars"></a>
+    <a href="https://img.shields.io/github/workflows/status/ZeroTwentyFifty/pact_methodology/master"><img src="https://github.com/ZeroTwentyFifty/pathfinder_framework/actions/workflows/app.yml/badge.svg"></a>
+    <!--<a href="https://readthedocs.org/projects/pathfinder-framework/badge/?version=latest"><img src="https://pathfinder-framework.readthedocs.io/en/latest/?badge=latest"></a>-->
+</p>
+
+
+
+
+
 
 A Python implementation of the WBCSD PACT Methodology, designed to streamline the calculation and reporting of product carbon footprints (PCFs).
 
