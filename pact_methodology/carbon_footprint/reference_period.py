@@ -32,3 +32,6 @@ class ReferencePeriod:
             bool: True if the end date of the reference period is in 2025 or later, False otherwise.
         """
         return self.end.year >= 2025
+
+    def __repr__(self):
+        return f"ReferencePeriod(start={self.start}, end={self.end})"
