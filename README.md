@@ -25,59 +25,63 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/ZeroTwentyFifty/pact_methodology/actions"><img src="https://img.shields.io/badge/coverage-pytest--cov-red.svg"></a>
-    <a href="https://img.shields.io/badge/license-MIT-blue.svg"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="license"></a>
+    <a href="https://github.com/ZeroTwentyFifty/pact_methodology/actions"><img src="https://img.shields.io/badge/coverage-pytest--cov-red.svg" alt="Coverage"></a>
+    <a href="https://img.shields.io/badge/license-MIT-blue.svg"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
     <a href="https://github.com/ZeroTwentyFifty/pact_methodology/stargazers"><img src="https://img.shields.io/github/stars/ZeroTwentyFifty/pact_methodology" alt="Github Stars"></a>
-    <a href="https://img.shields.io/github/workflows/status/ZeroTwentyFifty/pact_methodology/master"><img src="https://github.com/ZeroTwentyFifty/pathfinder_framework/actions/workflows/app.yml/badge.svg"></a>
-    <!--<a href="https://readthedocs.org/projects/pathfinder-framework/badge/?version=latest"><img src="https://pathfinder-framework.readthedocs.io/en/latest/?badge=latest"></a>-->
+    <a href="https://github.com/ZeroTwentyFifty/pact_methodology/actions/workflows/app.yml"><img src="https://github.com/ZeroTwentyFifty/pact_methodology/actions/workflows/app.yml/badge.svg" alt="CI/CD"></a>
+    <img src="https://img.shields.io/badge/Topic-ClimateTech-brightgreen" alt="ClimateTech">
+    <img src="https://img.shields.io/badge/Topic-Sustainability-yellow" alt="Sustainability">
+    <img src="https://img.shields.io/badge/Topic-CarbonFootprinting-ff69b4" alt="Carbon Footprinting">
+    <img src="https://img.shields.io/badge/Pricing-Free-brightgreen" alt="Pricing">
+    <img src="https://img.shields.io/badge/Help%20Wanted-Contribute-blue" alt="Help Wanted">
 </p>
 
+## PACT Methodology Library
 
+The `pact_methodology` library is an open-source Python implementation of the World Business Council for Sustainable Development (WBCSD) [PACT Methodology](https://www.carbon-transparency.org). This methodology is designed to standardize the calculation of product carbon footprints (PCFs), enabling organizations and industries to track and reduce their environmental impact.
 
+## About the PACT Methodology
 
+The PACT Methodology, developed by the World Business Council for Sustainable Development (WBCSD), provides a standardized methodology for calculating PCFs. This methodology aims to increase consistency and transparency in carbon accounting across various industries. Learn more about the framework on the Pathfinder website: [https://www.carbon-transparency.org](https://www.carbon-transparency.org)
 
-
-A Python implementation of the WBCSD PACT Methodology, designed to streamline the calculation and reporting of product carbon footprints (PCFs).
-
-**Documentation**
-
-You can view the docs here: http://pathfinder-framework.readthedocs.io/
-
-
-**About the PACT Methodology**
-
-The PACT Methodology, developed by the World Business Council for Sustainable Development (WBCSD), provides a standardized methodology for calculating PCFs. This methodlogy aims to increase consistency and transparency in carbon accounting across various industries. Learn more about the framework on the Pathfinder website: [https://www.carbon-transparency.com/2/](https://www.carbon-transparency.com/2/).
-
-**About ZeroTwentyFifty**
+## About ZeroTwentyFifty
 
 The pact_methodology library is developed and maintained by ZeroTwentyFifty. Visit our website https://www.zerotwentyfifty.com to learn more about our work.
 
-At our core, we are driven by a powerful purpose - to empower organizations to share vital carbon footprint data in the global battle against climate change. Our mission is crystal clear: we are dedicated to providing solutions that facilitate the sharing of this essential information. In a world where the urgency of combating climate change is undeniable, we stand resolute in our commitment to making a difference.
+### Key Features
+- **Standardized Compliance:** Ensures adherence to the latest PACT Methodology standards, facilitating carbon accounting consistency.
+- **Data-Driven Decision Making:** Provides tools for data collection, manipulation, and analysis, empowering users to make informed decisions to reduce carbon emissions.
+- **Integration with Ecosystems:** Can be integrated with various systems and tools, streamlining the carbon footprint management process.
+- **Comprehensive Documentation:** Detailed documentation is available to guide users through the library's functionality and usage.
 
-**Key Features**
+## Installation
 
-* **Data Structures:**  Represent core PACT Methodology concepts (e.g., products, processes, emissions factors) as Python objects for easy manipulation.
-* **Data Exchange:** Facilitate data sharing along the value chain through standardized input/output formats. 
+To install the `pact_methodology` library, use the following command:
 
-**Installation**
 
 ```bash
 pip install pact_methodology
 ```
 
-Use code with caution.
+## Documentation
 
-**Contributing**
+You can view the docs here: http://pathfinder-framework.readthedocs.io/
 
-We welcome contributions to improve and extend the pact_methodology library. Please follow these guidelines:
 
-Open an issue to discuss proposed changes before submitting a pull request.
-Ensure code adheres to PEP 8 style guidelines.
-Include unit tests for new functionality.
+## Contributing
 
-**License**
+We welcome contributions to improve and extend the `pact_methodology` library. Please follow these guidelines:
+- Open an issue to discuss proposed changes before submitting a pull request.
+- Ensure code adheres to PEP 8 style guidelines.
+- Include unit tests for new functionality.
 
-This project is released under the MIT License.  See LICENSE file for details.
+## License
+
+This project is released under the MIT License. See the LICENSE file for details.
+
+## Learn More
+
+For more information about the PACT Methodology and its applications, visit our blog post: [PACT Methodology Library Announcement](https://www.zerotwentyfifty.com/blog/pact-methodology-library).
 
 
 **Contact**
@@ -85,5 +89,3 @@ This project is released under the MIT License.  See LICENSE file for details.
 For questions, feedback, or support, please email us at:
 
     contact@zerotwentyfifty.com
-
-Let me know if you need any other formatting assistance! 
