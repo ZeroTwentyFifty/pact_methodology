@@ -146,3 +146,50 @@ def test_none_values_before_2025():
     assert dqi.geographical_dqr is None
     assert dqi.completeness_dqr is None
     assert dqi.reliability_dqr is None
+
+
+def test_data_quality_indicators_str(valid_data):
+    """Test the __str__ method of DataQualityIndicators"""
+    dqi = DataQualityIndicators(**valid_data)
+    expected_str = (
+        "DataQualityIndicators("
+        "reference_period=ReferencePeriod(start=2025-01-01T00:00:00Z, end=2026-01-01T00:00:00Z), "
+        "coverage_percent=80.0, "
+        "technological_dqr=2, "
+        "temporal_dqr=2, "
+        "geographical_dqr=1, "
+        "completeness_dqr=2, "
+        "reliability_dqr=3)"
+    )
+    assert str(dqi) == expected_str
+
+
+def test_data_quality_indicators_repr(valid_data):
+    """Test the __repr__ method of DataQualityIndicators"""
+    dqi = DataQualityIndicators(**valid_data)
+    expected_repr = (
+        "DataQualityIndicators(reference_period=ReferencePeriod(start=2025-01-01T00:00:00Z, end=2026-01-01T00:00:00Z), "
+        "coverage_percent=80.0, "
+        "technological_dqr=DataQualityRating(2), "
+        "temporal_dqr=DataQualityRating(2), "
+        "geographical_dqr=DataQualityRating(1), "
+        "completeness_dqr=DataQualityRating(2), "
+        "reliability_dqr=DataQualityRating(3))"
+    )
+    assert repr(dqi) == expected_repr
+
+
+def test_data_quality_indicators_eq(valid_data):
+    """Test the __eq__ method of DataQualityIndicators"""
+    dqi1 = DataQualityIndicators(**valid_data)
+    dqi2 = DataQualityIndicators(**valid_data)
+    assert dqi1 == dqi2
+
+
+def test_data_quality_indicators_ne(valid_data):
+    """Test the __ne__ method of DataQualityIndicators"""
+    valid_data_copy = valid_data.copy()
+    valid_data_copy["coverage_percent"] = 50.0
+    dqi1 = DataQualityIndicators(**valid_data)
+    dqi2 = DataQualityIndicators(**valid_data_copy)
+    assert dqi1 != dqi2
