@@ -41,27 +41,7 @@ class DataQualityIndicators:
                         including 2025 or later.
         """
 
-        if technological_dqr is not None and not isinstance(
-            technological_dqr, DataQualityRating
-        ):
-            raise TypeError(
-                "technological_dqr must be an instance of DataQualityRating"
-            )
-        if temporal_dqr is not None and not isinstance(temporal_dqr, DataQualityRating):
-            raise TypeError("temporal_dqr must be an instance of DataQualityRating")
-        if geographical_dqr is not None and not isinstance(
-            geographical_dqr, DataQualityRating
-        ):
-            raise TypeError("geographical_dqr must be an instance of DataQualityRating")
-        if completeness_dqr is not None and not isinstance(
-            completeness_dqr, DataQualityRating
-        ):
-            raise TypeError("completeness_dqr must be an instance of DataQualityRating")
-        if reliability_dqr is not None and not isinstance(
-            reliability_dqr, DataQualityRating
-        ):
-            raise TypeError("reliability_dqr must be an instance of DataQualityRating")
-
+        self.reference_period = reference_period
         self.coverage_percent = coverage_percent
         self.technological_dqr = technological_dqr
         self.temporal_dqr = temporal_dqr
@@ -84,3 +64,73 @@ class DataQualityIndicators:
                     raise ValueError(
                         f"Attribute '{attr}' must be defined and not None for reporting periods including 2025 or later"
                     )
+
+    @property
+    def reference_period(self):
+        return self._reference_period
+
+    @reference_period.setter
+    def reference_period(self, value):
+        if not isinstance(value, ReferencePeriod):
+            raise ValueError("reference_period must be an instance of ReferencePeriod")
+        self._reference_period = value
+
+    @property
+    def coverage_percent(self):
+        return self._coverage_percent
+
+    @coverage_percent.setter
+    def coverage_percent(self, value):
+        if value is not None and not isinstance(value, (int, float)):
+            raise ValueError("coverage_percent must be a number")
+        self._coverage_percent = value
+
+    @property
+    def technological_dqr(self):
+        return self._technological_dqr
+
+    @technological_dqr.setter
+    def technological_dqr(self, value):
+        if value is not None and not isinstance(value, DataQualityRating):
+            raise TypeError("technological_dqr must be an instance of DataQualityRating")
+        self._technological_dqr = value
+
+    @property
+    def temporal_dqr(self):
+        return self._temporal_dqr
+
+    @temporal_dqr.setter
+    def temporal_dqr(self, value):
+        if value is not None and not isinstance(value, DataQualityRating):
+            raise TypeError("temporal_dqr must be an instance of DataQualityRating")
+        self._temporal_dqr = value
+
+    @property
+    def geographical_dqr(self):
+        return self._geographical_dqr
+
+    @geographical_dqr.setter
+    def geographical_dqr(self, value):
+        if value is not None and not isinstance(value, DataQualityRating):
+            raise TypeError("geographical_dqr must be an instance of DataQualityRating")
+        self._geographical_dqr = value
+
+    @property
+    def completeness_dqr(self):
+        return self._completeness_dqr
+
+    @completeness_dqr.setter
+    def completeness_dqr(self, value):
+        if value is not None and not isinstance(value, DataQualityRating):
+            raise TypeError("completeness_dqr must be an instance of DataQualityRating")
+        self._completeness_dqr = value
+
+    @property
+    def reliability_dqr(self):
+        return self._reliability_dqr
+
+    @reliability_dqr.setter
+    def reliability_dqr(self, value):
+        if value is not None and not isinstance(value, DataQualityRating):
+            raise TypeError("reliability_dqr must be an instance of DataQualityRating")
+        self._reliability_dqr = value
