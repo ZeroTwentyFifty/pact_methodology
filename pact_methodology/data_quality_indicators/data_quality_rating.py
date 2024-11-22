@@ -21,3 +21,9 @@ class DataQualityRating:
             raise TypeError("Data quality rating must be an integer")
         if self.rating < 1 or self.rating > 3:
             raise ValueError("Data quality rating must be between 1 and 3 (inclusive)")
+
+    def __str__(self):
+        return f"{self.rating}"
+
+    def __repr__(self):
+        return f"DataQualityRating({self.rating})"

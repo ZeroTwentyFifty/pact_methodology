@@ -134,3 +134,40 @@ class DataQualityIndicators:
         if value is not None and not isinstance(value, DataQualityRating):
             raise TypeError("reliability_dqr must be an instance of DataQualityRating")
         self._reliability_dqr = value
+
+    def __str__(self):
+        return (
+            f"DataQualityIndicators("
+            f"reference_period={self.reference_period}, "
+            f"coverage_percent={self.coverage_percent}, "
+            f"technological_dqr={self.technological_dqr}, "
+            f"temporal_dqr={self.temporal_dqr}, "
+            f"geographical_dqr={self.geographical_dqr}, "
+            f"completeness_dqr={self.completeness_dqr}, "
+            f"reliability_dqr={self.reliability_dqr})"
+        )
+
+    def __repr__(self):
+        return (
+            f"DataQualityIndicators("
+            f"reference_period={repr(self.reference_period)}, "
+            f"coverage_percent={repr(self.coverage_percent)}, "
+            f"technological_dqr={repr(self.technological_dqr)}, "
+            f"temporal_dqr={repr(self.temporal_dqr)}, "
+            f"geographical_dqr={repr(self.geographical_dqr)}, "
+            f"completeness_dqr={repr(self.completeness_dqr)}, "
+            f"reliability_dqr={repr(self.reliability_dqr)})"
+        )
+
+    def __eq__(self, other):
+        if not isinstance(other, DataQualityIndicators):
+            return NotImplemented
+        return (
+            self.reference_period == other.reference_period
+            and self.coverage_percent == other.coverage_percent
+            and self.technological_dqr == other.technological_dqr
+            and self.temporal_dqr == other.temporal_dqr
+            and self.geographical_dqr == other.geographical_dqr
+            and self.completeness_dqr == other.completeness_dqr
+            and self.reliability_dqr == other.reliability_dqr
+        )
