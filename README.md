@@ -25,7 +25,9 @@
 </p>
 
 <p align="center">
-    <a href="https://github.com/ZeroTwentyFifty/pact_methodology/actions"><img src="https://img.shields.io/badge/coverage-pytest--cov-red.svg" alt="Coverage"></a>
+    <a href="https://codecov.io/gh/ZeroTwentyFifty/pact_methodology" >
+      <img src="https://codecov.io/gh/ZeroTwentyFifty/pact_methodology/graph/badge.svg?token=DI5T8UZOKT"/>
+    </a>
     <a href="https://img.shields.io/badge/license-MIT-blue.svg"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
     <a href="https://github.com/ZeroTwentyFifty/pact_methodology/stargazers"><img src="https://img.shields.io/github/stars/ZeroTwentyFifty/pact_methodology" alt="Github Stars"></a>
     <a href="https://github.com/ZeroTwentyFifty/pact_methodology/actions/workflows/app.yml"><img src="https://github.com/ZeroTwentyFifty/pact_methodology/actions/workflows/app.yml/badge.svg" alt="CI/CD"></a>
