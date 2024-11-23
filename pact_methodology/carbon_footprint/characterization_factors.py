@@ -18,3 +18,9 @@ class CharacterizationFactors(str, Enum):
 
     AR5 = "AR5"
     AR6 = "AR6"
+
+    def __str__(self):
+        return self.value
+    
+    def __repr__(self):
+        return f"CharacterizationFactors.{self.value}"
