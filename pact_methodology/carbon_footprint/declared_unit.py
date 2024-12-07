@@ -15,8 +15,6 @@ class DeclaredUnit(str, Enum):
     - TON_KILOMETER: for ton kilometer, the Derived Unit from SI Base Units kilogram and metre
     - SQUARE_METER: for square meter, the Derived Unit from SI Base Unit metre
 
-    The value of each DeclaredUnit MUST be encoded as a JSON String.
-
     For more information, please refer to the official documentation:
         https://wbcsd.github.io/data-exchange-protocol/v2/#dt-declaredunit
     And the SI Unit reference:
@@ -30,3 +28,9 @@ class DeclaredUnit(str, Enum):
     MEGAJOULE = "megajoule"
     TON_KILOMETER = "ton kilometer"
     SQUARE_METER = "square meter"
+
+    def __str__(self):
+        return self.value
+    
+    def __repr__(self):
+        return f"DeclaredUnit.{self.name}"
