@@ -9,15 +9,18 @@ class CrossSectoralStandard(str, Enum):
     - ISO Standard 14067: for ISO Standard 14067
     - ISO Standard 14044: for ISO Standard 14044
 
-    4.9.1. JSON Representation
     Each CrossSectoralStandard MUST be encoded as a JSON string.
 
-    The value of each DeclaredUnit MUST be encoded as a JSON String.
-
     For more information, please refer to the official documentation:
-        https://wbcsd.github.io/tr/2023/data-exchange-protocol-20231207/#dt-crosssectoralstandard
+        https://wbcsd.github.io/data-exchange-protocol/v2/#dt-crosssectoralstandard
     """
 
     GHG_PROTOCOL = "GHG Protocol Product standard"
     ISO_14067 = "ISO Standard 14067"
     ISO_14044 = "ISO Standard 14044"
+    
+    def __str__(self):
+        return self.value
+    
+    def __repr__(self):
+        return f"CrossSectoralStandard.{self.name}"
