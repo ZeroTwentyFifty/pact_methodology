@@ -30,7 +30,7 @@ class RegionOrSubregion(str, Enum):
     - Western Europe: for the UN geographic subregion Western Europe
 
     For more information, please refer to the official documentation:
-        https://wbcsd.github.io/tr/2023/data-exchange-protocol-20231207/#dt-regionorsubregion
+        https://wbcsd.github.io/data-exchange-protocol/v2/#enumdef-regionorsubregion
     """
 
     AFRICA = "Africa"
@@ -55,3 +55,9 @@ class RegionOrSubregion(str, Enum):
     SUB_SAHARAN_AFRICA = "Sub-Saharan Africa"
     WESTERN_ASIA = "Western Asia"
     WESTERN_EUROPE = "Western Europe"
+
+    def __str__(self):
+        return self.value
+    
+    def __repr__(self):
+        return f"RegionOrSubregion.{self.name}"
