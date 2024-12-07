@@ -80,3 +80,16 @@ def test_product_or_sector_specific_rule_to_dict(valid_product_or_sector_specifi
         "ruleNames": ["Rule1"],
         "otherOperatorName": "Custom Operator",
     }
+
+
+def test_product_or_sector_specific_rule_str(valid_product_or_sector_specific_rule):
+    rule = ProductOrSectorSpecificRule(**valid_product_or_sector_specific_rule)
+    expected_str = "[operator=Other, rule_names=['Rule1'], other_operator_name=Custom Operator]"
+    assert str(rule) == expected_str
+
+
+def test_product_or_sector_specific_rule_repr(valid_product_or_sector_specific_rule):
+    rule = ProductOrSectorSpecificRule(**valid_product_or_sector_specific_rule)
+    expected_repr = "ProductOrSectorSpecificRule(operator=ProductOrSectorSpecificRuleOperator.OTHER, rule_names=['Rule1'], other_operator_name='Custom Operator')"
+    assert repr(rule) == expected_repr
+
