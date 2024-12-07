@@ -11,14 +11,17 @@ class BiogenicAccountingMethodology(str, Enum):
     - GHGP: For the Greenhouse Gas Protocol (GHGP) Land sector and Removals Guidance
     - Quantis: For the Quantis Accounting for Natural Climate Solutions Guidance
 
-    The enumeration of standards above will be evolved in future revisions.
-    Account for this when implementing the validation of this property.
-
     For more information, please refer to the official documentation:
-        https://wbcsd.github.io/tr/2023/data-exchange-protocol-20231207/#element-attrdef-carbonfootprint-biogenicaccountingmethodology
+        https://wbcsd.github.io/data-exchange-protocol/v2/#element-attrdef-carbonfootprint-biogenicaccountingmethodology
     """
 
     PEF = "PEF"
     ISO = "ISO"
     GHGP = "GHGP"
     QUANTIS = "Quantis"
+
+    def __str__(self):
+        return self.value
+    
+    def __repr__(self):
+        return f"BiogenicAccountingMethodology.{self.name}"
