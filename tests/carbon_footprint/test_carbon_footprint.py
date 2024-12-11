@@ -21,7 +21,7 @@ from pact_methodology.carbon_footprint.geographical_scope import (
     GeographicalGranularity,
 )
 from pact_methodology.data_quality_indicators.data_quality_indicators import (
-    DataQualityIndicators,
+    DataQualityIndicators, DataQualityRating
 )
 from pact_methodology.carbon_footprint.biogenic_accounting_methodology import BiogenicAccountingMethodology
 from pact_methodology.carbon_footprint.product_or_sector_specific_rule import ProductOrSectorSpecificRule
@@ -44,7 +44,7 @@ def valid_carbon_footprint_data():
         "boundary_processes_description": "boundary processes description",
         "exempted_emissions_percent": 1.0,
         "exempted_emissions_description": "Rationale for exclusion",
-        "reference_period": ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
+        "reference_period": ReferencePeriod(start=DateTime("2022-01-01T00:00:00Z"), end=DateTime("2022-12-31T23:59:59Z")),
         "packaging_emissions_included": True,
         "geographical_scope": CarbonFootprintGeographicalScope(
             global_scope=True,
@@ -54,7 +54,13 @@ def valid_carbon_footprint_data():
         ),
         "primary_data_share": 50.0,
         "dqi": DataQualityIndicators(
-            reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now())
+            reference_period=ReferencePeriod(start=DateTime("2022-01-01T00:00:00Z"), end=DateTime("2022-12-31T23:59:59Z")),
+            coverage_percent=80.0,
+            technological_dqr=DataQualityRating(2),
+            temporal_dqr=DataQualityRating(2),
+            geographical_dqr=DataQualityRating(1),
+            completeness_dqr=DataQualityRating(2),
+            reliability_dqr=DataQualityRating(3),
         ),
         "d_luc_ghg_emissions": 2,
         "land_management_ghg_emissions": 1.0,
@@ -798,3 +804,48 @@ def test_carbon_footprint_invalid_product_or_sector_specific_rules(
     with pytest.raises(ValueError) as excinfo:
         CarbonFootprint(**invalid_data)
     assert str(excinfo.value) == expected_error
+
+def test_carbon_footprint_str(valid_carbon_footprint_data):
+    carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
+    assert str(carbon_footprint) == (
+        f"CarbonFootprint("
+        f"declared_unit=kilogram, "
+        f"unitary_product_amount=1.0, "
+        f"p_cf_excluding_biogenic=0.5, "
+        f"p_cf_including_biogenic=2, "
+        f"fossil_ghg_emissions=0.3, "
+        f"fossil_carbon_content=0.2, "
+        f"biogenic_carbon_content=0.1, "
+        f"characterization_factors=AR6, "
+        f"ipcc_characterization_factors_sources=['AR6'], "
+        f"cross_sectoral_standards_used=['GHG Protocol Product standard'], "
+        f"boundary_processes_description='boundary processes description', "
+        f"exempted_emissions_percent=1.0, "
+        f"exempted_emissions_description='Rationale for exclusion', "
+        f"reference_period=ReferencePeriod(start=2022-01-01T00:00:00Z, end=2022-12-31T23:59:59Z), "
+        f"packaging_emissions_included=True, "
+        f"geographical_scope=Geographical scope: Global (at Global level), "
+        f"primary_data_share=50.0, "
+        f"dqi=DataQualityIndicators("
+        f"reference_period=ReferencePeriod(start=2022-01-01T00:00:00Z, end=2022-12-31T23:59:59Z), "
+        f"coverage_percent=80.0, "
+        f"technological_dqr=2, "
+        f"temporal_dqr=2, "
+        f"geographical_dqr=1, "
+        f"completeness_dqr=2, "
+        f"reliability_dqr=3), "
+        f"d_luc_ghg_emissions=2, "
+        f"land_management_ghg_emissions=1.0, "
+        f"other_biogenic_ghg_emissions=1.5, "
+        f"biogenic_carbon_withdrawal=-1.0, "
+        f"iluc_ghg_emissions=1.0, "
+        f"aircraft_ghg_emissions=1.0, "
+        f"packaging_ghg_emissions=1.0, "
+        f"allocation_rules_description='Example allocation rules description', "
+        f"uncertainty_assessment_description='Example uncertainty assessment description', "
+        f"assurance=Assurance(assurance=True, provider_name='Example provider name', coverage=PCF system, "
+        f"level=reasonable, boundary=Gate-to-Gate, completed_at={carbon_footprint.assurance.completed_at}, "
+        f"standard_name='Example standard name', comments='Example comments'), "
+        f"biogenic_accounting_methodology=GHGP, "
+        f"product_or_sector_specific_rules=[\"operator=Other, rule_names=['Rule1'], other_operator_name=Custom Operator\"])"
+    )
