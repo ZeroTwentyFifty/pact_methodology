@@ -884,3 +884,13 @@ def test_carbon_footprint_repr(valid_carbon_footprint_data):
         f"biogenic_accounting_methodology={carbon_footprint.biogenic_accounting_methodology!r}, "
         f"product_or_sector_specific_rules={carbon_footprint.product_or_sector_specific_rules!r})"
     )
+
+def test_carbon_footprint_eq(valid_carbon_footprint_data):
+    carbon_footprint1 = CarbonFootprint(**valid_carbon_footprint_data)
+    carbon_footprint2 = CarbonFootprint(**valid_carbon_footprint_data)
+    assert carbon_footprint1 == carbon_footprint2
+
+def test_carbon_footprint_not_eq(valid_carbon_footprint_data):
+    carbon_footprint1 = CarbonFootprint(**valid_carbon_footprint_data)
+    carbon_footprint2 = CarbonFootprint(**{**valid_carbon_footprint_data, "unitary_product_amount": 2.0})
+    assert carbon_footprint1 != carbon_footprint2
