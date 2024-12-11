@@ -448,3 +448,38 @@ class CarbonFootprint:
         if value is not None and not all(isinstance(rule, ProductOrSectorSpecificRule) for rule in value):
             raise ValueError("product_or_sector_specific_rules must be a list of ProductOrSectorSpecificRule")
         self._product_or_sector_specific_rules = value
+
+    def __str__(self):
+        return (
+            f"CarbonFootprint("
+            f"declared_unit={self.declared_unit}, "
+            f"unitary_product_amount={self.unitary_product_amount}, "
+            f"p_cf_excluding_biogenic={self.p_cf_excluding_biogenic}, "
+            f"p_cf_including_biogenic={self.p_cf_including_biogenic}, "
+            f"fossil_ghg_emissions={self.fossil_ghg_emissions}, "
+            f"fossil_carbon_content={self.fossil_carbon_content}, "
+            f"biogenic_carbon_content={self.biogenic_carbon_content}, "
+            f"characterization_factors={self.characterization_factors.value}, "
+            f"ipcc_characterization_factors_sources={self.ipcc_characterization_factors_sources}, "
+            f"cross_sectoral_standards_used={[str(standard) for standard in self.cross_sectoral_standards_used]}, "
+            f"boundary_processes_description='{self.boundary_processes_description}', "
+            f"exempted_emissions_percent={self.exempted_emissions_percent}, "
+            f"exempted_emissions_description='{self.exempted_emissions_description}', "
+            f"reference_period={self.reference_period}, "
+            f"packaging_emissions_included={self.packaging_emissions_included}, "
+            f"geographical_scope={self.geographical_scope}, "
+            f"primary_data_share={self.primary_data_share}, "
+            f"dqi={self.dqi}, "
+            f"d_luc_ghg_emissions={self.d_luc_ghg_emissions}, "
+            f"land_management_ghg_emissions={self.land_management_ghg_emissions}, "
+            f"other_biogenic_ghg_emissions={self.other_biogenic_ghg_emissions}, "
+            f"biogenic_carbon_withdrawal={self.biogenic_carbon_withdrawal}, "
+            f"iluc_ghg_emissions={self.iluc_ghg_emissions}, "
+            f"aircraft_ghg_emissions={self.aircraft_ghg_emissions}, "
+            f"packaging_ghg_emissions={self.packaging_ghg_emissions}, "
+            f"allocation_rules_description='{self.allocation_rules_description}', "
+            f"uncertainty_assessment_description='{self.uncertainty_assessment_description}', "
+            f"assurance={self.assurance}, "
+            f"biogenic_accounting_methodology={self.biogenic_accounting_methodology.value}, "
+            f"product_or_sector_specific_rules={[str(rule) for rule in self.product_or_sector_specific_rules]})"
+        )
