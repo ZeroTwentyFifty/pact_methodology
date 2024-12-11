@@ -9,22 +9,28 @@ from pact_methodology.assurance.assurance import (
 from pact_methodology.datetime import DateTime
 
 
+@pytest.fixture
+def valid_assurance_data():
+    return {
+        "assurance": True,
+        "provider_name": "My Auditor",
+        "coverage": Coverage.PCF_SYSTEM,
+        "level": Level.LIMITED,
+        "boundary": Boundary.CRADLE_TO_GATE,
+        "completed_at": DateTime("2022-12-08T14:47:32Z"),
+        "standard_name": "ISO 14044",
+        "comments": "Example comments"
+    }
+
+
 def test_assurance_init():
     assurance = Assurance(True, "My Auditor")
     assert assurance.assurance == True
     assert assurance.provider_name == "My Auditor"
 
 
-def test_assurance_to_dict():
-    assurance = Assurance(
-        True,
-        "My Auditor",
-        Coverage.PCF_SYSTEM,
-        Level.LIMITED,
-        Boundary.CRADLE_TO_GATE,
-        DateTime("2022-12-08T14:47:32Z"),
-        "ISO 14044",
-    )
+def test_assurance_to_dict(valid_assurance_data):
+    assurance = Assurance(**valid_assurance_data)
     expected_dict = {
         "assurance": True,
         "provider_name": "My Auditor",
@@ -33,6 +39,7 @@ def test_assurance_to_dict():
         "boundary": "Cradle-to-Gate",
         "completed_at": "2022-12-08T14:47:32Z",
         "standard_name": "ISO 14044",
+        "comments": "Example comments"
     }
     assert assurance.to_dict() == expected_dict
 
@@ -44,15 +51,47 @@ def test_coverage_enum():
     assert Coverage.PRODUCT_LEVEL.value == "product level"
 
 
+def test_coverage_repr():
+    assert repr(Coverage.CORPORATE_LEVEL) == "Coverage.CORPORATE_LEVEL"
+    assert repr(Coverage.PRODUCT_LINE) == "Coverage.PRODUCT_LINE"
+    assert repr(Coverage.PCF_SYSTEM) == "Coverage.PCF_SYSTEM"
+    assert repr(Coverage.PRODUCT_LEVEL) == "Coverage.PRODUCT_LEVEL"
+    
+def test_coverage_str():
+    assert str(Coverage.CORPORATE_LEVEL) == "corporate level"
+    assert str(Coverage.PRODUCT_LINE) == "product line"
+    assert str(Coverage.PCF_SYSTEM) == "PCF system"
+    assert str(Coverage.PRODUCT_LEVEL) == "product level"
+
+
 def test_level_enum():
     assert Level.LIMITED.value == "limited"
     assert Level.REASONABLE.value == "reasonable"
+
+    
+def test_level_repr():
+    assert repr(Level.LIMITED) == "Level.LIMITED"
+    assert repr(Level.REASONABLE) == "Level.REASONABLE"
+
+    
+def test_level_str():
+    assert str(Level.LIMITED) == "limited"
+    assert str(Level.REASONABLE) == "reasonable"
 
 
 def test_boundary_enum():
     assert Boundary.GATE_TO_GATE.value == "Gate-to-Gate"
     assert Boundary.CRADLE_TO_GATE.value == "Cradle-to-Gate"
 
+
+def test_boundary_repr():
+    assert repr(Boundary.GATE_TO_GATE) == "Boundary.GATE_TO_GATE"
+    assert repr(Boundary.CRADLE_TO_GATE) == "Boundary.CRADLE_TO_GATE"
+
+def test_boundary_str():
+    assert str(Boundary.GATE_TO_GATE) == "Gate-to-Gate"
+    assert str(Boundary.CRADLE_TO_GATE) == "Cradle-to-Gate"
+    
 
 def test_assurance_init_with_invalid_coverage():
     with pytest.raises(ValueError) as excinfo:
@@ -72,17 +111,11 @@ def test_assurance_init_with_invalid_boundary():
     assert str(excinfo.value) == "boundary must be an instance of Boundary"
 
 
-def test_assurance_init_with_valid_enum_values():
-    assurance = Assurance(
-        True,
-        "My Auditor",
-        coverage=Coverage.PCF_SYSTEM,
-        level=Level.LIMITED,
-        boundary=Boundary.GATE_TO_GATE,
-    )
+def test_assurance_init_with_valid_enum_values(valid_assurance_data):
+    assurance = Assurance(**valid_assurance_data)
     assert assurance.coverage == Coverage.PCF_SYSTEM
     assert assurance.level == Level.LIMITED
-    assert assurance.boundary == Boundary.GATE_TO_GATE
+    assert assurance.boundary == Boundary.CRADLE_TO_GATE
 
 
 @pytest.mark.parametrize("assurance", [True, False])
@@ -147,25 +180,29 @@ def test_assurance_init_with_invalid_comments(comments):
         Assurance(True, "My Auditor", comments=comments)
     assert str(excinfo.value) == "comments must be a string"
 
-def test_assurance_str():
-    assurance = Assurance(
-        assurance=True,
-        provider_name="Example Provider",
-        coverage=Coverage.PCF_SYSTEM,
-        level=Level.REASONABLE,
-        boundary=Boundary.GATE_TO_GATE,
-        completed_at=DateTime("2023-01-01T00:00:00Z"),
-        standard_name="Example Standard",
-        comments="Example comments",
-    )
+def test_assurance_str(valid_assurance_data):
+    assurance = Assurance(**valid_assurance_data)
     assert str(assurance) == (
         f"Assurance("
         f"assurance=True, "
-        f"provider_name='Example Provider', "
+        f"provider_name='My Auditor', "
         f"coverage=PCF system, "
-        f"level=reasonable, "
-        f"boundary=Gate-to-Gate, "
-        f"completed_at=2023-01-01T00:00:00Z, "
-        f"standard_name='Example Standard', "
+        f"level=limited, "
+        f"boundary=Cradle-to-Gate, "
+        f"completed_at=2022-12-08T14:47:32Z, "
+        f"standard_name='ISO 14044', "
         f"comments='Example comments')"
     )
+
+
+def test_assurance_repr(valid_assurance_data):
+    assurance = Assurance(**valid_assurance_data)
+    assert repr(assurance) == (
+        f"Assurance(assurance=True, provider_name='My Auditor', coverage=PCF system, level=limited, boundary=Cradle-to-Gate, completed_at=2022-12-08T14:47:32Z, standard_name='ISO 14044', comments='Example comments')"
+    )
+
+
+def test_assurance_eq(valid_assurance_data):
+    assurance1 = Assurance(**valid_assurance_data)
+    assurance2 = Assurance(**valid_assurance_data)
+    assert assurance1 == assurance2
