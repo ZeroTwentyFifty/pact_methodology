@@ -170,7 +170,7 @@ class ProductOrSectorSpecificRule:
             A human-readable string showing the rule's attributes
         """
         return (
-            f"[operator={self.operator}, rule_names={self.rule_names}, other_operator_name={self.other_operator_name}]"
+            f"operator={self.operator}, rule_names={self.rule_names}, other_operator_name={self.other_operator_name}"
         )
     
     def __repr__(self) -> str:
