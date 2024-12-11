@@ -519,4 +519,8 @@ class CarbonFootprint:
             f"product_or_sector_specific_rules={self.product_or_sector_specific_rules!r})"
         )
 
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
