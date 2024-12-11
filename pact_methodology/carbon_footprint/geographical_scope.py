@@ -6,10 +6,38 @@ from pact_methodology.carbon_footprint.region_or_subregion import RegionOrSubreg
 
 
 class GeographicalGranularity(Enum):
+    """Represents the granularity level of geographical information.
+
+    This enum defines different levels of geographical granularity that can be used
+    to specify the scope of carbon footprint data.
+
+    Attributes:
+        GLOBAL: Represents global scope with no specific geographical boundaries.
+        COUNTRY_SUBDIVISION: Represents scope at a country subdivision level (e.g. state/province).
+        COUNTRY: Represents scope at a country level.
+        REGION_OR_SUBREGION: Represents scope at a regional or subregional level.
+
+    Example:
+        >>> granularity = GeographicalGranularity.COUNTRY
+        >>> str(granularity)
+        'Country'
+        >>> granularity = GeographicalGranularity.COUNTRY_SUBDIVISION
+        >>> str(granularity)
+        'Country Subdivision'
+        >>> granularity = GeographicalGranularity.GLOBAL
+        >>> repr(granularity)
+        'GeographicalGranularity.GLOBAL'
+    """
     GLOBAL = "Global"
     COUNTRY_SUBDIVISION = "Country Subdivision"
     COUNTRY = "Country"
     REGION_OR_SUBREGION = "Region or Subregion"
+
+    def __str__(self):
+        return self.value
+
+    def __repr__(self):
+        return f"GeographicalGranularity.{self.name}"
 
 
 class CarbonFootprintGeographicalScope:

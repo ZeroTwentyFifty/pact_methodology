@@ -106,6 +106,20 @@ def test_geographical_granularity_enum():
     assert GeographicalGranularity.REGION_OR_SUBREGION.value == "Region or Subregion"
 
 
+def test_geographical_granularity_enum_str():
+    assert str(GeographicalGranularity.GLOBAL) == "Global"
+    assert str(GeographicalGranularity.COUNTRY_SUBDIVISION) == "Country Subdivision"
+    assert str(GeographicalGranularity.COUNTRY) == "Country"
+    assert str(GeographicalGranularity.REGION_OR_SUBREGION) == "Region or Subregion"
+
+
+def test_geographical_granularity_enum_repr():
+    assert repr(GeographicalGranularity.GLOBAL) == "GeographicalGranularity.GLOBAL"
+    assert repr(GeographicalGranularity.COUNTRY_SUBDIVISION) == "GeographicalGranularity.COUNTRY_SUBDIVISION"
+    assert repr(GeographicalGranularity.COUNTRY) == "GeographicalGranularity.COUNTRY"
+    assert repr(GeographicalGranularity.REGION_OR_SUBREGION) == "GeographicalGranularity.REGION_OR_SUBREGION"
+
+
 @pytest.mark.parametrize("country_code", ["US", "FR", "GB", "CN", "JP"])
 def test_carbon_footprint_geographical_scope_valid_country_codes(country_code):
     scope = CarbonFootprintGeographicalScope(geography_country=country_code)
