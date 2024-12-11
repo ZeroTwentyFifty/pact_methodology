@@ -849,3 +849,38 @@ def test_carbon_footprint_str(valid_carbon_footprint_data):
         f"biogenic_accounting_methodology=GHGP, "
         f"product_or_sector_specific_rules=[\"operator=Other, rule_names=['Rule1'], other_operator_name=Custom Operator\"])"
     )
+
+def test_carbon_footprint_repr(valid_carbon_footprint_data):
+    carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
+    assert repr(carbon_footprint) == (
+        f"CarbonFootprint(declared_unit={carbon_footprint.declared_unit!r}, "
+        f"unitary_product_amount={carbon_footprint.unitary_product_amount!r}, "
+        f"p_cf_excluding_biogenic={carbon_footprint.p_cf_excluding_biogenic!r}, "
+        f"p_cf_including_biogenic={carbon_footprint.p_cf_including_biogenic!r}, "
+        f"fossil_ghg_emissions={carbon_footprint.fossil_ghg_emissions!r}, "
+        f"fossil_carbon_content={carbon_footprint.fossil_carbon_content!r}, "
+        f"biogenic_carbon_content={carbon_footprint.biogenic_carbon_content!r}, "
+        f"characterization_factors={carbon_footprint.characterization_factors!r}, "
+        f"ipcc_characterization_factors_sources={carbon_footprint.ipcc_characterization_factors_sources!r}, "
+        f"cross_sectoral_standards_used={carbon_footprint.cross_sectoral_standards_used!r}, "
+        f"boundary_processes_description={carbon_footprint.boundary_processes_description!r}, "
+        f"exempted_emissions_percent={carbon_footprint.exempted_emissions_percent!r}, "
+        f"exempted_emissions_description={carbon_footprint.exempted_emissions_description!r}, "
+        f"reference_period={carbon_footprint.reference_period!r}, "
+        f"packaging_emissions_included={carbon_footprint.packaging_emissions_included!r}, "
+        f"geographical_scope={carbon_footprint.geographical_scope!r}, "
+        f"primary_data_share={carbon_footprint.primary_data_share!r}, "
+        f"dqi={carbon_footprint.dqi!r}, "
+        f"d_luc_ghg_emissions={carbon_footprint.d_luc_ghg_emissions!r}, "
+        f"land_management_ghg_emissions={carbon_footprint.land_management_ghg_emissions!r}, "
+        f"other_biogenic_ghg_emissions={carbon_footprint.other_biogenic_ghg_emissions!r}, "
+        f"biogenic_carbon_withdrawal={carbon_footprint.biogenic_carbon_withdrawal!r}, "
+        f"iluc_ghg_emissions={carbon_footprint.iluc_ghg_emissions!r}, "
+        f"aircraft_ghg_emissions={carbon_footprint.aircraft_ghg_emissions!r}, "
+        f"packaging_ghg_emissions={carbon_footprint.packaging_ghg_emissions!r}, "
+        f"allocation_rules_description={carbon_footprint.allocation_rules_description!r}, "
+        f"uncertainty_assessment_description={carbon_footprint.uncertainty_assessment_description!r}, "
+        f"assurance={carbon_footprint.assurance!r}, "
+        f"biogenic_accounting_methodology={carbon_footprint.biogenic_accounting_methodology!r}, "
+        f"product_or_sector_specific_rules={carbon_footprint.product_or_sector_specific_rules!r})"
+    )

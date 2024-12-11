@@ -483,3 +483,40 @@ class CarbonFootprint:
             f"biogenic_accounting_methodology={self.biogenic_accounting_methodology.value}, "
             f"product_or_sector_specific_rules={[str(rule) for rule in self.product_or_sector_specific_rules]})"
         )
+
+    def __repr__(self):
+        return (
+            f"CarbonFootprint("
+            f"declared_unit={self.declared_unit!r}, "
+            f"unitary_product_amount={self.unitary_product_amount!r}, "
+            f"p_cf_excluding_biogenic={self.p_cf_excluding_biogenic!r}, "
+            f"p_cf_including_biogenic={self.p_cf_including_biogenic!r}, "
+            f"fossil_ghg_emissions={self.fossil_ghg_emissions!r}, "
+            f"fossil_carbon_content={self.fossil_carbon_content!r}, "
+            f"biogenic_carbon_content={self.biogenic_carbon_content!r}, "
+            f"characterization_factors={self.characterization_factors!r}, "
+            f"ipcc_characterization_factors_sources={self.ipcc_characterization_factors_sources!r}, "
+            f"cross_sectoral_standards_used={self.cross_sectoral_standards_used!r}, "
+            f"boundary_processes_description={self.boundary_processes_description!r}, "
+            f"exempted_emissions_percent={self.exempted_emissions_percent!r}, "
+            f"exempted_emissions_description={self.exempted_emissions_description!r}, "
+            f"reference_period={self.reference_period!r}, "
+            f"packaging_emissions_included={self.packaging_emissions_included!r}, "
+            f"geographical_scope={self.geographical_scope!r}, "
+            f"primary_data_share={self.primary_data_share!r}, "
+            f"dqi={self.dqi!r}, "
+            f"d_luc_ghg_emissions={self.d_luc_ghg_emissions!r}, "
+            f"land_management_ghg_emissions={self.land_management_ghg_emissions!r}, "
+            f"other_biogenic_ghg_emissions={self.other_biogenic_ghg_emissions!r}, "
+            f"biogenic_carbon_withdrawal={self.biogenic_carbon_withdrawal!r}, "
+            f"iluc_ghg_emissions={self.iluc_ghg_emissions!r}, "
+            f"aircraft_ghg_emissions={self.aircraft_ghg_emissions!r}, "
+            f"packaging_ghg_emissions={self.packaging_ghg_emissions!r}, "
+            f"allocation_rules_description={self.allocation_rules_description!r}, "
+            f"uncertainty_assessment_description={self.uncertainty_assessment_description!r}, "
+            f"assurance={self.assurance!r}, "
+            f"biogenic_accounting_methodology={self.biogenic_accounting_methodology!r}, "
+            f"product_or_sector_specific_rules={self.product_or_sector_specific_rules!r})"
+        )
+
+
