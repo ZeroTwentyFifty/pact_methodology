@@ -68,6 +68,19 @@ class CarbonFootprintGeographicalScope:
     Attributes:
         scope (str or RegionOrSubregion): The geographical scope.
         granularity (GeographicalGranularity): The granularity of the geographical scope.
+        
+    Examples:
+        Create a global scope:
+        >>> scope = CarbonFootprintGeographicalScope(global_scope=True)
+        >>> scope.granularity
+        GeographicalGranularity.GLOBAL
+
+        Create a country-specific scope:
+        >>> scope = CarbonFootprintGeographicalScope(geography_country="US")
+        >>> scope.scope
+        'US'
+        >>> scope.granularity
+        GeographicalGranularity.COUNTRY
     """
 
     def __init__(
@@ -127,3 +140,13 @@ class CarbonFootprintGeographicalScope:
             raise ValueError(
                 "At least one argument must be provided from: global_scope, geography_country_subdivision, geography_country, or geography_region_or_subregion"
             )
+
+    def __str__(self):
+        return f"Geographical scope: {self.scope} (at {self.granularity.value} level)"
+        
+    def __repr__(self):
+        return (
+            f"CarbonFootprintGeographicalScope("
+            f"scope={self.scope}, "
+            f"granularity={self.granularity.value})"
+        )
