@@ -11,6 +11,9 @@ class Coverage(str, Enum):
 
     def __str__(self):
         return self.value
+    
+    def __repr__(self):
+        return f"Coverage.{self.name}"
 
 
 class Level(str, Enum):
@@ -20,6 +23,9 @@ class Level(str, Enum):
     def __str__(self):
         return self.value
 
+    def __repr__(self):
+        return f"Level.{self.name}"
+
 
 class Boundary(str, Enum):
     GATE_TO_GATE = "Gate-to-Gate"
@@ -27,6 +33,9 @@ class Boundary(str, Enum):
 
     def __str__(self):
         return self.value
+    
+    def __repr__(self):
+        return f"Boundary.{self.name}"
 
 
 class Assurance:
@@ -362,3 +371,19 @@ class Assurance:
             f"standard_name='{self.standard_name}', "
             f"comments='{self.comments}')"
         )
+
+    def __repr__(self):
+        return (
+            f"Assurance("
+            f"assurance={self.assurance}, "
+            f"provider_name='{self.provider_name}', "
+            f"coverage={self.coverage}, "
+            f"level={self.level}, "
+            f"boundary={self.boundary}, "
+            f"completed_at={self.completed_at}, "
+            f"standard_name='{self.standard_name}', "
+            f"comments='{self.comments}')"
+        )
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__
