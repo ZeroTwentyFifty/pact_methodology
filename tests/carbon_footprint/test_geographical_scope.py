@@ -160,3 +160,22 @@ def test_no_scope_raises_value_error():
         match="At least one argument must be provided from: global_scope, geography_country_subdivision, geography_country, or geography_region_or_subregion",
     ):
         CarbonFootprintGeographicalScope()
+
+
+def test_carbon_footprint_geographical_scope_str():
+    geographical_scope = CarbonFootprintGeographicalScope(global_scope=True)
+    assert str(geographical_scope) == "Geographical scope: Global (at Global level)"
+
+    geographical_scope = CarbonFootprintGeographicalScope(geography_country="US")
+    assert str(geographical_scope) == "Geographical scope: US (at Country level)"
+
+    geographical_scope = CarbonFootprintGeographicalScope(geography_country_subdivision="US-NY")
+    assert str(geographical_scope) == "Geographical scope: US-NY (at Country Subdivision level)"
+
+    geographical_scope = CarbonFootprintGeographicalScope(geography_region_or_subregion=RegionOrSubregion.AFRICA)
+    assert str(geographical_scope) == "Geographical scope: Africa (at Region or Subregion level)"
+
+
+def test_carbon_footprint_geographical_scope_repr():
+    geographical_scope = CarbonFootprintGeographicalScope(global_scope=True)
+    assert repr(geographical_scope) == "CarbonFootprintGeographicalScope(scope=Global, granularity=Global)"
