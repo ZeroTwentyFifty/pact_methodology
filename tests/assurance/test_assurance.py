@@ -146,3 +146,26 @@ def test_assurance_init_with_invalid_comments(comments):
     with pytest.raises(ValueError) as excinfo:
         Assurance(True, "My Auditor", comments=comments)
     assert str(excinfo.value) == "comments must be a string"
+
+def test_assurance_str():
+    assurance = Assurance(
+        assurance=True,
+        provider_name="Example Provider",
+        coverage=Coverage.PCF_SYSTEM,
+        level=Level.REASONABLE,
+        boundary=Boundary.GATE_TO_GATE,
+        completed_at=DateTime("2023-01-01T00:00:00Z"),
+        standard_name="Example Standard",
+        comments="Example comments",
+    )
+    assert str(assurance) == (
+        f"Assurance("
+        f"assurance=True, "
+        f"provider_name='Example Provider', "
+        f"coverage=PCF system, "
+        f"level=reasonable, "
+        f"boundary=Gate-to-Gate, "
+        f"completed_at=2023-01-01T00:00:00Z, "
+        f"standard_name='Example Standard', "
+        f"comments='Example comments')"
+    )
