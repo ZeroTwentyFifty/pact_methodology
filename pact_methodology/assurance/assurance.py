@@ -9,15 +9,24 @@ class Coverage(str, Enum):
     PRODUCT_LINE = "product line"
     PRODUCT_LEVEL = "product level"
 
+    def __str__(self):
+        return self.value
+
 
 class Level(str, Enum):
     LIMITED = "limited"
     REASONABLE = "reasonable"
 
+    def __str__(self):
+        return self.value
+
 
 class Boundary(str, Enum):
     GATE_TO_GATE = "Gate-to-Gate"
     CRADLE_TO_GATE = "Cradle-to-Gate"
+
+    def __str__(self):
+        return self.value
 
 
 class Assurance:
@@ -25,7 +34,7 @@ class Assurance:
     Represents an assurance in conformance with Pathfinder Framework chapter 5 and appendix B.
 
     Args:
-        assurance (bool): A boolean flag indicating whether the CarbonFootprint has been assured in line with Pathfinder Framework requirements (section 5).
+        assurance (bool): A boolean flag indicating whether the CarbonFootprint has been assured in line with PACT Methodology requirements (section 5).
         provider_name (str): The non-empty name of the independent third party engaged to undertake the assurance.
         coverage (Coverage | None): Level of granularity of the emissions data assured.
         level (Level | None): Level of assurance applicable to the PCF.
@@ -35,7 +44,7 @@ class Assurance:
         comments (str | None): Any additional comments that will clarify the interpretation of the assurance.
 
     Attributes:
-        assurance (bool): A boolean flag indicating whether the CarbonFootprint has been assured in line with Pathfinder Framework requirements (section 5).
+        assurance (bool): A boolean flag indicating whether the CarbonFootprint has been assured in line with PACT Methodology requirements (section 5).
         provider_name (str): The non-empty name of the independent third party engaged to undertake the assurance.
         coverage (Coverage | None): Level of granularity of the emissions data assured.
         level (Level | None): Level of assurance applicable to the PCF.
@@ -110,3 +119,16 @@ class Assurance:
             assurance_dict["comments"] = self.comments
 
         return assurance_dict
+
+    def __str__(self):
+        return (
+            f"Assurance("
+            f"assurance={self.assurance}, "
+            f"provider_name='{self.provider_name}', "
+            f"coverage={self.coverage}, "
+            f"level={self.level}, "
+            f"boundary={self.boundary}, "
+            f"completed_at={self.completed_at}, "
+            f"standard_name='{self.standard_name}', "
+            f"comments='{self.comments}')"
+        )
