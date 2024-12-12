@@ -13,6 +13,7 @@ from pact_methodology.carbon_footprint.characterization_factors import (
 from pact_methodology.carbon_footprint.cross_sectoral_standard import (
     CrossSectoralStandard,
 )
+from pact_methodology.carbon_footprint.cross_sectoral_standard_set import CrossSectoralStandardSet
 from pact_methodology.carbon_footprint.declared_unit import DeclaredUnit
 from pact_methodology.datetime import DateTime
 from pact_methodology.carbon_footprint.reference_period import ReferencePeriod
@@ -30,6 +31,9 @@ from pact_methodology.carbon_footprint.product_or_sector_specific_rule_operator 
 
 @pytest.fixture
 def valid_carbon_footprint_data():
+    standards_set = CrossSectoralStandardSet()
+    standards_set.add(CrossSectoralStandard.GHG_PROTOCOL)
+    
     return {
         "declared_unit": DeclaredUnit.KILOGRAM,
         "unitary_product_amount": 1.0,
@@ -40,7 +44,7 @@ def valid_carbon_footprint_data():
         "biogenic_carbon_content": 0.1,
         "characterization_factors": CharacterizationFactors.AR6,
         "ipcc_characterization_factors_sources": ["AR6"],
-        "cross_sectoral_standards_used": [CrossSectoralStandard.GHG_PROTOCOL],
+        "cross_sectoral_standards_used": standards_set,
         "boundary_processes_description": "boundary processes description",
         "exempted_emissions_percent": 1.0,
         "exempted_emissions_description": "Rationale for exclusion",
@@ -295,7 +299,7 @@ def test_carbon_footprint_invalid_cross_sectoral_standards_used(
         CarbonFootprint(**invalid_data)
     assert (
         str(excinfo.value)
-        == "cross_sectoral_standards_used must be a list of CrossSectoralStandard"
+        == "cross_sectoral_standards_used must be an instance of CrossSectoralStandardSet"
     )
 
 
@@ -818,7 +822,7 @@ def test_carbon_footprint_str(valid_carbon_footprint_data):
         f"biogenic_carbon_content=0.1, "
         f"characterization_factors=AR6, "
         f"ipcc_characterization_factors_sources=['AR6'], "
-        f"cross_sectoral_standards_used=['GHG Protocol Product standard'], "
+        f"cross_sectoral_standards_used={{'GHG Protocol Product standard'}}, "
         f"boundary_processes_description='boundary processes description', "
         f"exempted_emissions_percent=1.0, "
         f"exempted_emissions_description='Rationale for exclusion', "
