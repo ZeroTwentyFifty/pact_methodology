@@ -34,10 +34,7 @@ class ProductOrSectorSpecificRule:
 
         Convert rule to dictionary format:
         >>> rule.to_dict()
-        {
-            'operator': 'PEF',
-            'ruleNames': ['PEFCR Guidance v6.3']
-        }
+        {'operator': 'PEF', 'ruleNames': ['PEFCR Guidance v6.3']}
 
     Raises:
         ValueError: If operator is not a valid ProductOrSectorSpecificRuleOperator,
