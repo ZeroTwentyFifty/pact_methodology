@@ -5,6 +5,7 @@ from pact_methodology.carbon_footprint.characterization_factors import (
 from pact_methodology.carbon_footprint.cross_sectoral_standard import (
     CrossSectoralStandard,
 )
+from pact_methodology.carbon_footprint.cross_sectoral_standard_set import CrossSectoralStandardSet
 from pact_methodology.carbon_footprint.declared_unit import DeclaredUnit
 from pact_methodology.carbon_footprint.geographical_scope import (
     CarbonFootprintGeographicalScope,
@@ -29,7 +30,7 @@ class CarbonFootprint:
         biogenic_carbon_content (float): The biogenic carbon content of the product (mass of carbon).
         characterization_factors (CharacterizationFactors): The IPCC version of the GWP characterization factors used in the calculation of the PCF.
         ipcc_characterization_factors_sources (list[str]): The characterization factors from one or more IPCC Assessment Reports used in the calculation of the PCF.
-        cross_sectoral_standards_used (list[CrossSectoralStandard]): The cross-sectoral standards applied for calculating or allocating GHG emissions.
+        cross_sectoral_standards_used (CrossSectoralStandardSet): The cross-sectoral standards applied for calculating or allocating GHG emissions.
         boundary_processes_description (str): Description of boundary processes.
         exempted_emissions_percent (float): The Percentage of emissions excluded from PCF, expressed as a decimal number between 0.0 and 5 including.
         exempted_emissions_description (str): Rationale behind exclusion of specific PCF emissions, can be the empty string if no emissions were excluded.
@@ -228,13 +229,22 @@ class CarbonFootprint:
         self._ipcc_characterization_factors_sources = value
 
     @property
-    def cross_sectoral_standards_used(self):
+    def cross_sectoral_standards_used(self) -> CrossSectoralStandardSet:
+        """
+        The cross-sectoral standards applied for calculating or allocating GHG emissions.
+        """
         return self._cross_sectoral_standards_used
 
     @cross_sectoral_standards_used.setter
-    def cross_sectoral_standards_used(self, value):
-        if not all(isinstance(standard, CrossSectoralStandard) for standard in value):
-            raise ValueError("cross_sectoral_standards_used must be a list of CrossSectoralStandard")
+    def cross_sectoral_standards_used(self, value: CrossSectoralStandardSet) -> None:
+        """
+        Setter for cross_sectoral_standards_used.
+
+        Args:
+            value (CrossSectoralStandardSet): The new value for cross_sectoral_standards_used.
+        """
+        if not isinstance(value, CrossSectoralStandardSet):
+            raise ValueError("cross_sectoral_standards_used must be an instance of CrossSectoralStandardSet")
         self._cross_sectoral_standards_used = value
 
     @property
@@ -461,7 +471,7 @@ class CarbonFootprint:
             f"biogenic_carbon_content={self.biogenic_carbon_content}, "
             f"characterization_factors={self.characterization_factors.value}, "
             f"ipcc_characterization_factors_sources={self.ipcc_characterization_factors_sources}, "
-            f"cross_sectoral_standards_used={[str(standard) for standard in self.cross_sectoral_standards_used]}, "
+            f"cross_sectoral_standards_used={self.cross_sectoral_standards_used}, "
             f"boundary_processes_description='{self.boundary_processes_description}', "
             f"exempted_emissions_percent={self.exempted_emissions_percent}, "
             f"exempted_emissions_description='{self.exempted_emissions_description}', "
