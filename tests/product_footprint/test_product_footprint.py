@@ -23,6 +23,7 @@ from pact_methodology.carbon_footprint.characterization_factors import (
 from pact_methodology.carbon_footprint.cross_sectoral_standard import (
     CrossSectoralStandard,
 )
+from pact_methodology.carbon_footprint.cross_sectoral_standard_set import CrossSectoralStandardSet
 from pact_methodology.carbon_footprint.declared_unit import DeclaredUnit
 from pact_methodology.datetime import DateTime
 from pact_methodology.carbon_footprint.reference_period import ReferencePeriod
@@ -69,6 +70,9 @@ def start_and_end_time() -> (DateTime, DateTime):
 def valid_carbon_footprint_data(start_and_end_time):
 
     start_time, end_time = start_and_end_time
+    
+    standards_set = CrossSectoralStandardSet()
+    standards_set.add(CrossSectoralStandard.GHG_PROTOCOL)
 
     return {
         "declared_unit": DeclaredUnit.KILOGRAM,
@@ -80,7 +84,7 @@ def valid_carbon_footprint_data(start_and_end_time):
         "biogenic_carbon_content": 0.1,
         "characterization_factors": CharacterizationFactors.AR6,
         "ipcc_characterization_factors_sources": ["AR6"],
-        "cross_sectoral_standards_used": [CrossSectoralStandard.GHG_PROTOCOL],
+        "cross_sectoral_standards_used": standards_set,
         "boundary_processes_description": "boundary processes description",
         "exempted_emissions_percent": 1.0,
         "exempted_emissions_description": "Rationale for exclusion",
