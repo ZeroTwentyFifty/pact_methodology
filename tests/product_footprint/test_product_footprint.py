@@ -38,6 +38,8 @@ from pact_methodology.product_footprint.validity_period import ValidityPeriod
 from pact_methodology.data_model_extension.data_model_extension import (
     DataModelExtension,
 )
+from pact_methodology.carbon_footprint.emission_factor_ds import EmissionFactorDS
+from pact_methodology.carbon_footprint.emission_factor_ds_set import EmissionFactorDSSet
 
 
 @pytest.fixture(scope="module")
@@ -73,6 +75,8 @@ def valid_carbon_footprint_data(start_and_end_time):
     
     standards_set = CrossSectoralStandardSet()
     standards_set.add(CrossSectoralStandard.GHG_PROTOCOL)
+    emission_factor_ds_set = EmissionFactorDSSet()
+    emission_factor_ds_set.add_ds(EmissionFactorDS(name="ecoinvent", version="3.9.1"))
 
     return {
         "declared_unit": DeclaredUnit.KILOGRAM,
@@ -97,6 +101,7 @@ def valid_carbon_footprint_data(start_and_end_time):
             geography_region_or_subregion=None,
         ),
         "primary_data_share": 50.0,
+        "secondary_emission_factor_sources": emission_factor_ds_set,
         "dqi": DataQualityIndicators(
             reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now())
         ),
