@@ -13,6 +13,7 @@ from pact_methodology.data_quality_indicators.data_quality_indicators import (
 )
 from pact_methodology.carbon_footprint.biogenic_accounting_methodology import BiogenicAccountingMethodology
 from pact_methodology.carbon_footprint.product_or_sector_specific_rule_set import ProductOrSectorSpecificRuleSet
+from pact_methodology.carbon_footprint.emission_factor_ds_set import EmissionFactorDSSet
 
 class CarbonFootprint:
     """
@@ -38,6 +39,7 @@ class CarbonFootprint:
            Can be negative, representing a net removal of CO2. Defaults to None.
         primary_data_share (float): The share of primary data in percent. See the Pathfinder Framework Sections 4.2.1, 4.2.2, Appendix B.
         dqi (DataQualityIndicators): The data quality indicators for the carbon footprint.
+        secondary_emission_factor_sources (EmissionFactorDSSet | None): The secondary emission factor sources used in the calculation of the PCF.
         d_luc_ghg_emissions (float | None): Emissions resulting from recent (i.e., previous 20 years) carbon stock loss due to land conversion directly on the area of land under consideration, expressed as a decimal equal to or greater than zero, per declared unit with unit kg of CO2 equivalent per declared unit (kgCO2e / declaredUnit). Defaults to None.
         land_management_ghg_emissions (float | None): If present, GHG emissions and removals associated with land-management-related changes, including non-CO2 sources. The value MUST be calculated per declared unit with unit kg of CO2 equivalent per declared unit (kgCO2e / declaredUnit), expressed as a decimal. Defaults to None.
         other_biogenic_ghg_emissions (float | None): If present, all other biogenic GHG emissions associated with product manufacturing and transport that are not included in dLUC (dLucGhgEmissions), iLUC (iLucGhgEmissions), and land management (landManagementGhgEmissions). The value MUST be calculated per declared unit with unit kg of CO2 equivalent per declared unit (kgCO2e / declaredUnit), expressed as a decimal equal to or greater than zero.
@@ -72,6 +74,7 @@ class CarbonFootprint:
         p_cf_including_biogenic=None,
         primary_data_share=None,
         dqi=None,
+        secondary_emission_factor_sources=None,
         d_luc_ghg_emissions=None,
         land_management_ghg_emissions=None,
         other_biogenic_ghg_emissions=None,
@@ -103,6 +106,7 @@ class CarbonFootprint:
         self.p_cf_including_biogenic = p_cf_including_biogenic
         self.primary_data_share = primary_data_share
         self.dqi = dqi
+        self.secondary_emission_factor_sources = secondary_emission_factor_sources
         self.d_luc_ghg_emissions = d_luc_ghg_emissions
         self.land_management_ghg_emissions = land_management_ghg_emissions
         self.other_biogenic_ghg_emissions = other_biogenic_ghg_emissions
@@ -253,6 +257,16 @@ class CarbonFootprint:
         if not value:
             raise ValueError("boundary_processes_description must not be empty")
         self._boundary_processes_description = value
+
+    @property
+    def secondary_emission_factor_sources(self):
+        return self._secondary_emission_factor_sources
+
+    @secondary_emission_factor_sources.setter
+    def secondary_emission_factor_sources(self, value):
+        if not isinstance(value, EmissionFactorDSSet):
+            raise ValueError("secondary_emission_factor_sources must be an instance of EmissionFactorDSSet")
+        self._secondary_emission_factor_sources = value
 
     @property
     def exempted_emissions_percent(self):
@@ -477,6 +491,7 @@ class CarbonFootprint:
             f"geographical_scope={self.geographical_scope}, "
             f"primary_data_share={self.primary_data_share}, "
             f"dqi={self.dqi}, "
+            f"secondary_emission_factor_sources={self.secondary_emission_factor_sources}, "
             f"d_luc_ghg_emissions={self.d_luc_ghg_emissions}, "
             f"land_management_ghg_emissions={self.land_management_ghg_emissions}, "
             f"other_biogenic_ghg_emissions={self.other_biogenic_ghg_emissions}, "
@@ -512,6 +527,7 @@ class CarbonFootprint:
             f"geographical_scope={self.geographical_scope!r}, "
             f"primary_data_share={self.primary_data_share!r}, "
             f"dqi={self.dqi!r}, "
+            f"secondary_emission_factor_sources={self.secondary_emission_factor_sources!r}, "
             f"d_luc_ghg_emissions={self.d_luc_ghg_emissions!r}, "
             f"land_management_ghg_emissions={self.land_management_ghg_emissions!r}, "
             f"other_biogenic_ghg_emissions={self.other_biogenic_ghg_emissions!r}, "

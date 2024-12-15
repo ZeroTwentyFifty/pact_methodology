@@ -28,12 +28,17 @@ from pact_methodology.carbon_footprint.biogenic_accounting_methodology import Bi
 from pact_methodology.carbon_footprint.product_or_sector_specific_rule import ProductOrSectorSpecificRule
 from pact_methodology.carbon_footprint.product_or_sector_specific_rule_operator import ProductOrSectorSpecificRuleOperator
 from pact_methodology.carbon_footprint.product_or_sector_specific_rule_set import ProductOrSectorSpecificRuleSet
+from pact_methodology.carbon_footprint.emission_factor_ds import EmissionFactorDS
+from pact_methodology.carbon_footprint.emission_factor_ds_set import EmissionFactorDSSet
 
 @pytest.fixture
 def valid_carbon_footprint_data():
     standards_set = CrossSectoralStandardSet()
     standards_set.add(CrossSectoralStandard.GHG_PROTOCOL)
     
+    emission_factor_ds_set = EmissionFactorDSSet()
+    emission_factor_ds_set.add_ds(EmissionFactorDS(name="ecoinvent", version="3.9.1"))
+
     return {
         "declared_unit": DeclaredUnit.KILOGRAM,
         "unitary_product_amount": 1.0,
@@ -66,6 +71,7 @@ def valid_carbon_footprint_data():
             completeness_dqr=DataQualityRating(2),
             reliability_dqr=DataQualityRating(3),
         ),
+        "secondary_emission_factor_sources": emission_factor_ds_set,
         "d_luc_ghg_emissions": 2,
         "land_management_ghg_emissions": 1.0,
         "other_biogenic_ghg_emissions": 1.5,
@@ -840,6 +846,7 @@ def test_carbon_footprint_str(valid_carbon_footprint_data):
         f"geographical_dqr=1, "
         f"completeness_dqr=2, "
         f"reliability_dqr=3), "
+        f"secondary_emission_factor_sources=EmissionFactorDSSet(emission_factor_ds_list=[EmissionFactorDS(name='ecoinvent', version='3.9.1')]), "
         f"d_luc_ghg_emissions=2, "
         f"land_management_ghg_emissions=1.0, "
         f"other_biogenic_ghg_emissions=1.5, "
@@ -877,6 +884,7 @@ def test_carbon_footprint_repr(valid_carbon_footprint_data):
         f"geographical_scope={carbon_footprint.geographical_scope!r}, "
         f"primary_data_share={carbon_footprint.primary_data_share!r}, "
         f"dqi={carbon_footprint.dqi!r}, "
+        f"secondary_emission_factor_sources={carbon_footprint.secondary_emission_factor_sources!r}, "
         f"d_luc_ghg_emissions={carbon_footprint.d_luc_ghg_emissions!r}, "
         f"land_management_ghg_emissions={carbon_footprint.land_management_ghg_emissions!r}, "
         f"other_biogenic_ghg_emissions={carbon_footprint.other_biogenic_ghg_emissions!r}, "
