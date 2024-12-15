@@ -27,7 +27,7 @@ from pact_methodology.data_quality_indicators.data_quality_indicators import (
 from pact_methodology.carbon_footprint.biogenic_accounting_methodology import BiogenicAccountingMethodology
 from pact_methodology.carbon_footprint.product_or_sector_specific_rule import ProductOrSectorSpecificRule
 from pact_methodology.carbon_footprint.product_or_sector_specific_rule_operator import ProductOrSectorSpecificRuleOperator
-
+from pact_methodology.carbon_footprint.product_or_sector_specific_rule_set import ProductOrSectorSpecificRuleSet
 
 @pytest.fixture
 def valid_carbon_footprint_data():
@@ -86,11 +86,13 @@ def valid_carbon_footprint_data():
             comments="Example comments",
         ),
         "biogenic_accounting_methodology": BiogenicAccountingMethodology.GHGP,
-        "product_or_sector_specific_rules": [ProductOrSectorSpecificRule(
-            operator=ProductOrSectorSpecificRuleOperator.OTHER,
-            rule_names=["Rule1"],
-            other_operator_name="Custom Operator",
-        )]
+        "product_or_sector_specific_rules": ProductOrSectorSpecificRuleSet(
+            rules=[ProductOrSectorSpecificRule(
+                operator=ProductOrSectorSpecificRuleOperator.OTHER,
+                rule_names=["Rule1"],
+                other_operator_name="Custom Operator",
+            )]
+        )
     }
 
 
@@ -781,11 +783,11 @@ def test_carbon_footprint_invalid_assurance(
     "product_or_sector_specific_rules",
     [
         None,
-        [ProductOrSectorSpecificRule(
+        ProductOrSectorSpecificRuleSet([ProductOrSectorSpecificRule(
             operator=ProductOrSectorSpecificRuleOperator.OTHER,
             rule_names=["Rule1"],
             other_operator_name="Custom Operator",
-        )],
+        )]),
     ],
 )
 def test_carbon_footprint_valid_product_or_sector_specific_rules(valid_carbon_footprint_data, product_or_sector_specific_rules):
@@ -797,7 +799,7 @@ def test_carbon_footprint_valid_product_or_sector_specific_rules(valid_carbon_fo
 @pytest.mark.parametrize(
     "product_or_sector_specific_rules, expected_error",
     [
-        ([1], "product_or_sector_specific_rules must be a list of ProductOrSectorSpecificRule"),
+        ([1], "product_or_sector_specific_rules must be an instance of ProductOrSectorSpecificRuleSet"),
     ],
 )
 def test_carbon_footprint_invalid_product_or_sector_specific_rules(
@@ -851,7 +853,7 @@ def test_carbon_footprint_str(valid_carbon_footprint_data):
         f"level=reasonable, boundary=Gate-to-Gate, completed_at={carbon_footprint.assurance.completed_at}, "
         f"standard_name='Example standard name', comments='Example comments'), "
         f"biogenic_accounting_methodology=GHGP, "
-        f"product_or_sector_specific_rules=[\"operator=Other, rule_names=['Rule1'], other_operator_name=Custom Operator\"])"
+        f"product_or_sector_specific_rules=ProductOrSectorSpecificRuleSet(rules=[ProductOrSectorSpecificRule(operator=ProductOrSectorSpecificRuleOperator.OTHER, rule_names=['Rule1'], other_operator_name='Custom Operator')]))"
     )
 
 def test_carbon_footprint_repr(valid_carbon_footprint_data):

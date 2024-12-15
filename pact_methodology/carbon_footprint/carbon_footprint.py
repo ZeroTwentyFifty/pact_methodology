@@ -2,9 +2,6 @@ from pact_methodology.assurance.assurance import Assurance
 from pact_methodology.carbon_footprint.characterization_factors import (
     CharacterizationFactors,
 )
-from pact_methodology.carbon_footprint.cross_sectoral_standard import (
-    CrossSectoralStandard,
-)
 from pact_methodology.carbon_footprint.cross_sectoral_standard_set import CrossSectoralStandardSet
 from pact_methodology.carbon_footprint.declared_unit import DeclaredUnit
 from pact_methodology.carbon_footprint.geographical_scope import (
@@ -15,7 +12,7 @@ from pact_methodology.data_quality_indicators.data_quality_indicators import (
     DataQualityIndicators,
 )
 from pact_methodology.carbon_footprint.biogenic_accounting_methodology import BiogenicAccountingMethodology
-from pact_methodology.carbon_footprint.product_or_sector_specific_rule import ProductOrSectorSpecificRule
+from pact_methodology.carbon_footprint.product_or_sector_specific_rule_set import ProductOrSectorSpecificRuleSet
 
 class CarbonFootprint:
     """
@@ -52,7 +49,7 @@ class CarbonFootprint:
         uncertainty_assessment_description (str | None): If present, the results, key drivers, and a short qualitative description of the uncertainty assessment.
         assurance (Assurance | None): If present, the Assurance information in accordance with the Pathfinder Framework.
         biogenic_accounting_methodology (BiogenicAccountingMethodology | None): The methodology used for biogenic carbon accounting.
-        product_or_sector_specific_rules (list[ProductOrSectorSpecificRule] | None): If present, refers to a set of product or sector specific rules published by a specific operator and applied during product carbon footprint calculation.
+        product_or_sector_specific_rules (ProductOrSectorSpecificRuleSet | None): If present, refers to a set of product or sector specific rules published by a specific operator and applied during product carbon footprint calculation.
     """
 
     def __init__(
@@ -455,8 +452,8 @@ class CarbonFootprint:
 
     @product_or_sector_specific_rules.setter
     def product_or_sector_specific_rules(self, value):
-        if value is not None and not all(isinstance(rule, ProductOrSectorSpecificRule) for rule in value):
-            raise ValueError("product_or_sector_specific_rules must be a list of ProductOrSectorSpecificRule")
+        if value is not None and not isinstance(value, ProductOrSectorSpecificRuleSet):
+            raise ValueError("product_or_sector_specific_rules must be an instance of ProductOrSectorSpecificRuleSet")
         self._product_or_sector_specific_rules = value
 
     def __str__(self):
@@ -491,7 +488,7 @@ class CarbonFootprint:
             f"uncertainty_assessment_description='{self.uncertainty_assessment_description}', "
             f"assurance={self.assurance}, "
             f"biogenic_accounting_methodology={self.biogenic_accounting_methodology.value}, "
-            f"product_or_sector_specific_rules={[str(rule) for rule in self.product_or_sector_specific_rules]})"
+            f"product_or_sector_specific_rules={self.product_or_sector_specific_rules})"
         )
 
     def __repr__(self):
