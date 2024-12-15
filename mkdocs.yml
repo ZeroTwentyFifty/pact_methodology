@@ -3,6 +3,9 @@ site_name: ZeroTwentyFifty - PACT Methodology
 theme:
   name: "material"
 
+plugins:
+  - mkdocstrings
+
 repo_name: ZeroTwentyFifty/pact_methodology
 repo_url: https://github.com/ZeroTwentyFifty/pact_methodology
 site_author: ZeroTwentyFifty
@@ -12,3 +15,10 @@ edit_uri: ""
 nav:
   - Introduction: "README.md"
   - Developer Contribution Guide: "developer_contribution_guide.md"
+  - Reference:
+    - Overview: "reference.md" 
+    - Carbon Footprint: "reference/carbon_footprint.md"
+    - Product Footprint: "reference/product_footprint.md"
+    - Assurance: "reference/assurance.md"
+    - Data Model Extension: "reference/data_model_extension.md"
+    - Data Quality Indicators: "reference/data_quality_indicators.md"
