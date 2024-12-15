@@ -817,6 +817,28 @@ def test_carbon_footprint_invalid_product_or_sector_specific_rules(
         CarbonFootprint(**invalid_data)
     assert str(excinfo.value) == expected_error
 
+
+def test_carbon_footprint_secondary_emission_factor_sources(valid_carbon_footprint_data):
+    carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
+    assert isinstance(carbon_footprint.secondary_emission_factor_sources, EmissionFactorDSSet)
+
+
+@pytest.mark.parametrize(
+    "secondary_emission_factor_sources, expected_error",
+    [
+        (1, "secondary_emission_factor_sources must be an instance of EmissionFactorDSSet"),
+    ],
+)
+def test_carbon_footprint_invalid_secondary_emission_factor_sources(
+    valid_carbon_footprint_data, secondary_emission_factor_sources, expected_error
+):
+    invalid_data = valid_carbon_footprint_data.copy()
+    invalid_data["secondary_emission_factor_sources"] = secondary_emission_factor_sources
+    with pytest.raises(ValueError) as excinfo:
+        CarbonFootprint(**invalid_data)
+    assert str(excinfo.value) == expected_error
+
+
 def test_carbon_footprint_str(valid_carbon_footprint_data):
     carbon_footprint = CarbonFootprint(**valid_carbon_footprint_data)
     assert str(carbon_footprint) == (
