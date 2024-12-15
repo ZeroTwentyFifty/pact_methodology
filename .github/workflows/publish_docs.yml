@@ -42,7 +42,7 @@ jobs:
           python_version: '3.x' # Uses latest 3.x version.
       - name: Install dependencies
         # Alternatively: pip install mkdocs
-        run: pip install mkdocs mkdocs-material
+        run: pip install mkdocs mkdocs-material mkdocstrings[python]
       - name: Build Docs
         run: mkdocs build
       - name: Configure GitHub Pages
