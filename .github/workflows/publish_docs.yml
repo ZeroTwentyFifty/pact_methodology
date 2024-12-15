@@ -1,0 +1,57 @@
+name: Publish documentation
+
+on:
+  workflow_dispatch: # Allow manual triggers
+  push:
+    tags-ignore:
+      - '**' # Ignore any tags here
+    branches:
+      - master
+    #
+    # Trigger when either files in the docs folder,
+    # the requirements.txt file or the mkdocs.yml file
+    # are edited and commited.
+    paths:
+      - 'docs/**'
+      - 'requirements.txt'
+      - 'mkdocs.yml'
+
+# These permissions are required for it to work
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Makes sure only one workflow runs at a time.
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+jobs:
+  buildAndDeploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.pages_url }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Setup Python 3.x
+        uses: actions/setup-python@v4
+        with:
+          python_version: '3.x' # Uses latest 3.x version.
+      - name: Install dependencies
+        # Alternatively: pip install mkdocs
+        run: pip install mkdocs mkdocs-material
+      - name: Build Docs
+        run: mkdocs build
+      - name: Configure GitHub Pages
+        # I have no idea if this actually needed...
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: 'site/' # MkDocs builds to site/ by default
+      - name: Deploy to GitHub Pages
+        id: deployment # This is required for environment
+        uses: actions/deploy-pages@v2

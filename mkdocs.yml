@@ -1,0 +1,14 @@
+site_name: ZeroTwentyFifty - PACT Methodology
+
+theme:
+  name: "material"
+
+repo_name: ZeroTwentyFifty/pact_methodology
+repo_url: https://github.com/ZeroTwentyFifty/pact_methodology
+site_author: ZeroTwentyFifty
+site_description: Documentation for ZeroTwentyFifty's PACT Methodology
+edit_uri: ""
+
+nav:
+  - Introduction: "README.md"
+  - Developer Contribution Guide: "developer_contribution_guide.md"
