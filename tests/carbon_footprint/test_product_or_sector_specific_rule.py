@@ -77,8 +77,8 @@ def test_product_or_sector_specific_rule_to_dict(valid_product_or_sector_specifi
     rule = ProductOrSectorSpecificRule(**valid_product_or_sector_specific_rule)
     assert rule.to_dict() == {
         "operator": ProductOrSectorSpecificRuleOperator.OTHER,
-        "ruleNames": ["Rule1"],
-        "otherOperatorName": "Custom Operator",
+        "rule_names": ["Rule1"],
+        "other_operator_name": "Custom Operator",
     }
 
 

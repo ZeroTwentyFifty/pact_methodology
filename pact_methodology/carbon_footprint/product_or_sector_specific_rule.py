@@ -146,17 +146,17 @@ class ProductOrSectorSpecificRule:
             A dictionary with the following structure:
             {
                 "operator": str,  # The operator value
-                "ruleNames": list[str],  # List of rule names
-                "otherOperatorName": str | None  # Custom operator name if applicable
+                "rule_names": list[str],  # List of rule names
+                "other_operator_name": str | None  # Custom operator name if applicable
             }
         """
         rule_dict = {
             "operator": self.operator.value,
-            "ruleNames": self.rule_names,
+            "rule_names": self.rule_names,
         }
 
         if self.operator == ProductOrSectorSpecificRuleOperator.OTHER:
-            rule_dict["otherOperatorName"] = self.other_operator_name
+            rule_dict["other_operator_name"] = self.other_operator_name
 
         return rule_dict
 
