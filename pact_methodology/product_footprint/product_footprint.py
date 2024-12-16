@@ -34,6 +34,24 @@ class ProductFootprint:
         extensions (list[DataModelExtension] | None): A list of DataModelExtension objects.
         pcf (CarbonFootprint): The carbon footprint of the given product with value conforming to the data type CarbonFootprint.
         preceding_pf_ids (list[ProductFootprintId] | None): A list of preceding ProductFootprintIds.
+
+    Examples:
+        >>> pcf = CarbonFootprint(...)  # Assume CarbonFootprint is properly initialized
+        >>> product_footprint = ProductFootprint(
+        ...     version=Version(),
+        ...     created=DateTime(),
+        ...     status=ProductFootprintStatus(),
+        ...     company_name="Example Company",
+        ...     company_ids=[CompanyId()],
+        ...     product_description="Example Product",
+        ...     product_ids=[ProductId()],
+        ...     product_category_cpc=CPC(),
+        ...     product_name_company="Example Product Name",
+        ...     comment="Example comment",
+        ...     pcf=pcf
+        ... )
+        >>> print(product_footprint)
+        ProductFootprint(id=<ProductFootprintId>, spec_version=2.2.0, version=<Version>, ...)
     """
 
     def __init__(
@@ -80,6 +98,24 @@ class ProductFootprint:
             extensions (list[DataModelExtension] | None): A list of DataModelExtension objects.
             pcf (CarbonFootprint): The carbon footprint of the given product with value conforming to the data type CarbonFootprint.
             preceding_pf_ids (list[ProductFootprintId] | None): A list of preceding ProductFootprintIds.
+
+        Examples:
+            >>> pcf = CarbonFootprint(...)  # Assume CarbonFootprint is properly initialized
+            >>> product_footprint = ProductFootprint(
+            ...     version=Version(),
+            ...     created=DateTime(),
+            ...     status=ProductFootprintStatus(),
+            ...     company_name="Example Company",
+            ...     company_ids=[CompanyId()],
+            ...     product_description="Example Product",
+            ...     product_ids=[ProductId()],
+            ...     product_category_cpc=CPC(),
+            ...     product_name_company="Example Product Name",
+            ...     comment="Example comment",
+            ...     pcf=pcf
+            ... )
+            >>> print(product_footprint)
+            ProductFootprint(id=<ProductFootprintId>, spec_version=2.2.0, version=<Version>, ...)
         """
         self.id = id if id else ProductFootprintId()
         self.spec_version = spec_version
@@ -284,6 +320,27 @@ class ProductFootprint:
         self._preceding_pf_ids = value
 
     def __str__(self):
+        """
+        Returns a string representation of the ProductFootprint instance.
+
+        Examples:
+            >>> pcf = CarbonFootprint(...)  # Assume CarbonFootprint is properly initialized
+            >>> product_footprint = ProductFootprint(
+            ...     version=Version(),
+            ...     created=DateTime(),
+            ...     status=ProductFootprintStatus(),
+            ...     company_name="Example Company",
+            ...     company_ids=[CompanyId()],
+            ...     product_description="Example Product",
+            ...     product_ids=[ProductId()],
+            ...     product_category_cpc=CPC(),
+            ...     product_name_company="Example Product Name",
+            ...     comment="Example comment",
+            ...     pcf=pcf
+            ... )
+            >>> print(product_footprint)
+            ProductFootprint(id=<ProductFootprintId>, spec_version=2.2.0, version=<Version>, ...)
+        """
         return (
             f"ProductFootprint(id={self.id}, spec_version={self.spec_version}, version={self.version}, "
             f"created={self.created}, updated={self.updated}, status={self.status}, status_comment='{self.status_comment}', "
@@ -294,6 +351,27 @@ class ProductFootprint:
         )
 
     def __repr__(self):
+        """
+        Returns a detailed string representation of the ProductFootprint instance for debugging.
+
+        Examples:
+            >>> pcf = CarbonFootprint(...)  # Assume CarbonFootprint is properly initialized
+            >>> product_footprint = ProductFootprint(
+            ...     version=Version(),
+            ...     created=DateTime(),
+            ...     status=ProductFootprintStatus(),
+            ...     company_name="Example Company",
+            ...     company_ids=[CompanyId()],
+            ...     product_description="Example Product",
+            ...     product_ids=[ProductId()],
+            ...     product_category_cpc=CPC(),
+            ...     product_name_company="Example Product Name",
+            ...     comment="Example comment",
+            ...     pcf=pcf
+            ... )
+            >>> repr(product_footprint)
+            ProductFootprint(id=<ProductFootprintId>, spec_version='2.2.0', version=<Version>, ...)
+        """
         return (
             f"ProductFootprint(id={self.id!r}, spec_version={self.spec_version!r}, version={self.version!r}, "
             f"created={self.created!r}, updated={self.updated!r}, status={self.status!r}, status_comment={self.status_comment!r}, "
@@ -304,7 +382,75 @@ class ProductFootprint:
         )
 
     def __eq__(self, other):
+        """
+        Compares two ProductFootprint instances for equality.
+
+        Examples:
+            >>> pcf = CarbonFootprint(...)  # Assume CarbonFootprint is properly initialized
+            >>> product_footprint1 = ProductFootprint(
+            ...     version=Version(),
+            ...     created=DateTime(),
+            ...     status=ProductFootprintStatus(),
+            ...     company_name="Example Company",
+            ...     company_ids=[CompanyId()],
+            ...     product_description="Example Product",
+            ...     product_ids=[ProductId()],
+            ...     product_category_cpc=CPC(),
+            ...     product_name_company="Example Product Name",
+            ...     comment="Example comment",
+            ...     pcf=pcf
+            ... )
+            >>> product_footprint2 = ProductFootprint(
+            ...     version=Version(),
+            ...     created=DateTime(),
+            ...     status=ProductFootprintStatus(),
+            ...     company_name="Example Company",
+            ...     company_ids=[CompanyId()],
+            ...     product_description="Example Product",
+            ...     product_ids=[ProductId()],
+            ...     product_category_cpc=CPC(),
+            ...     product_name_company="Example Product Name",
+            ...     comment="Example comment",
+            ...     pcf=pcf
+            ... )
+            >>> product_footprint1 == product_footprint2
+            True
+        """
         return self.__dict__ == other.__dict__
 
     def __ne__(self, other):
+        """
+        Compares two ProductFootprint instances for inequality.
+
+        Examples:
+            >>> pcf = CarbonFootprint(...)  # Assume CarbonFootprint is properly initialized
+            >>> product_footprint1 = ProductFootprint(
+            ...     version=Version(),
+            ...     created=DateTime(),
+            ...     status=ProductFootprintStatus(),
+            ...     company_name="Example Company",
+            ...     company_ids=[CompanyId()],
+            ...     product_description="Example Product",
+            ...     product_ids=[ProductId()],
+            ...     product_category_cpc=CPC(),
+            ...     product_name_company="Example Product Name",
+            ...     comment="Example comment",
+            ...     pcf=pcf
+            ... )
+            >>> product_footprint2 = ProductFootprint(
+            ...     version=Version(),
+            ...     created=DateTime(),
+            ...     status=ProductFootprintStatus(),
+            ...     company_name="Different Company",
+            ...     company_ids=[CompanyId()],
+            ...     product_description="Example Product",
+            ...     product_ids=[ProductId()],
+            ...     product_category_cpc=CPC(),
+            ...     product_name_company="Example Product Name",
+            ...     comment="Example comment",
+            ...     pcf=pcf
+            ... )
+            >>> product_footprint1 != product_footprint2
+            True
+        """
         return not self.__eq__(other)
