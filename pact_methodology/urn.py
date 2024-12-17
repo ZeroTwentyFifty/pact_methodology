@@ -5,13 +5,6 @@ import casregnum
 from urnparse import URN8141, InvalidURNFormatError
 
 
-import re
-from typing import Any
-
-import casregnum
-from urnparse import URN8141, InvalidURNFormatError
-
-
 class URN:
     """
     A class representing a generic URN (RFC8141).
@@ -123,6 +116,30 @@ class URN:
 
 
 class CompanyId(URN):
+    """
+    A class representing a Company ID URN.
+
+    This class inherits from URN and adds specific validation for Company IDs.
+
+    Attributes:
+        BUYER_ASSIGNED_PATTERN (re.Pattern): Regex pattern for buyer-assigned IDs.
+        VENDOR_ASSIGNED_PATTERN (re.Pattern): Regex pattern for vendor-assigned IDs.
+
+    Examples:
+        >>> CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+        CompanyId(value='urn:pathfinder:company:customcode:buyer-assigned:acme-corp')
+        >>> CompanyId("urn:pathfinder:company:customcode:vendor-assigned:12345")
+        CompanyId(value='urn:pathfinder:company:customcode:vendor-assigned:12345')
+        >>> CompanyId("invalid-urn")
+        Traceback (most recent call last):
+            ...
+        ValueError: Value must be a valid URN
+        >>> CompanyId("urn:pathfinder:company:customcode:buyer-assigned:bad code")
+        Traceback (most recent call last):
+            ...
+        ValueError: CompanyId does not conform to the required format
+    """
+
     BUYER_ASSIGNED_PATTERN = re.compile(
         r"^urn:pathfinder:company:customcode:buyer-assigned:[a-zA-Z0-9-]+$"
     )
@@ -130,14 +147,45 @@ class CompanyId(URN):
         r"^urn:pathfinder:company:customcode:vendor-assigned:[a-zA-Z0-9-]+$"
     )
 
-    def _validate(self):
-        super()._validate()  # Inherit URN validation
+    def __init__(self, value: str):
+        """
+        Initialize a CompanyId instance.
 
+        Args:
+            value (str): The Company ID string to validate and store.
+
+        Raises:
+            ValueError: If the value is not a valid URN or does not match the Company ID format.
+        """
+        super().__init__(value)  # This will call URN's __init__ which includes validation
+        self._validate_company_id()
+
+    def _validate_company_id(self):
+        """
+        Validate the Company ID format beyond the URN standard.
+
+        Raises:
+            ValueError: If the URN does not match the required Company ID format.
+        """
         if not (
             self.BUYER_ASSIGNED_PATTERN.match(self.value)
             or self.VENDOR_ASSIGNED_PATTERN.match(self.value)
         ):
             raise ValueError("CompanyId does not conform to the required format")
+
+    def __repr__(self) -> str:
+        """
+        Return the representation of the CompanyId instance.
+
+        Returns:
+            str: A string representation of the CompanyId instance.
+
+        Examples:
+            >>> cid = CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+            >>> repr(cid)
+            "CompanyId(value='urn:pathfinder:company:customcode:buyer-assigned:acme-corp')"
+        """
+        return f"CompanyId(value='{self.value}')"
 
 
 class ProductId(URN):

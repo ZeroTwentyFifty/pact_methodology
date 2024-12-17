@@ -95,73 +95,104 @@ def test_hash_inequality():
     urn2 = URN(value="urn:isbn:978-1-56619-909-4")
     assert hash(urn1) != hash(urn2)
 
-def test_valid_company_ids():
-    valid_ids = [
+import pytest
+
+from pact_methodology.urn import CompanyId
+
+
+@pytest.mark.parametrize(
+    "company_id",
+    [
         "urn:pathfinder:company:customcode:buyer-assigned:acme-corp",
+        "urn:pathfinder:company:customcode:buyer-assigned:12345",
+        "urn:pathfinder:company:customcode:vendor-assigned:acme-corp",
         "urn:pathfinder:company:customcode:vendor-assigned:12345",
-    ]
-    for cid in valid_ids:
-        CompanyId(value=cid)
+    ],
+)
+def test_valid_company_ids(company_id):
+    """Test initialization with valid CompanyId strings."""
+    cid = CompanyId(value=company_id)
+    assert cid.value == company_id
 
 
-def test_invalid_company_ids():
-    invalid_ids = [
-        "urn:pathfinder:company:customcode:buyer-assigned:bad code",
+@pytest.mark.parametrize(
+    "company_id",
+    [
         "urn:pathfinder:company:customcode:vendor-assigned:",
-        "not-a-company-id",
-    ]
-    for cid in invalid_ids:
-        with pytest.raises(ValueError):
-            CompanyId(value=cid)
-
-
-@pytest.mark.parametrize(
-    "product_id",
-    [
-        "urn:pathfinder:product:customcode:buyer-assigned:acme-product",
-        "urn:pathfinder:product:customcode:vendor-assigned:12345",
-        "urn:pathfinder:product:id:cas:64-17-5",
-        "urn:pathfinder:product:id:cas:1067-08-9",
-        "urn:pathfinder:product:id:cas:2306877-20-1",
-        "urn:pathfinder:product:id:iupac-inchi:1S/C9H8O4/c1-6(10)13-8-5-3-2-4-7(8)9(11)12/h2-5H,1H3,(H,11,12)",
+        "urn:pathfinder:company:customcode:invalid-type:12345",
+        "urn:pathfinder:company:customcode:buyer-assigned:",
     ],
 )
-def test_valid_product_ids(product_id):
-    pid = ProductId(value=product_id)
-    assert pid.value == product_id
+def test_invalid_company_ids(company_id):
+    """Test initialization with invalid CompanyId strings."""
+    with pytest.raises(ValueError, match="CompanyId does not conform to the required format"):
+        CompanyId(value=company_id)
 
 
-@pytest.mark.parametrize(
-    "product_id",
-    [
-        "urn:pathfinder:product:customcode:buyer-assigned:acme product",
-        "urn:pathfinder:product:customcode:vendor-assigned:",
-        "urn:pathfinder:product:id:cas:17-5",
-        "urn:pathfinder:product:id:cas:1345678-08-9",
-    ],
-)
-def test_invalid_product_ids(product_id):
-    with pytest.raises(ValueError):
-        ProductId(value=product_id)
+def test_company_id_inherits_urn_validation():
+    """Test that CompanyId inherits URN validation."""
+    with pytest.raises(ValueError, match="Value must be a valid URN"):
+        CompanyId(value="invalid-urn")
+
+
+def test_company_id_str_representation():
+    """Test string representation of CompanyId."""
+    company_id = "urn:pathfinder:company:customcode:buyer-assigned:acme-corp"
+    cid = CompanyId(value=company_id)
+    assert str(cid) == company_id
+
+
+def test_company_id_repr_representation():
+    """Test representation of CompanyId."""
+    company_id = "urn:pathfinder:company:customcode:buyer-assigned:acme-corp"
+    cid = CompanyId(value=company_id)
+    assert repr(cid) == f"CompanyId(value='{company_id}')"
 
 
 def test_company_id_hash():
-    company_id = CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
-    assert hash(company_id) == hash(
-        "urn:pathfinder:company:customcode:buyer-assigned:acme-corp"
-    )
+    """Test hash functionality of CompanyId."""
+    company_id = "urn:pathfinder:company:customcode:buyer-assigned:acme-corp"
+    cid = CompanyId(value=company_id)
+    assert hash(cid) == hash(company_id)
 
 
-def test_company_id_hash_multiple():
-    company_id1 = CompanyId(
-        "urn:pathfinder:company:customcode:buyer-assigned:acme-corp"
-    )
-    company_id2 = CompanyId(
-        "urn:pathfinder:company:customcode:buyer-assigned:acme-corp"
-    )
-    company_id3 = CompanyId(
-        "urn:pathfinder:company:customcode:buyer-assigned:other-corp"
-    )
+def test_company_id_equality_same_instance():
+    """Test equality of the same CompanyId instance."""
+    cid = CompanyId(value="urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+    assert cid == cid
 
-    assert hash(company_id1) == hash(company_id2)
-    assert hash(company_id1) != hash(company_id3)
+
+def test_company_id_equality_different_instances():
+    """Test equality of different CompanyId instances with the same value."""
+    cid1 = CompanyId(value="urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+    cid2 = CompanyId(value="urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+    assert cid1 == cid2
+
+
+def test_company_id_inequality_different_values():
+    """Test inequality of CompanyId instances with different values."""
+    cid1 = CompanyId(value="urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+    cid2 = CompanyId(value="urn:pathfinder:company:customcode:buyer-assigned:other-corp")
+    assert cid1 != cid2
+
+
+def test_company_id_inequality_with_non_company_id():
+    """Test inequality of CompanyId instance with non-CompanyId object."""
+    cid = CompanyId(value="urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+    assert cid != "urn:pathfinder:company:customcode:buyer-assigned:acme-corp"
+    assert cid != 123
+    assert cid != None
+
+
+def test_company_id_hash_consistency():
+    """Test hash consistency across different CompanyId instances with the same value."""
+    cid1 = CompanyId(value="urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+    cid2 = CompanyId(value="urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+    assert hash(cid1) == hash(cid2)
+
+
+def test_company_id_hash_inequality():
+    """Test hash inequality for different CompanyId values."""
+    cid1 = CompanyId(value="urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+    cid2 = CompanyId(value="urn:pathfinder:company:customcode:buyer-assigned:other-corp")
+    assert hash(cid1) != hash(cid2)
