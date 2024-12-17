@@ -1,4 +1,12 @@
 import re
+from typing import Any
+
+import casregnum
+from urnparse import URN8141, InvalidURNFormatError
+
+
+import re
+from typing import Any
 
 import casregnum
 from urnparse import URN8141, InvalidURNFormatError
@@ -7,28 +15,108 @@ from urnparse import URN8141, InvalidURNFormatError
 class URN:
     """
     A class representing a generic URN (RFC8141).
+
+    This class encapsulates the functionality to create, validate, and represent a URN.
+    It ensures that the URN conforms to the RFC8141 standard.
+
+    Examples:
+        >>> urn = URN("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")
+        >>> str(urn)
+        'urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6'
+        >>> repr(urn)
+        "URN(value='urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6')"
+        >>> hash(urn) == hash("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")
+        True
+        >>> urn == URN("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")
+        True
+        >>> urn == "urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6"
+        False
     """
 
     def __init__(self, value: str):
-        self.value = value
-        self._validate()
+        """
+        Initialize a URN instance.
 
-    def _validate(self):
+        Args:
+            value (str): The URN string to be validated and stored.
+
+        Raises:
+            ValueError: If the provided value is not a valid URN according to RFC8141.
+
+        Examples:
+            >>> URN("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")
+            URN(value='urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6')
+            >>> URN("invalid-urn")
+            Traceback (most recent call last):
+                ...
+            ValueError: Value must be a valid URN
+        """
         try:
-            URN8141.from_string(self.value)
+            URN8141.from_string(value)
         except InvalidURNFormatError:
             raise ValueError("Value must be a valid URN")
+        self.value = value
 
     def __str__(self) -> str:
+        """
+        Return the string representation of the URN.
+
+        Returns:
+            str: The URN value.
+
+        Examples:
+            >>> urn = URN("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")
+            >>> str(urn)
+            'urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6'
+        """
         return self.value
 
     def __repr__(self) -> str:
+        """
+        Return the representation of the URN instance.
+
+        Returns:
+            str: A string representation of the URN instance.
+
+        Examples:
+            >>> urn = URN("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")
+            >>> repr(urn)
+            "URN(value='urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6')"
+        """
         return f"URN(value='{self.value}')"
 
-    def __hash__(self):
+    def __hash__(self) -> int:
+        """
+        Return the hash of the URN value.
+
+        Returns:
+            int: The hash value of the URN.
+
+        Examples:
+            >>> urn = URN("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")
+            >>> hash(urn) == hash("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")
+            True
+        """
         return hash(self.value)
 
-    def __eq__(self, other):
+    def __eq__(self, other: Any) -> bool:
+        """
+        Check if this URN is equal to another object.
+
+        Args:
+            other (Any): The object to compare with.
+
+        Returns:
+            bool: True if the objects are equal, False otherwise.
+
+        Examples:
+            >>> urn1 = URN("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")
+            >>> urn2 = URN("urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6")
+            >>> urn1 == urn2
+            True
+            >>> urn1 == "urn:uuid:f81d4fae-7dec-11d0-a765-00a0c91e6bf6"
+            False
+        """
         if not isinstance(other, URN):
             return False
         return self.value == other.value
