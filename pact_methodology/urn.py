@@ -117,33 +117,29 @@ class URN:
 
 class CompanyId(URN):
     """
-    A class representing a Company ID URN.
+    A class representing a Company ID URN, extending the generic URN class.
 
-    This class inherits from URN and adds specific validation for Company IDs.
-
-    Attributes:
-        BUYER_ASSIGNED_PATTERN (re.Pattern): Regex pattern for buyer-assigned IDs.
-        VENDOR_ASSIGNED_PATTERN (re.Pattern): Regex pattern for vendor-assigned IDs.
+    This class encapsulates the functionality to create, validate, and represent a Company ID URN.
+    It ensures that the URN conforms to specific Company ID formats.
 
     Examples:
-        >>> CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
-        CompanyId(value='urn:pathfinder:company:customcode:buyer-assigned:acme-corp')
-        >>> CompanyId("urn:pathfinder:company:customcode:vendor-assigned:12345")
-        CompanyId(value='urn:pathfinder:company:customcode:vendor-assigned:12345')
-        >>> CompanyId("invalid-urn")
-        Traceback (most recent call last):
-            ...
-        ValueError: Value must be a valid URN
-        >>> CompanyId("urn:pathfinder:company:customcode:buyer-assigned:bad code")
-        Traceback (most recent call last):
-            ...
-        ValueError: CompanyId does not conform to the required format
+        >>> company_id = CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+        >>> str(company_id)
+        'urn:pathfinder:company:customcode:buyer-assigned:acme-corp'
+        >>> repr(company_id)
+        "CompanyId(value='urn:pathfinder:company:customcode:buyer-assigned:acme-corp')"
+        >>> hash(company_id) == hash("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+        True
+        >>> company_id == CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+        True
+        >>> company_id == "urn:pathfinder:company:customcode:buyer-assigned:acme-corp"
+        False
     """
 
-    BUYER_ASSIGNED_PATTERN = re.compile(
+    BUYER_ASSIGNED_PATTERN: re.Pattern = re.compile(
         r"^urn:pathfinder:company:customcode:buyer-assigned:[a-zA-Z0-9-]+$"
     )
-    VENDOR_ASSIGNED_PATTERN = re.compile(
+    VENDOR_ASSIGNED_PATTERN: re.Pattern = re.compile(
         r"^urn:pathfinder:company:customcode:vendor-assigned:[a-zA-Z0-9-]+$"
     )
 
@@ -152,15 +148,27 @@ class CompanyId(URN):
         Initialize a CompanyId instance.
 
         Args:
-            value (str): The Company ID string to validate and store.
+            value (str): The Company ID string to be validated and stored.
 
         Raises:
-            ValueError: If the value is not a valid URN or does not match the Company ID format.
+            ValueError: If the provided value is not a valid URN or does not conform to the Company ID format.
+
+        Examples:
+            >>> CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+            CompanyId(value='urn:pathfinder:company:customcode:buyer-assigned:acme-corp')
+            >>> CompanyId("invalid-urn")
+            Traceback (most recent call last):
+                ...
+            ValueError: Value must be a valid URN
+            >>> CompanyId("urn:pathfinder:company:customcode:invalid-type:12345")
+            Traceback (most recent call last):
+                ...
+            ValueError: CompanyId does not conform to the required format
         """
-        super().__init__(value)  # This will call URN's __init__ which includes validation
+        super().__init__(value)
         self._validate_company_id()
 
-    def _validate_company_id(self):
+    def _validate_company_id(self) -> None:
         """
         Validate the Company ID format beyond the URN standard.
 
@@ -173,6 +181,20 @@ class CompanyId(URN):
         ):
             raise ValueError("CompanyId does not conform to the required format")
 
+    def __str__(self) -> str:
+        """
+        Return the string representation of the CompanyId.
+
+        Returns:
+            str: The CompanyId value.
+
+        Examples:
+            >>> company_id = CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+            >>> str(company_id)
+            'urn:pathfinder:company:customcode:buyer-assigned:acme-corp'
+        """
+        return self.value
+
     def __repr__(self) -> str:
         """
         Return the representation of the CompanyId instance.
@@ -181,11 +203,47 @@ class CompanyId(URN):
             str: A string representation of the CompanyId instance.
 
         Examples:
-            >>> cid = CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
-            >>> repr(cid)
+            >>> company_id = CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+            >>> repr(company_id)
             "CompanyId(value='urn:pathfinder:company:customcode:buyer-assigned:acme-corp')"
         """
         return f"CompanyId(value='{self.value}')"
+
+    def __hash__(self) -> int:
+        """
+        Return the hash of the CompanyId value.
+
+        Returns:
+            int: The hash value of the CompanyId.
+
+        Examples:
+            >>> company_id = CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+            >>> hash(company_id) == hash("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+            True
+        """
+        return hash(self.value)
+
+    def __eq__(self, other: Any) -> bool:
+        """
+        Check if this CompanyId is equal to another object.
+
+        Args:
+            other (Any): The object to compare with.
+
+        Returns:
+            bool: True if the objects are equal, False otherwise.
+
+        Examples:
+            >>> company_id1 = CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+            >>> company_id2 = CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
+            >>> company_id1 == company_id2
+            True
+            >>> company_id1 == "urn:pathfinder:company:customcode:buyer-assigned:acme-corp"
+            False
+        """
+        if not isinstance(other, CompanyId):
+            return False
+        return self.value == other.value
 
 
 class ProductId(URN):
