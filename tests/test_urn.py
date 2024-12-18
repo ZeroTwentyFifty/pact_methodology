@@ -95,11 +95,6 @@ def test_hash_inequality():
     urn2 = URN(value="urn:isbn:978-1-56619-909-4")
     assert hash(urn1) != hash(urn2)
 
-import pytest
-
-from pact_methodology.urn import CompanyId
-
-
 @pytest.mark.parametrize(
     "company_id",
     [
@@ -116,23 +111,19 @@ def test_valid_company_ids(company_id):
 
 
 @pytest.mark.parametrize(
-    "company_id",
+    "company_id, error_message",
     [
-        "urn:pathfinder:company:customcode:vendor-assigned:",
-        "urn:pathfinder:company:customcode:invalid-type:12345",
-        "urn:pathfinder:company:customcode:buyer-assigned:",
+        ("urn:pathfinder:company:customcode:vendor-assigned:", "CompanyId does not conform to the required format"),
+        ("urn:pathfinder:company:customcode:invalid-type:12345", "CompanyId does not conform to the required format"),
+        ("urn:pathfinder:company:customcode:buyer-assigned:", "CompanyId does not conform to the required format"),
+        ("not-a-valid-urn", "Value must be a valid URN"),
+        ("urn:invalid", "Value must be a valid URN"),
     ],
 )
-def test_invalid_company_ids(company_id):
+def test_invalid_company_ids(company_id, error_message):
     """Test initialization with invalid CompanyId strings."""
-    with pytest.raises(ValueError, match="CompanyId does not conform to the required format"):
+    with pytest.raises(ValueError, match=error_message):
         CompanyId(value=company_id)
-
-
-def test_company_id_inherits_urn_validation():
-    """Test that CompanyId inherits URN validation."""
-    with pytest.raises(ValueError, match="Value must be a valid URN"):
-        CompanyId(value="invalid-urn")
 
 
 def test_company_id_str_representation():
