@@ -189,18 +189,67 @@ class CompanyId(URN):
 
 
 class ProductId(URN):
-    BUYER_ASSIGNED_PATTERN = re.compile(
+    """
+    A class representing a ProductId URN, extending the generic URN class.
+
+    This class encapsulates the functionality to create, validate, and represent a ProductId URN.
+    It ensures that the URN conforms to specific ProductId formats.
+
+    Examples:
+        >>> product_id = ProductId("urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+        >>> str(product_id)
+        'urn:pathfinder:product:customcode:buyer-assigned:ABC-123'
+        >>> repr(product_id)
+        "ProductId(value='urn:pathfinder:product:customcode:buyer-assigned:ABC-123')"
+        >>> hash(product_id) == hash("urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+        True
+        >>> product_id == ProductId("urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+        True
+        >>> product_id == "urn:pathfinder:product:customcode:buyer-assigned:ABC-123"
+        False
+    """
+
+    BUYER_ASSIGNED_PATTERN: re.Pattern = re.compile(
         r"^urn:pathfinder:product:customcode:buyer-assigned:[a-zA-Z0-9-]+$"
     )
-    VENDOR_ASSIGNED_PATTERN = re.compile(
+    VENDOR_ASSIGNED_PATTERN: re.Pattern = re.compile(
         r"^urn:pathfinder:product:customcode:vendor-assigned:[a-zA-Z0-9-]+$"
     )
-    CAS_PATTERN = re.compile(r"^urn:pathfinder:product:id:cas:\b\d{2,7}-\d{2}-\d\b$")
-    IUPAC_INCHI_PATTERN = re.compile(r"^urn:pathfinder:product:id:iupac-inchi:.*$")
+    CAS_PATTERN: re.Pattern = re.compile(r"^urn:pathfinder:product:id:cas:\b\d{2,7}-\d{2}-\d\b$")
+    IUPAC_INCHI_PATTERN: re.Pattern = re.compile(r"^urn:pathfinder:product:id:iupac-inchi:.*$")
 
-    def _validate(self):
-        super()._validate()
+    def __init__(self, value: str):
+        """
+        Initialize a ProductId instance.
 
+        Args:
+            value (str): The ProductId string to be validated and stored.
+
+        Raises:
+            ValueError: If the provided value is not a valid URN or does not conform to the ProductId format.
+
+        Examples:
+            >>> ProductId("urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+            ProductId(value='urn:pathfinder:product:customcode:buyer-assigned:ABC-123')
+            >>> ProductId("invalid-urn")
+            Traceback (most recent call last):
+                ...
+            ValueError: Value must be a valid URN
+            >>> ProductId("urn:pathfinder:product:customcode:invalid:ABC-123")
+            Traceback (most recent call last):
+                ...
+            ValueError: ProductId does not conform to the required format
+        """
+        super().__init__(value)
+        self._validate()
+
+    def _validate(self) -> None:
+        """
+        Validate the ProductId format.
+
+        Raises:
+            ValueError: If the ProductId does not conform to any of the required formats.
+        """
         if not any(
             [
                 self.BUYER_ASSIGNED_PATTERN.match(self.value),
@@ -211,13 +260,85 @@ class ProductId(URN):
         ):
             raise ValueError("ProductId does not conform to the required format")
 
-    def _validate_cas_number(self, value):
-        print(value)
+    def _validate_cas_number(self, value: str) -> bool:
+        """
+        Validate the CAS number format.
+
+        Args:
+            value (str): The URN string to validate.
+
+        Returns:
+            bool: True if the CAS number is valid, False otherwise.
+        """
         if self.CAS_PATTERN.match(value):
             try:
-                print(value.rsplit(":", 1)[-1])
-                casregnum.CAS(value.rsplit(":", 1)[-1])
+                cas_value = value.rsplit(":", 1)[-1]
+                casregnum.CAS(cas_value)
                 return True
             except ValueError:
                 return False
         return False
+
+    def __str__(self) -> str:
+        """
+        Return the string representation of the ProductId.
+
+        Returns:
+            str: The ProductId value.
+
+        Examples:
+            >>> product_id = ProductId("urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+            >>> str(product_id)
+            'urn:pathfinder:product:customcode:buyer-assigned:ABC-123'
+        """
+        return self.value
+
+    def __repr__(self) -> str:
+        """
+        Return the representation of the ProductId instance.
+
+        Returns:
+            str: A string representation of the ProductId instance.
+
+        Examples:
+            >>> product_id = ProductId("urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+            >>> repr(product_id)
+            "ProductId(value='urn:pathfinder:product:customcode:buyer-assigned:ABC-123')"
+        """
+        return f"ProductId(value='{self.value}')"
+
+    def __hash__(self) -> int:
+        """
+        Return the hash of the ProductId value.
+
+        Returns:
+            int: The hash value of the ProductId.
+
+        Examples:
+            >>> product_id = ProductId("urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+            >>> hash(product_id) == hash("urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+            True
+        """
+        return hash(self.value)
+
+    def __eq__(self, other: Any) -> bool:
+        """
+        Check if this ProductId is equal to another object.
+
+        Args:
+            other (Any): The object to compare with.
+
+        Returns:
+            bool: True if the objects are equal, False otherwise.
+
+        Examples:
+            >>> product_id1 = ProductId("urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+            >>> product_id2 = ProductId("urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+            >>> product_id1 == product_id2
+            True
+            >>> product_id1 == "urn:pathfinder:product:customcode:buyer-assigned:ABC-123"
+            False
+        """
+        if not isinstance(other, ProductId):
+            return False
+        return self.value == other.value
