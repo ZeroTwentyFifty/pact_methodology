@@ -196,3 +196,98 @@ def test_company_id_hash_inequality():
     cid1 = CompanyId(value="urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
     cid2 = CompanyId(value="urn:pathfinder:company:customcode:buyer-assigned:other-corp")
     assert hash(cid1) != hash(cid2)
+
+
+@pytest.mark.parametrize(
+    "urn_string",
+    [
+        "urn:pathfinder:product:customcode:buyer-assigned:acme-product",
+        "urn:pathfinder:product:customcode:vendor-assigned:12345",
+        "urn:pathfinder:product:id:cas:64-17-5",
+        "urn:pathfinder:product:id:cas:1067-08-9",
+        "urn:pathfinder:product:id:cas:2306877-20-1",
+        "urn:pathfinder:product:id:iupac-inchi:1S/C9H8O4/c1-6(10)13-8-5-3-2-4-7(8)9(11)12/h2-5H,1H3,(H,11,12)",
+    ],
+)
+def test_valid_product_id(urn_string):
+    """Test initialization with valid ProductId strings."""
+    product_id = ProductId(value=urn_string)
+    assert product_id.value == urn_string
+
+
+@pytest.mark.parametrize(
+    "urn_string, error_message",
+    [
+        ("not-a-valid-urn", "Value must be a valid URN"),
+        ("urn:invalid", "Value must be a valid URN"),
+        ("urn:pathfinder:product:customcode:invalid:ABC-123", "ProductId does not conform to the required format"),
+        ("urn:pathfinder:product:id:cas:12345-67-9", "ProductId does not conform to the required format"),  # Invalid CAS number
+    ],
+)
+def test_invalid_product_id(urn_string, error_message):
+    """Test initialization with invalid ProductId strings."""
+    with pytest.raises(ValueError, match=error_message):
+        ProductId(value=urn_string)
+
+
+def test_str_representation():
+    """Test string representation of ProductId."""
+    urn_string = "urn:pathfinder:product:customcode:buyer-assigned:ABC-123"
+    product_id = ProductId(value=urn_string)
+    assert str(product_id) == urn_string
+
+
+def test_repr_representation():
+    """Test representation of ProductId."""
+    urn_string = "urn:pathfinder:product:customcode:buyer-assigned:ABC-123"
+    product_id = ProductId(value=urn_string)
+    assert repr(product_id) == f"ProductId(value='{urn_string}')"
+
+
+def test_hash():
+    """Test hash functionality of ProductId."""
+    urn_string = "urn:pathfinder:product:customcode:buyer-assigned:ABC-123"
+    product_id = ProductId(value=urn_string)
+    assert hash(product_id) == hash(urn_string)
+
+
+def test_equality_same_instance():
+    """Test equality of the same ProductId instance."""
+    product_id = ProductId(value="urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+    assert product_id == product_id
+
+
+def test_equality_different_instances():
+    """Test equality of different ProductId instances with the same value."""
+    product_id1 = ProductId(value="urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+    product_id2 = ProductId(value="urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+    assert product_id1 == product_id2
+
+
+def test_inequality_different_values():
+    """Test inequality of ProductId instances with different values."""
+    product_id1 = ProductId(value="urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+    product_id2 = ProductId(value="urn:pathfinder:product:customcode:vendor-assigned:XYZ-456")
+    assert product_id1 != product_id2
+
+
+def test_inequality_with_non_product_id():
+    """Test inequality of ProductId instance with non-ProductId object."""
+    product_id = ProductId(value="urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+    assert product_id != "urn:pathfinder:product:customcode:buyer-assigned:ABC-123"
+    assert product_id != 123
+    assert product_id != None
+
+
+def test_hash_consistency():
+    """Test hash consistency across different instances with the same value."""
+    product_id1 = ProductId(value="urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+    product_id2 = ProductId(value="urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+    assert hash(product_id1) == hash(product_id2)
+
+
+def test_hash_inequality():
+    """Test hash inequality for different ProductId values."""
+    product_id1 = ProductId(value="urn:pathfinder:product:customcode:buyer-assigned:ABC-123")
+    product_id2 = ProductId(value="urn:pathfinder:product:customcode:vendor-assigned:XYZ-456")
+    assert hash(product_id1) != hash(product_id2)
