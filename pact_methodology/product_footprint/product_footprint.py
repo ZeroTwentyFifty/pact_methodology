@@ -138,180 +138,342 @@ class ProductFootprint:
 
     @property
     def id(self):
+        """Gets the unique identifier for this ProductFootprint."""
         return self._id
 
     @id.setter
     def id(self, value):
+        """Sets the unique identifier for this ProductFootprint.
+
+        Args:
+            value (ProductFootprintId | None): The identifier to set.
+
+        Raises:
+            ValueError: If value is not an instance of ProductFootprintId or None.
+        """
         if not isinstance(value, (ProductFootprintId, type(None))):
             raise ValueError("id must be an instance of ProductFootprintId or None")
         self._id = value
 
     @property
     def spec_version(self):
+        """Gets the version of the ProductFootprint data specification."""
         return self._spec_version
 
     @spec_version.setter
     def spec_version(self, value):
+        """Sets the version of the ProductFootprint data specification.
+
+        Args:
+            value (str): The specification version to set.
+
+        Raises:
+            ValueError: If value is not "2.2.0".
+        """
         if value != "2.2.0":
             raise ValueError("Invalid spec version")
         self._spec_version = value
 
     @property
     def version(self):
+        """Gets the version of the ProductFootprint."""
         return self._version
 
     @version.setter
     def version(self, value):
+        """Sets the version of the ProductFootprint.
+
+        Args:
+            value (Version): The version to set.
+
+        Raises:
+            ValueError: If value is not an instance of Version.
+        """
         if not isinstance(value, Version):
             raise ValueError("version must be an instance of Version")
         self._version = value
 
     @property
     def created(self):
+        """Gets the date and time when the ProductFootprint was created."""
         return self._created
 
     @created.setter
     def created(self, value):
+        """Sets the date and time when the ProductFootprint was created.
+
+        Args:
+            value (DateTime): The creation date/time to set.
+
+        Raises:
+            ValueError: If value is not an instance of DateTime.
+        """
         if not isinstance(value, DateTime):
             raise ValueError("created must be an instance of DateTime")
         self._created = value
 
     @property
     def updated(self):
+        """Gets the date and time when the ProductFootprint was last updated."""
         return self._updated
 
     @updated.setter
     def updated(self, value):
+        """Sets the date and time when the ProductFootprint was last updated.
+
+        Args:
+            value (DateTime | None): The update date/time to set.
+
+        Raises:
+            ValueError: If value is not an instance of DateTime or None.
+        """
         if value is not None and not isinstance(value, DateTime):
             raise ValueError("updated must be an instance of DateTime or None")
         self._updated = value
 
     @property
     def status(self):
+        """Gets the status of the ProductFootprint."""
         return self._status
 
     @status.setter
     def status(self, value):
+        """Sets the status of the ProductFootprint.
+
+        Args:
+            value (ProductFootprintStatus): The status to set.
+
+        Raises:
+            ValueError: If value is not an instance of ProductFootprintStatus.
+        """
         if not isinstance(value, ProductFootprintStatus):
             raise ValueError("status must be an instance of ProductFootprintStatus")
         self._status = value
 
     @property
     def status_comment(self):
+        """Gets the comment describing the status of the ProductFootprint."""
         return self._status_comment
 
     @status_comment.setter
     def status_comment(self, value):
+        """Sets the comment describing the status of the ProductFootprint.
+
+        Args:
+            value (str | None): The status comment to set.
+
+        Raises:
+            ValueError: If value is not a string or None.
+        """
         if value is not None and not isinstance(value, str):
             raise ValueError("status_comment must be a string or None")
         self._status_comment = value
 
     @property
     def validity_period(self):
+        """Gets the validity period for the ProductFootprint."""
         return self._validity_period
 
     @validity_period.setter
     def validity_period(self, value):
+        """Sets the validity period for the ProductFootprint.
+
+        Args:
+            value (ValidityPeriod | None): The validity period to set.
+
+        Raises:
+            ValueError: If value is not an instance of ValidityPeriod or None.
+        """
         if value is not None and not isinstance(value, ValidityPeriod):
             raise ValueError("validity_period must be an instance of ValidityPeriod or None")
         self._validity_period = value
 
     @property
     def company_name(self):
+        """Gets the name of the company that owns the ProductFootprint."""
         return self._company_name
 
     @company_name.setter
     def company_name(self, value):
+        """Sets the name of the company that owns the ProductFootprint.
+
+        Args:
+            value (str): The company name to set.
+
+        Raises:
+            ValueError: If value is not a non-empty string.
+        """
         if not isinstance(value, str) or not value:
             raise ValueError("company_name must be a non-empty string")
         self._company_name = value
 
     @property
     def company_ids(self):
+        """Gets the list of CompanyIds for the company that owns the ProductFootprint."""
         return self._company_ids
 
     @company_ids.setter
     def company_ids(self, value):
+        """Sets the list of CompanyIds for the company that owns the ProductFootprint.
+
+        Args:
+            value (list[CompanyId]): The list of company IDs to set.
+
+        Raises:
+            ValueError: If value is not a list of CompanyId instances.
+        """
         if not isinstance(value, list) or not all(isinstance(company_id, CompanyId) for company_id in value):
             raise ValueError("company_ids must be a list of CompanyId")
         self._company_ids = value
 
     @property
     def product_description(self):
+        """Gets the description of the product."""
         return self._product_description
 
     @product_description.setter
     def product_description(self, value):
+        """Sets the description of the product.
+
+        Args:
+            value (str): The product description to set.
+
+        Raises:
+            ValueError: If value is not a non-empty string.
+        """
         if not isinstance(value, str) or not value:
             raise ValueError("product_description must be a non-empty string")
         self._product_description = value
 
     @property
     def product_ids(self):
+        """Gets the list of ProductIds for the product."""
         return self._product_ids
 
     @product_ids.setter
     def product_ids(self, value):
+        """Sets the list of ProductIds for the product.
+
+        Args:
+            value (list[ProductId]): The list of product IDs to set.
+
+        Raises:
+            ValueError: If value is not a list of ProductId instances.
+        """
         if not isinstance(value, list) or not all(isinstance(product_id, ProductId) for product_id in value):
             raise ValueError("product_ids must be a list of ProductId")
         self._product_ids = value
 
     @property
     def product_category_cpc(self):
+        """Gets the category of the product according to the CPC (Central Product Classification) system."""
         return self._product_category_cpc
 
     @product_category_cpc.setter
     def product_category_cpc(self, value):
+        """Sets the category of the product according to the CPC system.
+
+        Args:
+            value (CPC): The CPC category to set.
+
+        Raises:
+            ValueError: If value is not an instance of CPC.
+        """
         if not isinstance(value, CPC):
             raise ValueError("product_category_cpc must be an instance of CPC")
         self._product_category_cpc = value
 
     @property
     def product_name_company(self):
+        """Gets the name of the product as used by the company."""
         return self._product_name_company
 
     @product_name_company.setter
     def product_name_company(self, value):
+        """Sets the name of the product as used by the company.
+
+        Args:
+            value (str): The product name to set.
+
+        Raises:
+            ValueError: If value is not a non-empty string.
+        """
         if not isinstance(value, str) or not value:
             raise ValueError("product_name_company must be a non-empty string")
         self._product_name_company = value
 
     @property
     def comment(self):
+        """Gets the comment about the ProductFootprint."""
         return self._comment
 
     @comment.setter
     def comment(self, value):
+        """Sets the comment about the ProductFootprint.
+
+        Args:
+            value (str): The comment to set.
+
+        Raises:
+            ValueError: If value is not a string.
+        """
         if not isinstance(value, str):
             raise ValueError("comment must be a string")
         self._comment = value
 
     @property
     def extensions(self):
+        """Gets the list of DataModelExtension objects."""
         return self._extensions
 
     @extensions.setter
     def extensions(self, value):
+        """Sets the list of DataModelExtension objects.
+
+        Args:
+            value (list[DataModelExtension] | None): The list of extensions to set.
+
+        Raises:
+            ValueError: If value is not None and not a list of DataModelExtension instances.
+        """
         if value is not None and (not isinstance(value, list) or not all(isinstance(ext, DataModelExtension) for ext in value)):
             raise ValueError("extensions must be a list of DataModelExtension objects or None")
         self._extensions = value
 
     @property
     def pcf(self):
+        """Gets the carbon footprint of the given product with value conforming to the data type CarbonFootprint."""
         return self._pcf
 
     @pcf.setter
     def pcf(self, value):
+        """Sets the carbon footprint of the given product.
+
+        Args:
+            value (CarbonFootprint): The carbon footprint to set.
+
+        Raises:
+            ValueError: If value is not an instance of CarbonFootprint.
+        """
         if not isinstance(value, CarbonFootprint):
             raise ValueError("pcf must be an instance of CarbonFootprint")
         self._pcf = value
 
     @property
     def preceding_pf_ids(self):
+        """Gets the list of preceding ProductFootprintIds."""
         return self._preceding_pf_ids
 
     @preceding_pf_ids.setter
     def preceding_pf_ids(self, value):
+        """Sets the list of preceding ProductFootprintIds.
+
+        Args:
+            value (list[ProductFootprintId] | None): The list of preceding product footprint IDs to set.
+
+        Raises:
+            ValueError: If value is not None and not a list of unique ProductFootprintId instances.
+        """
         if value is not None:
             if not isinstance(value, list) or not all(isinstance(pf_id, ProductFootprintId) for pf_id in value):
                 raise ValueError("preceding_pf_ids must be a list of ProductFootprintId or None")
@@ -355,7 +517,7 @@ class ProductFootprint:
         Returns a detailed string representation of the ProductFootprint instance for debugging.
 
         Examples:
-            >>> pcf = CarbonFootprint(...)  # Assume CarbonFootprint is properly initialized
+            >>> pcf = CarbonFootprint(
             >>> product_footprint = ProductFootprint(
             ...     version=Version(),
             ...     created=DateTime(),
