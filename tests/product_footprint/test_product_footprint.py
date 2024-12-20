@@ -206,6 +206,13 @@ def test_product_footprint_initialization(valid_product_footprint_data):
     )
 
 
+@pytest.mark.parametrize("id", [123, 1.0, "string", {}, []])
+def test_product_footprint_id_invalid_value_error(valid_product_footprint_data, id):
+    pf = ProductFootprint(**valid_product_footprint_data)
+    with pytest.raises(ValueError, match="id must be an instance of ProductFootprintId or None"):
+        pf.id = id
+
+
 def test_product_footprint_spec_version(valid_product_footprint_data):
     product_footprint = ProductFootprint(**valid_product_footprint_data)
     assert product_footprint.spec_version == "2.2.0"
@@ -264,6 +271,18 @@ def test_product_footprint_invalid_updated(valid_product_footprint_data, updated
         ProductFootprint(**product_footprint_data)
 
 
+def test_product_footprint_status_info(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+    assert isinstance(product_footprint.status_info, ProductFootprintStatus)
+
+
+@pytest.mark.parametrize("status_info", [123, 1.0, "string", {}, []])
+def test_product_footprint_status_info_invalid_value_error(valid_product_footprint_data, status_info):
+    pf = ProductFootprint(**valid_product_footprint_data)
+    with pytest.raises(ValueError, match="status_info must be an instance of ProductFootprintStatus"):
+        pf.status_info = status_info
+
+
 @pytest.mark.parametrize(
     "status", [Status.ACTIVE, Status.DEPRECATED]
 )
@@ -300,38 +319,6 @@ def test_product_footprint_invalid_status_comment(
         pf.status_comment = status_comment
 
 
-def test_product_footprint_valid_validity_period(valid_product_footprint_data):
-    validity_period = ValidityPeriod(
-        start=DateTime("2022-01-01T00:00:00Z"), end=DateTime("2025-12-31T23:59:59Z")
-    )
-    product_footprint_data = {
-        **valid_product_footprint_data,
-        "validity_period": validity_period,
-    }
-    product_footprint = ProductFootprint(**product_footprint_data)
-    assert product_footprint.validity_period == validity_period
-
-
-def test_product_footprint_empty_validity_period(valid_product_footprint_data):
-    product_footprint_data = {
-        **valid_product_footprint_data,
-        "validity_period": None,
-    }
-    product_footprint = ProductFootprint(**product_footprint_data)
-    assert isinstance(product_footprint.validity_period, ValidityPeriod)
-
-
-def test_product_footprint_default_reference_period(valid_product_footprint_data):
-    product_footprint = ProductFootprint(**valid_product_footprint_data)
-    # The start date of the validity period should be equal to the end date of the reference period.
-    expected_start_date = product_footprint.pcf.reference_period.end
-    assert DateTime.same_day(product_footprint.validity_period.start, expected_start_date)
-
-    # The end date should be 3 years after the start date.
-    expected_end_date = ValidityPeriod.three_years_from_end(product_footprint.validity_period.start)
-    assert product_footprint.validity_period.end == expected_end_date
-
-
 @pytest.mark.parametrize("company_name", [123, 1.0, None, [], {}, ""])
 def test_product_footprint_invalid_company_name(
     valid_product_footprint_data, company_name
@@ -347,44 +334,6 @@ def test_product_footprint_invalid_company_name(
 def test_product_footprint_company_name(valid_product_footprint_data):
     product_footprint = ProductFootprint(**valid_product_footprint_data)
     assert product_footprint.company_name == "Company Name"
-
-
-@pytest.mark.parametrize("product_description", [123, 1.0, None, [], {}, ""])
-def test_product_footprint_invalid_product_description(
-    valid_product_footprint_data, product_description
-):
-    invalid_product_footprint_data = {
-        **valid_product_footprint_data,
-        "product_description": product_description,
-    }
-    with pytest.raises(
-        ValueError, match="product_description must be a non-empty string"
-    ):
-        ProductFootprint(**invalid_product_footprint_data)
-
-
-def test_product_footprint_product_description(valid_product_footprint_data):
-    product_footprint = ProductFootprint(**valid_product_footprint_data)
-    assert product_footprint.product_description == "Product Description"
-
-
-@pytest.mark.parametrize("product_name_company", [123, 1.0, None, [], {}, ""])
-def test_product_footprint_invalid_product_name_company(
-    valid_product_footprint_data, product_name_company
-):
-    invalid_product_footprint_data = {
-        **valid_product_footprint_data,
-        "product_name_company": product_name_company,
-    }
-    with pytest.raises(
-        ValueError, match="product_name_company must be a non-empty string"
-    ):
-        ProductFootprint(**invalid_product_footprint_data)
-
-
-def test_product_footprint_product_name_company(valid_product_footprint_data):
-    product_footprint = ProductFootprint(**valid_product_footprint_data)
-    assert product_footprint.product_name_company == "Product Name Company"
 
 
 @pytest.mark.parametrize(
@@ -430,6 +379,25 @@ def test_product_footprint_invalid_company_ids(
     }
     with pytest.raises(ValueError, match="company_ids must be a list of CompanyId"):
         ProductFootprint(**invalid_product_footprint_data)
+
+
+@pytest.mark.parametrize("product_description", [123, 1.0, None, [], {}, ""])
+def test_product_footprint_invalid_product_description(
+    valid_product_footprint_data, product_description
+):
+    invalid_product_footprint_data = {
+        **valid_product_footprint_data,
+        "product_description": product_description,
+    }
+    with pytest.raises(
+        ValueError, match="product_description must be a non-empty string"
+    ):
+        ProductFootprint(**invalid_product_footprint_data)
+
+
+def test_product_footprint_product_description(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+    assert product_footprint.product_description == "Product Description"
 
 
 @pytest.mark.parametrize(
@@ -578,6 +546,25 @@ def test_product_footprint_invalid_product_category_cpc(
         ProductFootprint(**invalid_product_footprint_data)
 
 
+@pytest.mark.parametrize("product_name_company", [123, 1.0, None, [], {}, ""])
+def test_product_footprint_invalid_product_name_company(
+    valid_product_footprint_data, product_name_company
+):
+    invalid_product_footprint_data = {
+        **valid_product_footprint_data,
+        "product_name_company": product_name_company,
+    }
+    with pytest.raises(
+        ValueError, match="product_name_company must be a non-empty string"
+    ):
+        ProductFootprint(**invalid_product_footprint_data)
+
+
+def test_product_footprint_product_name_company(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+    assert product_footprint.product_name_company == "Product Name Company"
+
+
 def test_product_footprint_comment(valid_product_footprint_data):
     product_footprint = ProductFootprint(**valid_product_footprint_data)
     assert isinstance(product_footprint.comment, str)
@@ -673,23 +660,36 @@ def test_product_footprint_duplicate_preceding_pf_ids(valid_product_footprint_da
         ProductFootprint(**product_footprint_data)
 
 
-@pytest.mark.parametrize("id", [123, 1.0, "string", {}, []])
-def test_product_footprint_id_invalid_value_error(valid_product_footprint_data, id):
-    pf = ProductFootprint(**valid_product_footprint_data)
-    with pytest.raises(ValueError, match="id must be an instance of ProductFootprintId or None"):
-        pf.id = id
+def test_product_footprint_valid_validity_period(valid_product_footprint_data):
+    validity_period = ValidityPeriod(
+        start=DateTime("2022-01-01T00:00:00Z"), end=DateTime("2025-12-31T23:59:59Z")
+    )
+    product_footprint_data = {
+        **valid_product_footprint_data,
+        "validity_period": validity_period,
+    }
+    product_footprint = ProductFootprint(**product_footprint_data)
+    assert product_footprint.validity_period == validity_period
 
 
-def test_product_footprint_status_info(valid_product_footprint_data):
+def test_product_footprint_empty_validity_period(valid_product_footprint_data):
+    product_footprint_data = {
+        **valid_product_footprint_data,
+        "validity_period": None,
+    }
+    product_footprint = ProductFootprint(**product_footprint_data)
+    assert isinstance(product_footprint.validity_period, ValidityPeriod)
+
+
+def test_product_footprint_default_reference_period(valid_product_footprint_data):
     product_footprint = ProductFootprint(**valid_product_footprint_data)
-    assert isinstance(product_footprint.status_info, ProductFootprintStatus)
+    # The start date of the validity period should be equal to the end date of the reference period.
+    expected_start_date = product_footprint.pcf.reference_period.end
+    assert DateTime.same_day(product_footprint.validity_period.start, expected_start_date)
 
-
-@pytest.mark.parametrize("status_info", [123, 1.0, "string", {}, []])
-def test_product_footprint_status_info_invalid_value_error(valid_product_footprint_data, status_info):
-    pf = ProductFootprint(**valid_product_footprint_data)
-    with pytest.raises(ValueError, match="status_info must be an instance of ProductFootprintStatus"):
-        pf.status_info = status_info
+    # The end date should be 3 years after the start date.
+    expected_end_date = ValidityPeriod.three_years_from_end(product_footprint.validity_period.start)
+    assert product_footprint.validity_period.end == expected_end_date
 
 
 @pytest.mark.parametrize("validity_period", [123, 1.0, "string", {}, []])
