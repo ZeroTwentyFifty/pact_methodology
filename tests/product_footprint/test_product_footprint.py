@@ -671,3 +671,67 @@ def test_product_footprint_duplicate_preceding_pf_ids(valid_product_footprint_da
     }
     with pytest.raises(ValueError, match="preceding_pf_ids must not contain duplicates"):
         ProductFootprint(**product_footprint_data)
+
+
+@pytest.mark.parametrize("id", [123, 1.0, "string", {}, []])
+def test_product_footprint_id_invalid_value_error(valid_product_footprint_data, id):
+    pf = ProductFootprint(**valid_product_footprint_data)
+    with pytest.raises(ValueError, match="id must be an instance of ProductFootprintId or None"):
+        pf.id = id
+
+
+def test_product_footprint_status_info(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+    assert isinstance(product_footprint.status_info, ProductFootprintStatus)
+
+
+@pytest.mark.parametrize("status_info", [123, 1.0, "string", {}, []])
+def test_product_footprint_status_info_invalid_value_error(valid_product_footprint_data, status_info):
+    pf = ProductFootprint(**valid_product_footprint_data)
+    with pytest.raises(ValueError, match="status_info must be an instance of ProductFootprintStatus"):
+        pf.status_info = status_info
+
+
+@pytest.mark.parametrize("validity_period", [123, 1.0, "string", {}, []])
+def test_product_footprint_validity_period_invalid_value_error(valid_product_footprint_data, validity_period):
+    pf = ProductFootprint(**valid_product_footprint_data)
+    with pytest.raises(ValueError, match="validity_period must be an instance of ValidityPeriod or None"):
+        pf.validity_period = validity_period
+
+
+def test_product_footprint_str(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+    expected_str = (
+        f"ProductFootprint(id={product_footprint.id}, spec_version={product_footprint.spec_version}, version={product_footprint.version}, "
+        f"created={product_footprint.created}, updated={product_footprint.updated}, status={product_footprint.status}, status_comment='{product_footprint.status_comment}', "
+        f"validity_period={product_footprint.validity_period}, company_name='{product_footprint.company_name}', company_ids={product_footprint.company_ids}, "
+        f"product_description='{product_footprint.product_description}', product_ids={product_footprint.product_ids}, "
+        f"product_category_cpc={product_footprint.product_category_cpc}, product_name_company='{product_footprint.product_name_company}', "
+        f"comment='{product_footprint.comment}', extensions={product_footprint.extensions}, pcf={product_footprint.pcf}, preceding_pf_ids={product_footprint.preceding_pf_ids})"
+    )
+    assert str(product_footprint) == expected_str
+
+
+def test_product_footprint_repr(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+    expected_repr = (
+        f"ProductFootprint(id={product_footprint.id!r}, spec_version={product_footprint.spec_version!r}, version={product_footprint.version!r}, "
+        f"created={product_footprint.created!r}, updated={product_footprint.updated!r}, status={product_footprint.status!r}, status_comment={product_footprint.status_comment!r}, "
+        f"validity_period={product_footprint.validity_period!r}, company_name={product_footprint.company_name!r}, company_ids={product_footprint.company_ids!r}, "
+        f"product_description={product_footprint.product_description!r}, product_ids={product_footprint.product_ids!r}, "
+        f"product_category_cpc={product_footprint.product_category_cpc!r}, product_name_company={product_footprint.product_name_company!r}, "
+        f"comment={product_footprint.comment!r}, extensions={product_footprint.extensions!r}, pcf={product_footprint.pcf!r}, preceding_pf_ids={product_footprint.preceding_pf_ids!r})"
+    )
+    assert repr(product_footprint) == expected_repr
+
+
+def test_product_footprint_eq(valid_product_footprint_data):
+    product_footprint1 = ProductFootprint(**valid_product_footprint_data)
+    product_footprint2 = ProductFootprint(**valid_product_footprint_data)
+    assert product_footprint1 == product_footprint2
+
+
+def test_product_footprint_ne(valid_product_footprint_data):
+    product_footprint1 = ProductFootprint(**valid_product_footprint_data)
+    product_footprint2 = ProductFootprint(**{**valid_product_footprint_data, "company_name": "Different Company Name"})
+    assert product_footprint1 != product_footprint2
