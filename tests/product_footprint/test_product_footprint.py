@@ -12,7 +12,7 @@ from pact_methodology.assurance.assurance import (
 )
 from pact_methodology.product_footprint.id import ProductFootprintId
 from pact_methodology.product_footprint.product_footprint import ProductFootprint
-from pact_methodology.product_footprint.status import ProductFootprintStatus
+from pact_methodology.product_footprint.status import ProductFootprintStatus, Status
 from pact_methodology.urn import CompanyId, ProductId
 from pact_methodology.product_footprint.cpc import CPCCodeLookup, CPC
 from pact_methodology.product_footprint.version import Version
@@ -159,8 +159,7 @@ def valid_product_footprint_data(valid_carbon_footprint_data, carbon_footprint):
         "version": version,
         "created": DateTime.now(),
         "updated": DateTime.now(),
-        "status": ProductFootprintStatus.ACTIVE,
-        "status_comment": "This is a comment",
+        "status_info": ProductFootprintStatus(status=Status.ACTIVE, comment="This is a comment"),
         "validity_period": validity_period,
         "company_name": "Company Name",
         "company_ids": company_ids,
@@ -182,7 +181,7 @@ def test_product_footprint_initialization(valid_product_footprint_data):
     assert product_footprint.version == Version(1)
     assert isinstance(product_footprint.created, DateTime)
     assert isinstance(product_footprint.updated, DateTime)
-    assert product_footprint.status == ProductFootprintStatus.ACTIVE
+    assert product_footprint.status == Status.ACTIVE
     assert product_footprint.status_comment == "This is a comment"
     assert isinstance(product_footprint.validity_period, ValidityPeriod)
     assert product_footprint.company_name == "Company Name"
@@ -266,45 +265,39 @@ def test_product_footprint_invalid_updated(valid_product_footprint_data, updated
 
 
 @pytest.mark.parametrize(
-    "status", [ProductFootprintStatus.ACTIVE, ProductFootprintStatus.DEPRECATED]
+    "status", [Status.ACTIVE, Status.DEPRECATED]
 )
 def test_product_footprint_valid_status(valid_product_footprint_data, status):
-    product_footprint_data = {**valid_product_footprint_data, "status": status}
+    product_footprint_data = {**valid_product_footprint_data, "status_info": ProductFootprintStatus(status=status, comment="This is a comment")}
     product_footprint = ProductFootprint(**product_footprint_data)
     assert product_footprint.status == status
 
 
 @pytest.mark.parametrize("status", ["Active", "Deprecated", 1, 1.0, datetime.now()])
 def test_product_footprint_invalid_status(valid_product_footprint_data, status):
-    product_footprint_data = {**valid_product_footprint_data, "status": status}
+    pf = ProductFootprint(**valid_product_footprint_data)
     with pytest.raises(
-        ValueError, match="status must be an instance of ProductFootprintStatus"
+        ValueError, match="status must be an instance of Status"
     ):
-        ProductFootprint(**product_footprint_data)
+        pf.status = status
 
 
 @pytest.mark.parametrize("status_comment", ["This is a comment", "Another comment", None])
 def test_product_footprint_valid_status_comment(
     valid_product_footprint_data, status_comment
 ):
-    product_footprint_data = {
-        **valid_product_footprint_data,
-        "status_comment": status_comment,
-    }
-    product_footprint = ProductFootprint(**product_footprint_data)
-    assert product_footprint.status_comment == status_comment
+    pf = ProductFootprint(**valid_product_footprint_data)
+    pf.status_comment = status_comment
+    assert pf.status_comment == status_comment
 
 
 @pytest.mark.parametrize("status_comment", [1, 1.0, datetime.now()])
 def test_product_footprint_invalid_status_comment(
     valid_product_footprint_data, status_comment
 ):
-    product_footprint_data = {
-        **valid_product_footprint_data,
-        "status_comment": status_comment,
-    }
-    with pytest.raises(ValueError, match="status_comment must be a string"):
-        ProductFootprint(**product_footprint_data)
+    pf = ProductFootprint(**valid_product_footprint_data)
+    with pytest.raises(ValueError, match="comment must be a string or None"):
+        pf.status_comment = status_comment
 
 
 def test_product_footprint_valid_validity_period(valid_product_footprint_data):

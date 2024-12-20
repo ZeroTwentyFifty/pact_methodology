@@ -62,8 +62,7 @@ class ProductFootprint:
         version: Version,
         created: DateTime,
         updated: DateTime | None = None,
-        status: ProductFootprintStatus,
-        status_comment: str | None = None,
+        status_info: ProductFootprintStatus,
         validity_period: ValidityPeriod | None = None,
         company_name: str,
         company_ids: list[CompanyId],
@@ -122,8 +121,7 @@ class ProductFootprint:
         self.version = version
         self.created = created
         self.updated = updated
-        self.status = status
-        self.status_comment = status_comment
+        self.status_info = status_info
         self.company_name = company_name
         self.company_ids = company_ids
         self.product_description = product_description
@@ -234,26 +232,24 @@ class ProductFootprint:
     @property
     def status(self):
         """Gets the status of the ProductFootprint."""
-        return self._status
+        return self._status_info.status
 
     @status.setter
     def status(self, value):
         """Sets the status of the ProductFootprint.
 
         Args:
-            value (ProductFootprintStatus): The status to set.
+            value (Status): The status to set.
 
         Raises:
-            ValueError: If value is not an instance of ProductFootprintStatus.
+            ValueError: If value is not an instance of Status.
         """
-        if not isinstance(value, ProductFootprintStatus):
-            raise ValueError("status must be an instance of ProductFootprintStatus")
-        self._status = value
+        self._status_info.status = value
 
     @property
     def status_comment(self):
         """Gets the comment describing the status of the ProductFootprint."""
-        return self._status_comment
+        return self._status_info.comment
 
     @status_comment.setter
     def status_comment(self, value):
@@ -265,9 +261,26 @@ class ProductFootprint:
         Raises:
             ValueError: If value is not a string or None.
         """
-        if value is not None and not isinstance(value, str):
-            raise ValueError("status_comment must be a string or None")
-        self._status_comment = value
+        self._status_info.comment = value
+
+    @property
+    def status_info(self):
+        """Gets the status information of the ProductFootprint."""
+        return self._status_info
+
+    @status_info.setter
+    def status_info(self, value):
+        """Sets the status information of the ProductFootprint.
+
+        Args:
+            value (ProductFootprintStatus): The status information to set.
+
+        Raises:
+            ValueError: If value is not an instance of ProductFootprintStatus.
+        """
+        if not isinstance(value, ProductFootprintStatus):
+            raise ValueError("status_info must be an instance of ProductFootprintStatus")
+        self._status_info = value
 
     @property
     def validity_period(self):
