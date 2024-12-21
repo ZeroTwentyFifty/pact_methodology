@@ -206,6 +206,13 @@ def test_product_footprint_initialization(valid_product_footprint_data):
     )
 
 
+def test_product_footprint_valid_id(valid_product_footprint_data):
+    new_id = ProductFootprintId()
+    product_footprint_data = {**valid_product_footprint_data, "id": new_id}
+    product_footprint = ProductFootprint(**product_footprint_data)
+    assert product_footprint.id == new_id
+
+
 @pytest.mark.parametrize("id", [123, 1.0, "string", {}, []])
 def test_product_footprint_id_invalid_value_error(valid_product_footprint_data, id):
     pf = ProductFootprint(**valid_product_footprint_data)
