@@ -1,9 +1,9 @@
 [tool.poetry]
 name = "pact-methodology"
-version = "0.0.2"
+version = "0.0.3"
 description = ""
 authors = ["JohnVonNeumann <louis@zerotwentyfifty.com>"]
-readme = "README.md"
+readme = "docs/README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
