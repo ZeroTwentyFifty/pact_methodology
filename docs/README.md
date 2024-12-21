@@ -67,7 +67,7 @@ pip install pact_methodology
 
 ## Documentation
 
-You can view the docs here: http://pathfinder-framework.readthedocs.io/
+You can view the docs here: https://zerotwentyfifty.github.io/pact_methodology/
 
 
 ## Contributing
