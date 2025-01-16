@@ -34,6 +34,8 @@ from pact_methodology.carbon_footprint.geographical_scope import (
 from pact_methodology.data_quality_indicators.data_quality_indicators import (
     DataQualityIndicators,
 )
+from pact_methodology.data_quality_indicators.data_quality_rating import DataQualityRating
+
 from pact_methodology.product_footprint.validity_period import ValidityPeriod
 from pact_methodology.data_model_extension.data_model_extension import (
     DataModelExtension,
@@ -72,7 +74,7 @@ def start_and_end_time() -> (DateTime, DateTime):
 def valid_carbon_footprint_data(start_and_end_time):
 
     start_time, end_time = start_and_end_time
-    
+
     standards_set = CrossSectoralStandardSet()
     standards_set.add(CrossSectoralStandard.GHG_PROTOCOL)
     emission_factor_ds_set = EmissionFactorDSSet()
@@ -103,7 +105,13 @@ def valid_carbon_footprint_data(start_and_end_time):
         "primary_data_share": 50.0,
         "secondary_emission_factor_sources": emission_factor_ds_set,
         "dqi": DataQualityIndicators(
-            reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now())
+            reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
+            coverage_percent=50.0,
+            technological_dqr=DataQualityRating(3),
+            temporal_dqr=DataQualityRating(3),
+            geographical_dqr=DataQualityRating(3),
+            completeness_dqr=DataQualityRating(3),
+            reliability_dqr=DataQualityRating(3),
         ),
         "d_luc_ghg_emissions": 2,
         "land_management_ghg_emissions": 1.0,
