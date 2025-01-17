@@ -149,10 +149,23 @@ class CarbonFootprint:
 
     @property
     def declared_unit(self):
+        """Gets the declared unit of analysis for the product.
+
+        Returns:
+            DeclaredUnit: The declared unit of analysis for the product.
+        """
         return self._declared_unit
 
     @declared_unit.setter
     def declared_unit(self, value):
+        """Sets the declared unit of analysis for the product.
+
+        Args:
+            value (DeclaredUnit): The declared unit to set.
+
+        Raises:
+            ValueError: If value is not an instance of DeclaredUnit.
+        """
         if not isinstance(value, DeclaredUnit):
             raise ValueError(
                 f"declared_unit '{value}' is not valid. It must be one of the following: {', '.join([unit.value for unit in DeclaredUnit])}"
@@ -161,88 +174,183 @@ class CarbonFootprint:
 
     @property
     def unitary_product_amount(self):
+        """Gets the amount of Declared Units contained within the product.
+
+        Returns:
+            float: The unitary product amount.
+        """
         return self._unitary_product_amount
 
     @unitary_product_amount.setter
     def unitary_product_amount(self, value):
+        """Sets the amount of Declared Units contained within the product.
+
+        Args:
+            value (float): The unitary product amount to set.
+
+        Raises:
+            ValueError: If value is not greater than 0.
+        """
         if value <= 0:
             raise ValueError("unitary_product_amount must be strictly greater than 0")
         self._unitary_product_amount = value
 
     @property
     def p_cf_excluding_biogenic(self):
+        """Gets the product carbon footprint excluding biogenic CO2 emissions.
+
+        Returns:
+            float: The product carbon footprint excluding biogenic CO2 emissions.
+        """
         return self._p_cf_excluding_biogenic
 
     @p_cf_excluding_biogenic.setter
     def p_cf_excluding_biogenic(self, value):
+        """Sets the product carbon footprint excluding biogenic CO2 emissions.
+
+        Args:
+            value (float): The carbon footprint to set.
+
+        Raises:
+            ValueError: If value is negative.
+        """
         if value < 0:
             raise ValueError("p_cf_excluding_biogenic must be equal to or greater than 0")
         self._p_cf_excluding_biogenic = value
 
     @property
     def fossil_ghg_emissions(self):
+        """Gets the emissions from fossil sources.
+
+        Returns:
+            float: The fossil GHG emissions.
+        """
         return self._fossil_ghg_emissions
 
     @fossil_ghg_emissions.setter
     def fossil_ghg_emissions(self, value):
+        """Sets the emissions from fossil sources.
+
+        Args:
+            value (float): The emissions to set.
+
+        Raises:
+            ValueError: If value is negative.
+        """
         if value < 0:
             raise ValueError("fossil_ghg_emissions must be equal to or greater than 0")
         self._fossil_ghg_emissions = value
 
     @property
     def fossil_carbon_content(self):
+        """Gets the fossil carbon content of the product.
+
+        Returns:
+            float: The fossil carbon content.
+        """
         return self._fossil_carbon_content
 
     @fossil_carbon_content.setter
     def fossil_carbon_content(self, value):
+        """Sets the fossil carbon content of the product.
+
+        Args:
+            value (float): The carbon content to set.
+
+        Raises:
+            ValueError: If value is negative.
+        """
         if value < 0:
             raise ValueError("fossil_carbon_content must be equal to or greater than 0")
         self._fossil_carbon_content = value
 
     @property
     def biogenic_carbon_content(self):
+        """Gets the biogenic carbon content of the product.
+
+        Returns:
+            float: The biogenic carbon content.
+        """
         return self._biogenic_carbon_content
 
     @biogenic_carbon_content.setter
     def biogenic_carbon_content(self, value):
+        """Sets the biogenic carbon content of the product.
+
+        Args:
+            value (float): The carbon content to set.
+
+        Raises:
+            ValueError: If value is negative.
+        """
         if value < 0:
             raise ValueError("biogenic_carbon_content must be equal to or greater than 0")
         self._biogenic_carbon_content = value
 
     @property
     def characterization_factors(self):
+        """Gets the characterization factors used in the PCF calculation.
+
+        Returns:
+            CharacterizationFactors: The characterization factors.
+        """
         return self._characterization_factors
 
     @characterization_factors.setter
     def characterization_factors(self, value):
+        """Sets the characterization factors used in the PCF calculation.
+
+        Args:
+            value (CharacterizationFactors): The factors to set.
+
+        Raises:
+            ValueError: If value is not an instance of CharacterizationFactors.
+        """
         if not isinstance(value, CharacterizationFactors):
             raise ValueError("characterization_factors must be an instance of CharacterizationFactors")
         self._characterization_factors = value
 
     @property
     def ipcc_characterization_factors_sources(self):
+        """Gets the IPCC characterization factors sources.
+
+        Returns:
+            list[str]: The sources of the characterization factors.
+        """
         return self._ipcc_characterization_factors_sources
 
     @ipcc_characterization_factors_sources.setter
     def ipcc_characterization_factors_sources(self, value):
+        """Sets the IPCC characterization factors sources.
+
+        Args:
+            value (list[str]): The sources to set.
+
+        Raises:
+            ValueError: If value is empty.
+        """
         if not value:
             raise ValueError("ipcc_characterization_factors_sources must not be empty")
         self._ipcc_characterization_factors_sources = value
 
     @property
     def cross_sectoral_standards_used(self) -> CrossSectoralStandardSet:
-        """
-        The cross-sectoral standards applied for calculating or allocating GHG emissions.
+        """Gets the cross-sectoral standards used for GHG emissions.
+
+        Returns:
+            CrossSectoralStandardSet: The cross-sectoral standards.
         """
         return self._cross_sectoral_standards_used
 
     @cross_sectoral_standards_used.setter
     def cross_sectoral_standards_used(self, value: CrossSectoralStandardSet) -> None:
-        """
-        Setter for cross_sectoral_standards_used.
+        """Sets the cross-sectoral standards used for GHG emissions.
 
         Args:
-            value (CrossSectoralStandardSet): The new value for cross_sectoral_standards_used.
+            value (CrossSectoralStandardSet): The standards to set.
+
+        Raises:
+            ValueError: If value is not an instance of CrossSectoralStandardSet.
         """
         if not isinstance(value, CrossSectoralStandardSet):
             raise ValueError("cross_sectoral_standards_used must be an instance of CrossSectoralStandardSet")
@@ -250,170 +358,391 @@ class CarbonFootprint:
 
     @property
     def boundary_processes_description(self):
+        """Gets the description of boundary processes.
+
+        Returns:
+            str: The description of boundary processes.
+        """
         return self._boundary_processes_description
 
     @boundary_processes_description.setter
     def boundary_processes_description(self, value):
+        """Sets the description of boundary processes.
+
+        Args:
+            value (str): The description to set.
+
+        Raises:
+            ValueError: If value is empty.
+        """
         if not value:
             raise ValueError("boundary_processes_description must not be empty")
         self._boundary_processes_description = value
 
     @property
     def secondary_emission_factor_sources(self):
+        """Gets the secondary emission factor sources.
+
+        Returns:
+            EmissionFactorDSSet | None: The secondary emission factor sources.
+        """
         return self._secondary_emission_factor_sources
 
     @secondary_emission_factor_sources.setter
     def secondary_emission_factor_sources(self, value):
-        if not isinstance(value, EmissionFactorDSSet):
+        """Sets the secondary emission factor sources.
+
+        Args:
+            value (EmissionFactorDSSet | None): The sources to set.
+
+        Raises:
+            ValueError: If value is not an instance of EmissionFactorDSSet.
+        """
+        if value is not None and not isinstance(value, EmissionFactorDSSet):
             raise ValueError("secondary_emission_factor_sources must be an instance of EmissionFactorDSSet")
         self._secondary_emission_factor_sources = value
 
     @property
     def exempted_emissions_percent(self):
+        """Gets the percent of emissions excluded from the PCF.
+
+        Returns:
+            float: The percent of emissions excluded.
+        """
         return self._exempted_emissions_percent
 
     @exempted_emissions_percent.setter
     def exempted_emissions_percent(self, value):
+        """Sets the percent of emissions excluded from the PCF.
+
+        Args:
+            value (float): The percent to set.
+
+        Raises:
+            ValueError: If value is not between 0.0 and 5.0 inclusive.
+        """
         if not 0.0 <= value <= 5.0:
             raise ValueError("exempted_emissions_percent must be between 0.0 and 5.0")
         self._exempted_emissions_percent = value
 
     @property
     def exempted_emissions_description(self):
+        """Gets the description of exempted emissions.
+
+        Returns:
+            str: The description of exempted emissions.
+        """
         return self._exempted_emissions_description
 
     @exempted_emissions_description.setter
     def exempted_emissions_description(self, value):
+        """Sets the description of exempted emissions.
+
+        Args:
+            value (str): The description to set.
+
+        Raises:
+            ValueError: If value is not a string.
+        """
         if not isinstance(value, str):
             raise ValueError("exempted_emissions_description must be a string")
         self._exempted_emissions_description = value
 
     @property
     def reference_period(self):
+        """Gets the reference period for the carbon footprint.
+
+        Returns:
+            ReferencePeriod: The reference period.
+        """
         return self._reference_period
 
     @reference_period.setter
     def reference_period(self, value):
+        """Sets the reference period for the carbon footprint.
+
+        Args:
+            value (ReferencePeriod): The reference period to set.
+
+        Raises:
+            ValueError: If value is not an instance of ReferencePeriod.
+        """
         if not isinstance(value, ReferencePeriod):
             raise ValueError("reference_period must be an instance of ReferencePeriod")
         self._reference_period = value
 
     @property
     def packaging_emissions_included(self):
+        """Gets whether packaging emissions are included in the PCF.
+
+        Returns:
+            bool: True if packaging emissions are included, otherwise False.
+        """
         return self._packaging_emissions_included
 
     @packaging_emissions_included.setter
     def packaging_emissions_included(self, value):
+        """Sets whether packaging emissions are included in the PCF.
+
+        Args:
+            value (bool): True to include packaging emissions, otherwise False.
+
+        Raises:
+            ValueError: If value is not a boolean.
+        """
         if not isinstance(value, bool):
             raise ValueError("packaging_emissions_included must be a boolean")
         self._packaging_emissions_included = value
 
     @property
     def geographical_scope(self):
+        """Gets the geographical scope of the carbon footprint.
+
+        Returns:
+            CarbonFootprintGeographicalScope: The geographical scope.
+        """
         return self._geographical_scope
 
     @geographical_scope.setter
     def geographical_scope(self, value):
+        """Sets the geographical scope of the carbon footprint.
+
+        Args:
+            value (CarbonFootprintGeographicalScope): The geographical scope to set.
+
+        Raises:
+            ValueError: If value is not an instance of CarbonFootprintGeographicalScope.
+        """
         if not isinstance(value, CarbonFootprintGeographicalScope):
             raise ValueError("geographical_scope must be an instance of CarbonFootprintGeographicalScope")
         self._geographical_scope = value
 
     @property
     def p_cf_including_biogenic(self):
+        """Gets the carbon footprint including all biogenic emissions.
+
+        Returns:
+            float | None: The carbon footprint including biogenic emissions.
+        """
         return self._p_cf_including_biogenic
 
     @p_cf_including_biogenic.setter
     def p_cf_including_biogenic(self, value):
+        """Sets the carbon footprint including all biogenic emissions.
+
+        Args:
+            value (float | None): The carbon footprint to set.
+
+        Raises:
+            ValueError: If value is not a number or None.
+        """
         if value is not None and not isinstance(value, (int, float)):
             raise ValueError("p_cf_including_biogenic must be a number")
         self._p_cf_including_biogenic = value
 
     @property
     def primary_data_share(self):
+        """Gets the share of primary data in percent.
+
+        Returns:
+            float | None: The share of primary data.
+        """
         return self._primary_data_share
 
     @primary_data_share.setter
     def primary_data_share(self, value):
+        """Sets the share of primary data in percent.
+
+        Args:
+            value (float | None): The share to set.
+
+        Raises:
+            ValueError: If value is not a number or None.
+        """
         if not isinstance(value, (int, float)) and value is not None:
             raise ValueError("primary_data_share must be a number")
         self._primary_data_share = value
 
     @property
     def dqi(self):
+        """Gets the data quality indicators for the carbon footprint.
+
+        Returns:
+            DataQualityIndicators | None: The data quality indicators.
+        """
         return self._dqi
 
     @dqi.setter
     def dqi(self, value):
+        """Sets the data quality indicators for the carbon footprint.
+
+        Args:
+            value (DataQualityIndicators | None): The data quality indicators to set.
+
+        Raises:
+            ValueError: If value is not an instance of DataQualityIndicators or None.
+        """
         if value is not None and not isinstance(value, DataQualityIndicators):
             raise ValueError("dqi must be an instance of DataQualityIndicators")
         self._dqi = value
 
     @property
     def d_luc_ghg_emissions(self):
+        """Gets the emissions from direct land use change.
+
+        Returns:
+            float | None: The emissions from direct land use change.
+        """
         return self._d_luc_ghg_emissions
 
     @d_luc_ghg_emissions.setter
     def d_luc_ghg_emissions(self, value):
+        """Sets the emissions from direct land use change.
+
+        Args:
+            value (float | None): The emissions to set.
+
+        Raises:
+            ValueError: If value is not a non-negative number or None.
+        """
         if value is not None and (not isinstance(value, (int, float)) or value < 0):
             raise ValueError("d_luc_ghg_emissions must be a non-negative number")
         self._d_luc_ghg_emissions = value
 
     @property
     def land_management_ghg_emissions(self):
+        """Gets the emissions from land management activities.
+
+        Returns:
+            float | None: The emissions from land management activities.
+        """
         return self._land_management_ghg_emissions
 
     @land_management_ghg_emissions.setter
     def land_management_ghg_emissions(self, value):
+        """Sets the emissions from land management activities.
+
+        Args:
+            value (float | None): The emissions to set.
+
+        Raises:
+            ValueError: If value is not a number or None.
+        """
         if value is not None and not isinstance(value, (int, float)):
             raise ValueError("land_management_ghg_emissions must be a number")
         self._land_management_ghg_emissions = value
 
     @property
     def other_biogenic_ghg_emissions(self):
+        """Gets the other biogenic GHG emissions.
+
+        Returns:
+            float | None: The other biogenic GHG emissions.
+        """
         return self._other_biogenic_ghg_emissions
 
     @other_biogenic_ghg_emissions.setter
     def other_biogenic_ghg_emissions(self, value):
+        """Sets the other biogenic GHG emissions.
+
+        Args:
+            value (float | None): The emissions to set.
+
+        Raises:
+            ValueError: If value is not a non-negative number or None.
+        """
         if value is not None and (not isinstance(value, (int, float)) or value < 0):
             raise ValueError("other_biogenic_ghg_emissions must be a non-negative number")
         self._other_biogenic_ghg_emissions = value
 
     @property
     def biogenic_carbon_withdrawal(self):
+        """Gets the biogenic carbon withdrawal.
+
+        Returns:
+            float | None: The biogenic carbon withdrawal.
+        """
         return self._biogenic_carbon_withdrawal
 
     @biogenic_carbon_withdrawal.setter
     def biogenic_carbon_withdrawal(self, value):
+        """Sets the biogenic carbon withdrawal.
+
+        Args:
+            value (float | None): The withdrawal to set.
+
+        Raises:
+            ValueError: If value is not a non-positive number or None.
+        """
         if value is not None and (not isinstance(value, (int, float)) or value > 0):
             raise ValueError("biogenic_carbon_withdrawal must be a non-positive number")
         self._biogenic_carbon_withdrawal = value
 
     @property
     def iluc_ghg_emissions(self):
+        """Gets the emissions from indirect land use change.
+
+        Returns:
+            float | None: The emissions from indirect land use change.
+        """
         return self._iluc_ghg_emissions
 
     @iluc_ghg_emissions.setter
     def iluc_ghg_emissions(self, value):
+        """Sets the emissions from indirect land use change.
+
+        Args:
+            value (float | None): The emissions to set.
+
+        Raises:
+            ValueError: If value is not a non-negative number or None.
+        """
         if value is not None and (not isinstance(value, (int, float)) or value < 0):
             raise ValueError("iluc_ghg_emissions must be a non-negative number")
         self._iluc_ghg_emissions = value
 
     @property
     def aircraft_ghg_emissions(self):
+        """Gets the GHG emissions from aircraft transport.
+
+        Returns:
+            float | None: The GHG emissions from aircraft transport.
+        """
         return self._aircraft_ghg_emissions
 
     @aircraft_ghg_emissions.setter
     def aircraft_ghg_emissions(self, value):
+        """Sets the GHG emissions from aircraft transport.
+
+        Args:
+            value (float | None): The emissions to set.
+
+        Raises:
+            ValueError: If value is not a non-negative number or None.
+        """
         if value is not None and (not isinstance(value, (int, float)) or value < 0):
             raise ValueError("aircraft_ghg_emissions must be a non-negative number")
         self._aircraft_ghg_emissions = value
 
     @property
     def packaging_ghg_emissions(self):
+        """Gets the emissions from product packaging.
+
+        Returns:
+            float | None: The emissions from product packaging.
+        """
         return self._packaging_ghg_emissions
 
     @packaging_ghg_emissions.setter
     def packaging_ghg_emissions(self, value):
+        """Sets the emissions from product packaging.
+
+        Args:
+            value (float | None): The emissions to set.
+
+        Raises:
+            ValueError: If packaging emissions are not included and value is defined, or if value is not a non-negative number when packaging emissions are included.
+        """
         if self.packaging_emissions_included and (value is None or not isinstance(value, (int, float)) or value < 0):
             raise ValueError("packaging_ghg_emissions must be a non-negative number if packaging_emissions_included is true")
         elif value is not None and not self.packaging_emissions_included:
@@ -422,50 +751,115 @@ class CarbonFootprint:
 
     @property
     def allocation_rules_description(self):
+        """Gets the description of allocation rules applied.
+
+        Returns:
+            str | None: The description of allocation rules.
+        """
         return self._allocation_rules_description
 
     @allocation_rules_description.setter
     def allocation_rules_description(self, value):
+        """Sets the description of allocation rules applied.
+
+        Args:
+            value (str | None): The description to set.
+
+        Raises:
+            ValueError: If value is not a string or None.
+        """
         if value is not None and not isinstance(value, str):
             raise ValueError("allocation_rules_description must be a string")
         self._allocation_rules_description = value
 
     @property
     def uncertainty_assessment_description(self):
+        """Gets the description of the uncertainty assessment.
+
+        Returns:
+            str | None: The description of the uncertainty assessment.
+        """
         return self._uncertainty_assessment_description
 
     @uncertainty_assessment_description.setter
     def uncertainty_assessment_description(self, value):
+        """Sets the description of the uncertainty assessment.
+
+        Args:
+            value (str | None): The description to set.
+
+        Raises:
+            ValueError: If value is not a string or None.
+        """
         if value is not None and not isinstance(value, str):
             raise ValueError("uncertainty_assessment_description must be a string")
         self._uncertainty_assessment_description = value
 
     @property
     def assurance(self):
+        """Gets the assurance information.
+
+        Returns:
+            Assurance | None: The assurance information.
+        """
         return self._assurance
 
     @assurance.setter
     def assurance(self, value):
+        """Sets the assurance information.
+
+        Args:
+            value (Assurance | None): The assurance information to set.
+
+        Raises:
+            ValueError: If value is not an instance of Assurance or None.
+        """
         if value is not None and not isinstance(value, Assurance):
             raise ValueError("assurance must be an instance of Assurance")
         self._assurance = value
 
     @property
     def biogenic_accounting_methodology(self):
+        """Gets the biogenic carbon accounting methodology.
+
+        Returns:
+            BiogenicAccountingMethodology | None: The biogenic accounting methodology.
+        """
         return self._biogenic_accounting_methodology
 
     @biogenic_accounting_methodology.setter
     def biogenic_accounting_methodology(self, value):
+        """Sets the biogenic carbon accounting methodology.
+
+        Args:
+            value (BiogenicAccountingMethodology | None): The methodology to set.
+
+        Raises:
+            ValueError: If value is not an instance of BiogenicAccountingMethodology or None.
+        """
         if value is not None and not isinstance(value, BiogenicAccountingMethodology):
             raise ValueError("biogenic_accounting_methodology must be an instance of BiogenicAccountingMethodology")
         self._biogenic_accounting_methodology = value
 
     @property
     def product_or_sector_specific_rules(self):
+        """Gets the product or sector-specific rules.
+
+        Returns:
+            ProductOrSectorSpecificRuleSet | None: The specific rules applied.
+        """
         return self._product_or_sector_specific_rules
 
     @product_or_sector_specific_rules.setter
     def product_or_sector_specific_rules(self, value):
+        """Sets the product or sector-specific rules.
+
+        Args:
+            value (ProductOrSectorSpecificRuleSet | None): The specific rules to set.
+
+        Raises:
+            ValueError: If value is not an instance of ProductOrSectorSpecificRuleSet or None.
+        """
         if value is not None and not isinstance(value, ProductOrSectorSpecificRuleSet):
             raise ValueError("product_or_sector_specific_rules must be an instance of ProductOrSectorSpecificRuleSet")
         self._product_or_sector_specific_rules = value
