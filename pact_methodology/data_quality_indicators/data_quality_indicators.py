@@ -10,6 +10,7 @@ This module provides the `DataQualityIndicators` class to encapsulate and valida
 
 from pact_methodology.carbon_footprint.reference_period import ReferencePeriod
 from pact_methodology.data_quality_indicators.data_quality_rating import DataQualityRating
+from pact_methodology.datetime import DateTime
 
 class DataQualityIndicators:
     """
@@ -25,6 +26,7 @@ class DataQualityIndicators:
         reliability_dqr (DataQualityRating | None): Data quality rating for data reliability.
 
     Examples:
+        >>> from pact_methodology.datetime import DateTime
         >>> dqi = DataQualityIndicators(
         ...     reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
         ...     coverage_percent=50.0,
@@ -68,6 +70,7 @@ class DataQualityIndicators:
                         including 2025 or later.
 
         Examples:
+            >>> from pact_methodology.datetime import DateTime
             >>> dqi = DataQualityIndicators(
             ...     reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
             ...     coverage_percent=50.0,
@@ -124,6 +127,7 @@ class DataQualityIndicators:
             ValueError: If value is not an instance of ReferencePeriod.
 
         Examples:
+            >>> from pact_methodology.datetime import DateTime
             >>> dqi = DataQualityIndicators(
             ...     reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
             ...     coverage_percent=50.0,
@@ -161,6 +165,7 @@ class DataQualityIndicators:
             ValueError: If value is not a number.
 
         Examples:
+            >>> from pact_methodology.datetime import DateTime
             >>> dqi = DataQualityIndicators(
             ...     reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
             ...     coverage_percent=50.0,
@@ -198,6 +203,7 @@ class DataQualityIndicators:
             TypeError: If value is not an instance of DataQualityRating.
 
         Examples:
+            >>> from pact_methodology.datetime import DateTime
             >>> dqi = DataQualityIndicators(
             ...     reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
             ...     coverage_percent=50.0,
@@ -235,6 +241,7 @@ class DataQualityIndicators:
             TypeError: If value is not an instance of DataQualityRating.
 
         Examples:
+            >>> from pact_methodology.datetime import DateTime
             >>> dqi = DataQualityIndicators(
             ...     reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
             ...     coverage_percent=50.0,
@@ -272,6 +279,7 @@ class DataQualityIndicators:
             TypeError: If value is not an instance of DataQualityRating.
 
         Examples:
+            >>> from pact_methodology.datetime import DateTime
             >>> dqi = DataQualityIndicators(
             ...     reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
             ...     coverage_percent=50.0,
@@ -309,6 +317,7 @@ class DataQualityIndicators:
             TypeError: If value is not an instance of DataQualityRating.
 
         Examples:
+            >>> from pact_methodology.datetime import DateTime
             >>> dqi = DataQualityIndicators(
             ...     reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
             ...     coverage_percent=50.0,
@@ -346,6 +355,7 @@ class DataQualityIndicators:
             TypeError: If value is not an instance of DataQualityRating.
 
         Examples:
+            >>> from pact_methodology.datetime import DateTime
             >>> dqi = DataQualityIndicators(
             ...     reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
             ...     coverage_percent=50.0,
@@ -369,6 +379,7 @@ class DataQualityIndicators:
             str: The string representation of the data quality indicators.
 
         Examples:
+            >>> from pact_methodology.datetime import DateTime
             >>> dqi = DataQualityIndicators(
             ...     reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
             ...     coverage_percent=50.0,
@@ -400,6 +411,7 @@ class DataQualityIndicators:
             str: The official string representation of the data quality indicators.
 
         Examples:
+            >>> from pact_methodology.datetime import DateTime
             >>> dqi = DataQualityIndicators(
             ...     reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
             ...     coverage_percent=50.0,
@@ -434,6 +446,7 @@ class DataQualityIndicators:
             bool: True if the instances are equal, False otherwise.
 
         Examples:
+            >>> from pact_methodology.datetime import DateTime
             >>> dqi1 = DataQualityIndicators(
             ...     reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
             ...     coverage_percent=50.0,
