@@ -137,11 +137,11 @@ def test_greater_than_or_equal():
 
 
 @pytest.mark.parametrize("years, expected_year", [
-    (1, 2025),
-    (2, 2026),
-    (3, 2027),
-    (0, 2024),
-    (-1, 2023)
+    (1, 2026),
+    (2, 2027),
+    (3, 2028),
+    (0, 2025),
+    (-1, 2024)
 ])
 def test_from_years_from_now(years: int, expected_year: int):
     future_date = DateTime.create_datetime_years_from_now(years)
