@@ -196,7 +196,7 @@ class CarbonFootprint:
         self._unitary_product_amount = value
 
     @property
-    def p_cf_excluding_biogenic(self):
+    def p_cf_excluding_biogenic(self) -> float:
         """Gets the product carbon footprint excluding biogenic CO2 emissions.
 
         Returns:
@@ -205,7 +205,7 @@ class CarbonFootprint:
         return self._p_cf_excluding_biogenic
 
     @p_cf_excluding_biogenic.setter
-    def p_cf_excluding_biogenic(self, value):
+    def p_cf_excluding_biogenic(self, value: float) -> None:
         """Sets the product carbon footprint excluding biogenic CO2 emissions.
 
         Args:
@@ -449,7 +449,7 @@ class CarbonFootprint:
         self._exempted_emissions_description = value
 
     @property
-    def reference_period(self):
+    def reference_period(self) -> ReferencePeriod:
         """Gets the reference period for the carbon footprint.
 
         Returns:
@@ -458,7 +458,7 @@ class CarbonFootprint:
         return self._reference_period
 
     @reference_period.setter
-    def reference_period(self, value):
+    def reference_period(self, value: ReferencePeriod) -> None:
         """Sets the reference period for the carbon footprint.
 
         Args:
@@ -564,7 +564,7 @@ class CarbonFootprint:
         self._primary_data_share = value
 
     @property
-    def dqi(self):
+    def dqi(self) -> DataQualityIndicators | None:
         """Gets the data quality indicators for the carbon footprint.
 
         Returns:
@@ -573,7 +573,7 @@ class CarbonFootprint:
         return self._dqi
 
     @dqi.setter
-    def dqi(self, value):
+    def dqi(self, value: DataQualityIndicators | None) -> None:
         """Sets the data quality indicators for the carbon footprint.
 
         Args:
