@@ -22,5 +22,6 @@ nav:
     - Assurance: "reference/assurance.md"
     - Data Model Extension: "reference/data_model_extension.md"
     - Data Quality Indicators: "reference/data_quality_indicators.md"
+    - Data Quality Rating: "reference/data_quality_rating.md"
     - URN: "reference/urn.md"
     - CPC: "reference/cpc.md"
