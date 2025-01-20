@@ -9,6 +9,8 @@ from pact_methodology.product_footprint.cpc import CPC
 from pact_methodology.product_footprint.version import Version
 from pact_methodology.product_footprint.validity_period import ValidityPeriod
 from pact_methodology.urn import CompanyId, ProductId
+from pact_methodology.product_footprint.product_id_list import ProductIdList
+
 
 class ProductFootprint:
     """
@@ -67,7 +69,7 @@ class ProductFootprint:
         company_name: str,
         company_ids: list[CompanyId],
         product_description: str,
-        product_ids: list[ProductId],
+        product_ids: ProductIdList,
         product_category_cpc: CPC,
         product_name_company: str,
         comment: str,
@@ -360,21 +362,21 @@ class ProductFootprint:
 
     @property
     def product_ids(self):
-        """Gets the list of ProductIds for the product."""
+        """Gets the ProductIdList for the product."""
         return self._product_ids
 
     @product_ids.setter
     def product_ids(self, value):
-        """Sets the list of ProductIds for the product.
+        """Sets the ProductIdList for the product.
 
         Args:
-            value (list[ProductId]): The list of product IDs to set.
+            value (ProductIdList): The ProductIdList to set.
 
         Raises:
-            ValueError: If value is not a list of ProductId instances.
+            ValueError: If value is not an instance of ProductIdList.
         """
-        if not isinstance(value, list) or not all(isinstance(product_id, ProductId) for product_id in value):
-            raise ValueError("product_ids must be a list of ProductId")
+        if not isinstance(value, ProductIdList):
+            raise ValueError("product_ids must be an instance of ProductIdList")
         self._product_ids = value
 
     @property
