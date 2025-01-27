@@ -29,7 +29,7 @@ class ProductFootprint:
         company_name (str): The name of the company that owns the ProductFootprint.
         company_ids (list[CompanyId]): A list of CompanyIds for the company that owns the ProductFootprint.
         product_description (str): A description of the product.
-        product_ids (list[ProductId]): A list of ProductIds for the product.
+        product_ids (ProductIdList): A list of ProductIds for the product.
         product_category_cpc (CPC): The category of the product according to the CPC (Central Product Classification) system.
         product_name_company (str): The name of the product as used by the company.
         comment (str): A comment about the ProductFootprint.
