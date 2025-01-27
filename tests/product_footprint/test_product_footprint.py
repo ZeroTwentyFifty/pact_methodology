@@ -440,6 +440,11 @@ def test_product_footprint_product_ids(valid_product_footprint_data, product_ids
     for product_id in product_footprint.product_ids:
         assert isinstance(product_id, ProductId)
 
+def test_product_footprint_product_ids_invalid_value_error(valid_product_footprint_data):
+    product_footprint = ProductFootprint(**valid_product_footprint_data)
+    with pytest.raises(ValueError, match="product_ids must be an instance of ProductIdList"):
+        product_footprint.product_ids = "string"
+
 
 @pytest.mark.parametrize(
     "company_ids",
