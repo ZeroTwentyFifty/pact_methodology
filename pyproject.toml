@@ -7,7 +7,7 @@ readme = "docs/README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-pycountry = "^23.12.11"
+pycountry = "^24.6.1"
 casregnum = "^1.0.1"
 urnparse = "^0.2.1"
 python-dateutil = "^2.9.0.post0"
