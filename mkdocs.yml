@@ -27,3 +27,7 @@ nav:
     - CPC: "reference/cpc.md"
     - Product ID List: "reference/product_id_list.md"
     - Company ID List: "reference/company_id_list.md"
+    - Validity Period: "reference/validity_period.md"
+    - Version: "reference/version.md"
+    - Status: "reference/status.md"
+    - ID: "reference/id.md"
