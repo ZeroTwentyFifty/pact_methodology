@@ -10,6 +10,7 @@ from pact_methodology.product_footprint.version import Version
 from pact_methodology.product_footprint.validity_period import ValidityPeriod
 from pact_methodology.urn import CompanyId, ProductId
 from pact_methodology.product_footprint.product_id_list import ProductIdList
+from pact_methodology.product_footprint.company_id_list import CompanyIdList
 
 
 class ProductFootprint:
@@ -27,7 +28,7 @@ class ProductFootprint:
         status_comment (str | None): A comment describing the status of the ProductFootprint.
         validity_period (ValidityPeriod | None): The validity period for the ProductFootprint.
         company_name (str): The name of the company that owns the ProductFootprint.
-        company_ids (list[CompanyId]): A list of CompanyIds for the company that owns the ProductFootprint.
+        company_ids (CompanyIdList): A list of CompanyIds for the company that owns the ProductFootprint.
         product_description (str): A description of the product.
         product_ids (ProductIdList): A list of ProductIds for the product.
         product_category_cpc (CPC): The category of the product according to the CPC (Central Product Classification) system.
@@ -44,9 +45,9 @@ class ProductFootprint:
         ...     created=DateTime(),
         ...     status=ProductFootprintStatus(),
         ...     company_name="Example Company",
-        ...     company_ids=[CompanyId()],
+        ...     company_ids=CompanyIdList([CompanyId()]),
         ...     product_description="Example Product",
-        ...     product_ids=[ProductId()],
+        ...     product_ids=ProductIdList([ProductId()]),
         ...     product_category_cpc=CPC(),
         ...     product_name_company="Example Product Name",
         ...     comment="Example comment",
@@ -67,7 +68,7 @@ class ProductFootprint:
         status_info: ProductFootprintStatus,
         validity_period: ValidityPeriod | None = None,
         company_name: str,
-        company_ids: list[CompanyId],
+        company_ids: CompanyIdList,
         product_description: str,
         product_ids: ProductIdList,
         product_category_cpc: CPC,
@@ -90,9 +91,9 @@ class ProductFootprint:
             status_comment (str | None): A comment describing the status of the ProductFootprint.
             validity_period (ValidityPeriod | None): The validity period for the ProductFootprint.
             company_name (str): The name of the company that owns the ProductFootprint.
-            company_ids (list[CompanyId]): A list of CompanyIds for the company that owns the ProductFootprint.
+            company_ids (CompanyIdList): A list of CompanyIds for the company that owns the ProductFootprint.
             product_description (str): A description of the product.
-            product_ids (list[ProductId]): A list of ProductIds for the product.
+            product_ids (ProductIdList): A list of ProductIds for the product.
             product_category_cpc (CPC): The category of the product according to the CPC (Central Product Classification) system.
             product_name_company (str): The name of the product as used by the company.
             comment (str): A comment about the ProductFootprint.
@@ -107,9 +108,9 @@ class ProductFootprint:
             ...     created=DateTime(),
             ...     status=ProductFootprintStatus(),
             ...     company_name="Example Company",
-            ...     company_ids=[CompanyId()],
+            ...     company_ids=CompanyIdList([CompanyId()]),
             ...     product_description="Example Product",
-            ...     product_ids=[ProductId()],
+            ...     product_ids=ProductIdList([ProductId()]),
             ...     product_category_cpc=CPC(),
             ...     product_name_company="Example Product Name",
             ...     comment="Example comment",
@@ -324,21 +325,21 @@ class ProductFootprint:
 
     @property
     def company_ids(self):
-        """Gets the list of CompanyIds for the company that owns the ProductFootprint."""
+        """Gets the CompanyIdList for the company that owns the ProductFootprint."""
         return self._company_ids
 
     @company_ids.setter
     def company_ids(self, value):
-        """Sets the list of CompanyIds for the company that owns the ProductFootprint.
+        """Sets the CompanyIdList for the company that owns the ProductFootprint.
 
         Args:
-            value (list[CompanyId]): The list of company IDs to set.
+            value (CompanyIdList): The CompanyIdList to set.
 
         Raises:
-            ValueError: If value is not a list of CompanyId instances.
+            ValueError: If value is not an instance of CompanyIdList.
         """
-        if not isinstance(value, list) or not all(isinstance(company_id, CompanyId) for company_id in value):
-            raise ValueError("company_ids must be a list of CompanyId")
+        if not isinstance(value, CompanyIdList):
+            raise ValueError("company_ids must be an instance of CompanyIdList")
         self._company_ids = value
 
     @property
@@ -507,9 +508,9 @@ class ProductFootprint:
             ...     created=DateTime(),
             ...     status=ProductFootprintStatus(),
             ...     company_name="Example Company",
-            ...     company_ids=[CompanyId()],
+            ...     company_ids=CompanyIdList([CompanyId()]),
             ...     product_description="Example Product",
-            ...     product_ids=[ProductId()],
+            ...     product_ids=ProductIdList([ProductId()]),
             ...     product_category_cpc=CPC(),
             ...     product_name_company="Example Product Name",
             ...     comment="Example comment",
@@ -538,9 +539,9 @@ class ProductFootprint:
             ...     created=DateTime(),
             ...     status=ProductFootprintStatus(),
             ...     company_name="Example Company",
-            ...     company_ids=[CompanyId()],
+            ...     company_ids=CompanyIdList([CompanyId()]),
             ...     product_description="Example Product",
-            ...     product_ids=[ProductId()],
+            ...     product_ids=ProductIdList([ProductId()]),
             ...     product_category_cpc=CPC(),
             ...     product_name_company="Example Product Name",
             ...     comment="Example comment",
@@ -569,9 +570,9 @@ class ProductFootprint:
             ...     created=DateTime(),
             ...     status=ProductFootprintStatus(),
             ...     company_name="Example Company",
-            ...     company_ids=[CompanyId()],
+            ...     company_ids=CompanyIdList([CompanyId()]),
             ...     product_description="Example Product",
-            ...     product_ids=[ProductId()],
+            ...     product_ids=ProductIdList([ProductId()]),
             ...     product_category_cpc=CPC(),
             ...     product_name_company="Example Product Name",
             ...     comment="Example comment",
@@ -582,9 +583,9 @@ class ProductFootprint:
             ...     created=DateTime(),
             ...     status=ProductFootprintStatus(),
             ...     company_name="Example Company",
-            ...     company_ids=[CompanyId()],
+            ...     company_ids=CompanyIdList([CompanyId()]),
             ...     product_description="Example Product",
-            ...     product_ids=[ProductId()],
+            ...     product_ids=ProductIdList([ProductId()]),
             ...     product_category_cpc=CPC(),
             ...     product_name_company="Example Product Name",
             ...     comment="Example comment",
@@ -606,9 +607,9 @@ class ProductFootprint:
             ...     created=DateTime(),
             ...     status=ProductFootprintStatus(),
             ...     company_name="Example Company",
-            ...     company_ids=[CompanyId()],
+            ...     company_ids=CompanyIdList([CompanyId()]),
             ...     product_description="Example Product",
-            ...     product_ids=[ProductId()],
+            ...     product_ids=ProductIdList([ProductId()]),
             ...     product_category_cpc=CPC(),
             ...     product_name_company="Example Product Name",
             ...     comment="Example comment",
@@ -619,9 +620,9 @@ class ProductFootprint:
             ...     created=DateTime(),
             ...     status=ProductFootprintStatus(),
             ...     company_name="Different Company",
-            ...     company_ids=[CompanyId()],
+            ...     company_ids=CompanyIdList([CompanyId()]),
             ...     product_description="Example Product",
-            ...     product_ids=[ProductId()],
+            ...     product_ids=ProductIdList([ProductId()]),
             ...     product_category_cpc=CPC(),
             ...     product_name_company="Example Product Name",
             ...     comment="Example comment",
