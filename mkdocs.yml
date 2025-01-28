@@ -18,7 +18,7 @@ nav:
   - Reference:
     - Overview: "reference.md" 
     - Carbon Footprint:
-      - Carbon Footprint: "reference/carbon_footprint.md"
+      - Carbon Footprint: "reference/carbon_footprint/carbon_footprint.md"
       - Geographical Scope: "reference/carbon_footprint/geographical_scope.md"
       - Region or Subregion: "reference/carbon_footprint/region_or_subregion.md"
       - Reference Period: "reference/carbon_footprint/reference_period.md"
@@ -33,7 +33,7 @@ nav:
       - Product or Sector Specific Rule Set: "reference/carbon_footprint/product_or_sector_specific_rule_set.md"
       - Product or Sector Specific Rule: "reference/carbon_footprint/product_or_sector_specific_rule.md"
     - Product Footprint:
-      - Product Footprint: "reference/product_footprint.md"
+      - Product Footprint: "reference/product_footprint/product_footprint.md"
       - CPC: "reference/product_footprint/cpc.md"
       - Product ID List: "reference/product_footprint/product_id_list.md"
       - Company ID List: "reference/product_footprint/company_id_list.md"
