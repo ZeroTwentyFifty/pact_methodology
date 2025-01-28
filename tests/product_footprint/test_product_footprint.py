@@ -15,6 +15,7 @@ from pact_methodology.product_footprint.product_footprint import ProductFootprin
 from pact_methodology.product_footprint.status import ProductFootprintStatus, Status
 from pact_methodology.urn import CompanyId, ProductId
 from pact_methodology.product_footprint.product_id_list import ProductIdList
+from pact_methodology.product_footprint.company_id_list import CompanyIdList
 from pact_methodology.product_footprint.cpc import CPCCodeLookup, CPC
 from pact_methodology.product_footprint.version import Version
 from pact_methodology.datetime import DateTime
@@ -46,8 +47,8 @@ from pact_methodology.carbon_footprint.emission_factor_ds_set import EmissionFac
 
 
 @pytest.fixture(scope="module")
-def company_ids() -> list[CompanyId]:
-    return [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")]
+def company_ids() -> CompanyIdList:
+    return CompanyIdList([CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")])
 
 
 @pytest.fixture(scope="module")
@@ -144,9 +145,9 @@ def carbon_footprint(valid_carbon_footprint_data):
 
 @pytest.fixture
 def valid_product_footprint_data(valid_carbon_footprint_data, carbon_footprint):
-    company_ids = [
+    company_ids = CompanyIdList([
         CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
-    ]
+    ])
     product_ids = ProductIdList([
         ProductId("urn:pathfinder:product:customcode:buyer-assigned:acme-product")
     ])
@@ -194,9 +195,10 @@ def test_product_footprint_initialization(valid_product_footprint_data):
     assert product_footprint.status_comment == "This is a comment"
     assert isinstance(product_footprint.validity_period, ValidityPeriod)
     assert product_footprint.company_name == "Company Name"
-    assert product_footprint.company_ids == [
-        CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
-    ]
+    assert isinstance(product_footprint.company_ids, CompanyIdList)
+    assert all(
+        isinstance(company_id, CompanyId) for company_id in product_footprint.company_ids
+    )
     assert product_footprint.product_description == "Product Description"
     assert isinstance(product_footprint.product_ids, ProductIdList)
     assert all(
@@ -356,13 +358,13 @@ def test_product_footprint_company_name(valid_product_footprint_data):
 @pytest.mark.parametrize(
     "company_ids",
     [
-        [
+        CompanyIdList([
             CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")
-        ],  # list with a single item
-        [
+        ]),  # list with a single item
+        CompanyIdList([
             CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp"),
             CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp2"),
-        ],  # list with multiple items
+        ]),  # list with multiple items
     ],
 )
 def test_product_footprint_company_ids(valid_product_footprint_data, company_ids):
@@ -371,6 +373,7 @@ def test_product_footprint_company_ids(valid_product_footprint_data, company_ids
         "company_ids": company_ids,
     }
     product_footprint = ProductFootprint(**product_footprint_data)
+    assert isinstance(product_footprint.company_ids, CompanyIdList)
     assert len(product_footprint.company_ids) == len(company_ids)
     for company_id in product_footprint.company_ids:
         assert isinstance(company_id, CompanyId)
@@ -385,6 +388,7 @@ def test_product_footprint_company_ids(valid_product_footprint_data, company_ids
         "string",
         {},
         CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp"),
+        [CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp")],
     ],
 )
 def test_product_footprint_invalid_company_ids(
@@ -394,7 +398,7 @@ def test_product_footprint_invalid_company_ids(
         **valid_product_footprint_data,
         "company_ids": company_ids,
     }
-    with pytest.raises(ValueError, match="company_ids must be a list of CompanyId"):
+    with pytest.raises(ValueError, match="company_ids must be an instance of CompanyIdList"):
         ProductFootprint(**invalid_product_footprint_data)
 
 
@@ -444,47 +448,6 @@ def test_product_footprint_product_ids_invalid_value_error(valid_product_footpri
     product_footprint = ProductFootprint(**valid_product_footprint_data)
     with pytest.raises(ValueError, match="product_ids must be an instance of ProductIdList"):
         product_footprint.product_ids = "string"
-
-
-@pytest.mark.parametrize(
-    "company_ids",
-    [
-        ["string"],  # list with a single invalid item
-        [
-            CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp"),
-            "string",
-        ],  # list with a mix of valid and invalid items
-        [1, 2, 3],  # list with invalid items of a different type
-        [
-            CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp"),
-            CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp"),
-            "string",
-        ],  # list with multiple valid items and an invalid item
-    ],
-)
-def test_product_footprint_invalid_company_ids_list(
-    valid_product_footprint_data, company_ids
-):
-    invalid_product_footprint_data = {
-        **valid_product_footprint_data,
-        "company_ids": company_ids,
-    }
-    with pytest.raises(ValueError, match="company_ids must be a list of CompanyId"):
-        ProductFootprint(**invalid_product_footprint_data)
-
-
-@pytest.mark.xfail(reason="Functionality not implemented yet")
-def test_product_footprint_duplicate_company_ids(valid_product_footprint_data):
-    company_ids = [
-        CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp"),
-        CompanyId("urn:pathfinder:company:customcode:buyer-assigned:acme-corp"),
-    ]
-    product_footprint_data = {
-        **valid_product_footprint_data,
-        "company_ids": company_ids,
-    }
-    with pytest.raises(ValueError, match="Duplicate company_ids are not allowed"):
-        ProductFootprint(**product_footprint_data)
 
 
 def test_product_footprint_product_category_cpc(valid_product_footprint_data):
