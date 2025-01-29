@@ -28,13 +28,13 @@ class DataQualityIndicators:
     Examples:
         >>> from pact_methodology.datetime import DateTime
         >>> dqi = DataQualityIndicators(
-        ...     reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
-        ...     coverage_percent=50.0,
-        ...     technological_dqr=DataQualityRating(3),
-        ...     temporal_dqr=DataQualityRating(3),
-        ...     geographical_dqr=DataQualityRating(3),
-        ...     completeness_dqr=DataQualityRating(3),
-        ...     reliability_dqr=DataQualityRating(3)
+        ...    reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
+        ...    coverage_percent=50.0,
+        ...    technological_dqr=DataQualityRating(3),
+        ...    temporal_dqr=DataQualityRating(3),
+        ...    geographical_dqr=DataQualityRating(3),
+        ...    completeness_dqr=DataQualityRating(3),
+        ...    reliability_dqr=DataQualityRating(3)
         ... )
         >>> dqi.reference_period
         ReferencePeriod(start=DateTime.now(), end=DateTime.now())
@@ -66,19 +66,19 @@ class DataQualityIndicators:
             reliability_dqr (DataQualityRating, optional): Defaults to None if before 2025.
 
         Raises:
-            ValueError: If a required attribute is missing or None for reporting periods
+            ValueError: If a required attribute is missing or None for reference periods
                         including 2025 or later.
 
         Examples:
             >>> from pact_methodology.datetime import DateTime
             >>> dqi = DataQualityIndicators(
-            ...     reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
-            ...     coverage_percent=50.0,
-            ...     technological_dqr=DataQualityRating(3),
-            ...     temporal_dqr=DataQualityRating(3),
-            ...     geographical_dqr=DataQualityRating(3),
-            ...     completeness_dqr=DataQualityRating(3),
-            ...     reliability_dqr=DataQualityRating(3)
+            ...    reference_period=ReferencePeriod(start=DateTime.now(), end=DateTime.now()),
+            ...    coverage_percent=50.0,
+            ...    technological_dqr=DataQualityRating(3),
+            ...    temporal_dqr=DataQualityRating(3),
+            ...    geographical_dqr=DataQualityRating(3),
+            ...    completeness_dqr=DataQualityRating(3),
+            ...    reliability_dqr=DataQualityRating(3)
             ... )
         """
         self.reference_period = reference_period
@@ -102,7 +102,7 @@ class DataQualityIndicators:
             for attr in required_attributes_after_2025:
                 if not hasattr(self, attr) or getattr(self, attr) is None:
                     raise ValueError(
-                        f"Attribute '{attr}' must be defined and not None for reporting periods including 2025 or later"
+                        f"Attribute '{attr}' must be defined and not None for reference periods including 2025 or later"
                     )
 
     @property
