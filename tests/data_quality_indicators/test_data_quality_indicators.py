@@ -42,7 +42,7 @@ def test_dqi_missing_attributes_after_2025(valid_data, missing_attribute):
         DataQualityIndicators(**valid_data)
     assert (
         str(excinfo.value)
-        == f"Attribute '{missing_attribute}' must be defined and not None for reporting periods including 2025 or later"
+        == f"Attribute '{missing_attribute}' must be defined and not None for reference periods including 2025 or later"
     )
 
 

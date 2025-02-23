@@ -136,7 +136,7 @@ class CarbonFootprint:
             for attr in required_attributes_after_2025:
                 if not hasattr(self, attr) or getattr(self, attr) is None:
                     raise ValueError(
-                        f"Attribute '{attr}' must be defined and not None for reporting periods including 2025 or later"
+                        f"Attribute '{attr}' must be defined and not None for reference periods including 2025 or later"
                     )
         else:
             if not any(
@@ -144,7 +144,7 @@ class CarbonFootprint:
                 for attr in required_attributes_before_2025
             ):
                 raise ValueError(
-                    "At least one of 'primary_data_share' or 'dqi' must be defined for reporting periods before 2025"
+                    "At least one of 'primary_data_share' or 'dqi' must be defined for reference periods before 2025"
                 )
 
     @property

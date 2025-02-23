@@ -66,7 +66,7 @@ class DataQualityIndicators:
             reliability_dqr (DataQualityRating, optional): Defaults to None if before 2025.
 
         Raises:
-            ValueError: If a required attribute is missing or None for reporting periods
+            ValueError: If a required attribute is missing or None for reference periods
                         including 2025 or later.
 
         Examples:
@@ -102,7 +102,7 @@ class DataQualityIndicators:
             for attr in required_attributes_after_2025:
                 if not hasattr(self, attr) or getattr(self, attr) is None:
                     raise ValueError(
-                        f"Attribute '{attr}' must be defined and not None for reporting periods including 2025 or later"
+                        f"Attribute '{attr}' must be defined and not None for reference periods including 2025 or later"
                     )
 
     @property
